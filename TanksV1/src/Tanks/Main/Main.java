@@ -74,9 +74,9 @@ public class Main {
 		tank.setTankLocation(800, 500);
 		tank.setHullTurningDistance(3);
 		tank.setTurretTurningDistance(3);
-		tank.setMovementSpeed(5);
+		tank.setMovementSpeed(2);
 		tank.setInitialDirection(180);
-		tank.setShellSpeed(10);
+		tank.setShellSpeed(5);
 		tank.setShellRicochetNumber(2);
 		tank.enablePlayerControl();
 		
@@ -96,7 +96,7 @@ public class Main {
 		tank.setTankLocation(800, 500);
 		tank.setHullTurningDistance(3);
 		tank.setTurretTurningDistance(3);
-		tank.setMovementSpeed(5);
+		tank.setMovementSpeed(2);
 		tank.setInitialDirection(180);
 		tank.setShellSpeed(10);
 		tank.setShellRicochetNumber(2);

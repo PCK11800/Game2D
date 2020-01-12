@@ -40,6 +40,7 @@ public class Tank {
 	private float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
+	private long lastShellFired = System.nanoTime();
 	
 	private Map map;
 	
@@ -126,6 +127,7 @@ public class Tank {
 	{
 		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, map);
 		shell.setSize((float) (turret.getWidth()/10), turret.getHeight()/5);
+		lastShellFired = System.nanoTime();
 		return shell;
 		
 	}
@@ -150,7 +152,7 @@ public class Tank {
 	 */
 	public void shoot() 
 	{
-		shellList.add(createShell());
+		if (((System.nanoTime() - lastShellFired) / 1000000) > 100) shellList.add(createShell());
 	}
 	
 	/**
