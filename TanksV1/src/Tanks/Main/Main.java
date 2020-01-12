@@ -3,7 +3,9 @@ package Tanks.Main;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
+import Tanks.Objects.Opponent;
 import org.jsfml.graphics.Color;
 
 import Tanks.ObjectComponents.Textures;
@@ -39,27 +41,28 @@ public class Main {
 		createFullScreenWindow(60);
 		drawMapTest();
 		drawTankTest();
+		drawOpponentTest();
+		//after all tanks for current map created
+		for (Tank t: tankList)
+		{
+			testMap.addTank(t);
+		}
 	}
 	
 	private void loop()
 	{
 		while(window.isOpen()) {
 			window.startOfFrame();
-			
-			updateTanks();
+
 			updateMap();
 			
 			window.endOfFrame();
 		}
 	}
 	
-	private void updateTanks() {
-		for (Tank tank : tankList) {
-			tank.update();
-		}
-	}
+
 	
-	private void drawTankTest() 
+	private void drawTankTest()
 	{
 		Tank tank = new Tank();
 		tank.setHullTexture(Textures.TANKHULL_GREEN);
@@ -78,6 +81,27 @@ public class Main {
 		tank.enablePlayerControl();
 		
 		tankList.add(tank);
+		testMap.addTank(tank);
+	}
+
+	private void drawOpponentTest()
+	{
+		Opponent tank = new Opponent();
+		tank.setHullTexture(Textures.TANKHULL_GREEN);
+		tank.setTurretTexture(Textures.TANKTURRET_GREEN);
+		tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
+		tank.setMap(testMap);
+		tank.setWindow(window);
+		tank.setSize(100, 100);
+		tank.setTankLocation(800, 500);
+		tank.setHullTurningDistance(3);
+		tank.setTurretTurningDistance(3);
+		tank.setMovementSpeed(5);
+		tank.setInitialDirection(180);
+		tank.setShellSpeed(10);
+		tank.setShellRicochetNumber(2);
+		tankList.add(tank);
+		testMap.addTank(tank);
 	}
 	
 	private void drawMapTest() {

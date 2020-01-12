@@ -1,6 +1,8 @@
 package Tanks.Objects;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 import Tanks.Listeners.PlayerListener;
@@ -32,6 +34,7 @@ public class Tank {
 	private Window window;
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
+	private int health = 1;
 	
 	private String shellTexturePath;
 	private float shellSpeed;
@@ -46,12 +49,18 @@ public class Tank {
 		this.turret = new TankTurret();
 		turret.setConnectedTankHull(hull);
 	}
-	
+
 	public void setHullTexture(String texturePath)
 	{
 		hull.setObjectTexture(texturePath);
 	}
-	
+
+	public void setHealth(int health) {this.health = health; }
+
+	public void getHit() {
+		System.out.println("tank: " + health);
+		this.health--; }
+
 	public void setTurretTexture(String texturePath)
 	{
 		turret.setObjectTexture(texturePath);
@@ -61,6 +70,7 @@ public class Tank {
 	{
 		shellTexturePath = texturePath;
 	}
+
 	
 	public void setWindow(Window window) 
 	{
@@ -208,20 +218,12 @@ public class Tank {
 	//Call this in game loop
 	public void update()
 	{
-		for(int i = 0; i < shellList.size(); i++) {
-			if(shellList.get(i).checkOutOfBounds()) {
-				shellList.remove(i);
-				shellList.trimToSize();	
-			}
-			else if(shellList.get(i).getRicochetNum() == shellRicochetNumber) {
-				shellList.remove(i);
-				shellList.trimToSize();	
-			}
-			else {
-				shellList.get(i).update();
-			}
-		}
-		
+		shellList = new ArrayList<TankShell>
+				(shellList.stream()
+				.filter(s -> !s.checkOutOfBounds() && s.isActive() && s.getRicochetNum() != shellRicochetNumber)
+				.collect(Collectors.toList()));
+		for (TankShell s : shellList) { s.update(); }
+
 		if(tankCollisionCheck()) {
 			System.out.println("Collision");
 		}
@@ -234,7 +236,9 @@ public class Tank {
 			turret.setPlayerTurretDirection();
 		}
 	}
-	
+
+	public boolean isOpponent() { return !isPlayerControlled; }
+
 	public float getMovementSpeed()
 	{
 		return hull.getMovementSpeed();
@@ -249,5 +253,14 @@ public class Tank {
 	{
 		return turret.getTurningDistance();
 	}
-	
+
+	public float getLeftBounds() { return hull.getLeftBounds(); }
+
+	public float getRightBounds() { return hull.getRightBounds(); }
+
+	public float getTopBounds() { return hull.getTopBounds(); }
+
+	public float getBottomBounds() { return hull.getBottomBounds(); }
+
+	public boolean isAlive() { return (health <= 0 ? false : true); }
 }

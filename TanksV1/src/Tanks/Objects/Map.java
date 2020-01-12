@@ -1,6 +1,7 @@
 package Tanks.Objects;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.Textures;
@@ -10,6 +11,7 @@ public class Map{
 
 	private Window window;
 	private ArrayList<MapObject> objectList = new ArrayList<>();
+	private ArrayList<Tank> tankList = new ArrayList<>();
 	
 	public Map(Window window) 
 	{
@@ -27,8 +29,24 @@ public class Map{
 		{
 			objectList.get(i).update();
 		}
+		updateTanks();
 	}
-	
+
+	public void updateTanks() {
+		tankList = new ArrayList<Tank>(
+				tankList.stream()
+						.filter(t -> t.isAlive())
+						.collect(Collectors.toList()));
+
+		for (Tank tank : tankList)
+		{
+			tank.update();
+		}
+	}
+	public void addTank(Tank t) { tankList.add(t); }
+
+	public ArrayList<Tank> getTanks() { return tankList; }
+
 	public ArrayList<MapObject> getObjectsInMap()
 	{
 		return objectList;
