@@ -197,11 +197,32 @@ public class Tank {
 	
 	private boolean tankCollisionCheck() 
 	{
-		for(int i = 0; i < map.getObjectsInMap().size(); i++) {
-			if(hull.getGlobalBounds().intersection(map.getObjectsInMap().get(i).getGlobalBounds()) != null) {
+		//Collisions for MapObjects
+		for(int i = 0; i < map.getObjectsInMap().size(); i++)
+		{
+			if(hull.getGlobalBounds().intersection(map.getObjectsInMap().get(i).getGlobalBounds()) != null)
+			{
 				return true;
 			}
 		}
+
+		//Collisions for the MapExit
+		for(int i = 0; i < map.getMapExits().size(); i++)
+		{
+			if(hull.getGlobalBounds().intersection(map.getMapExits().get(i).getGlobalBounds()) != null)
+			{
+				if (!map.getMapExits().get(i).getLockedStatus()) //if unlocked load next level
+				{
+					map.getMapExits().get(i).loadNextLevel();
+				}
+				//Testing
+				else
+				{
+					System.out.println("The door is locked!");
+				}
+			}
+		}
+
 		return false;
 	}
 	
