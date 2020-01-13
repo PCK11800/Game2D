@@ -213,7 +213,7 @@ public class Tank {
 			{
 				if (!map.getMapExits().get(i).getLockedStatus()) //if unlocked load next level
 				{
-					map.getMapExits().get(i).loadNextLevel();
+					map.getMapExits().get(i).displayUnlocked();
 				}
 				//Testing
 				else

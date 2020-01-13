@@ -13,11 +13,16 @@ public class MapExit extends RotatingObject
     protected Window window;
     private boolean isLocked = true;
 
+    private String lockedTexture;
+    private String unlockedTexture;
 
-    public MapExit(Window window, float x, float y, float width, float height, String objectTexture)
+
+    public MapExit(Window window, float x, float y, float width, float height, String lockedTexture, String unlockedTexture)
     {
         this.window = window;
-        setObjectTexture(objectTexture);
+        this.lockedTexture = lockedTexture;
+        this.unlockedTexture = unlockedTexture;
+        setObjectTexture(lockedTexture);
         setLocation(x, y);
         setSize(width, height);
     }
@@ -28,9 +33,9 @@ public class MapExit extends RotatingObject
     }
 
 
-    public void loadNextLevel()
+    public void displayUnlocked()
     {
-        System.out.println("LOAD THE NEXT LEVEL!");
+        setObjectTexture(unlockedTexture);
     }
 
     public boolean getLockedStatus() { return isLocked; }
