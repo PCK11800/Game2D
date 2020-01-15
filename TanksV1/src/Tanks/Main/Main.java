@@ -86,7 +86,7 @@ public class Main {
 
 	private void drawOpponentTest()
 	{
-		Opponent tank = new Opponent();
+		Opponent tank = new Opponent(tankList.get(0));
 		tank.setHullTexture(Textures.TANKHULL_GREEN);
 		tank.setTurretTexture(Textures.TANKTURRET_GREEN);
 		tank.setShellTexture(Textures.TANKSHELL_DEFAULT);

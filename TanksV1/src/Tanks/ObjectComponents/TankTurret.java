@@ -70,9 +70,15 @@ public class TankTurret extends RotatingObject {
 	{
 		this.window = window;
 	}
+
+	public float getDirection() { return this.objectDirection; }
 	
 	public void update()
 	{
 		draw(window);
 	}
+
+	public float getXPos() { return getxPos(); }
+
+	public float getYPos() { return getyPos(); }
 }

@@ -29,15 +29,15 @@ public class Tank {
 	 * setPlayerControlled() : This enables the tank to be controlled by the player
 	 */
 	
-	private TankHull hull;
-	private TankTurret turret;
-	private Window window;
+	protected TankHull hull;
+	protected TankTurret turret;
+	protected Window window;
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
 	private int health = 1;
 	
 	private String shellTexturePath;
-	private float shellSpeed;
+	protected float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
 	private long lastShellFired = System.nanoTime();
@@ -255,6 +255,12 @@ public class Tank {
 	{
 		return turret.getTurningDistance();
 	}
+
+	public float getXPos() { return turret.getxPos(); }
+
+	public float getYPos() { return turret.getyPos(); }
+
+	public float getTurretDir() { return turret.getDirection(); }
 
 	public float getLeftBounds() { return hull.getLeftBounds(); }
 

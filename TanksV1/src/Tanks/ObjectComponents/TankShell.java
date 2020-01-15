@@ -19,8 +19,7 @@ public class TankShell extends RotatingObject{
 		this.shellSpeed = shellSpeed;
 		this.map = map;
 		setObjectTexture(texturePath);
-		//quick fix to stop tank damaging itself when shell is fired (will fix properly later):
-		setCenterLocation(connectedTankTurret.getxPos() + (float)(80 * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(80 * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
+		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
 	}
 	
