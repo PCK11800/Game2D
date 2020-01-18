@@ -19,10 +19,7 @@ public class Map{
 		createMap();
 	}
 	
-	private void createMap() 
-	{
-		objectList.add(new MapObject(window, 500, 500, 100, 100, Textures.BRICKBLOCK));
-	}
+	private void createMap() { objectList.add(new MapObject(window, 500, 500, 100, 100, Textures.BRICKBLOCK)); }
 	
 	public void update() {
 		for(int i = 0; i < objectList.size(); i++) 

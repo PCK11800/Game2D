@@ -34,7 +34,7 @@ public class Tank {
 	protected Window window;
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
-	private int health = 1;
+	private int health = 100;
 	
 	private String shellTexturePath;
 	protected float shellSpeed;
@@ -42,7 +42,7 @@ public class Tank {
 	private int shellRicochetNumber;
 	private long lastShellFired = System.nanoTime();
 	
-	private Map map;
+	protected Map map;
 	
 	public Tank() 
 	{
@@ -60,7 +60,8 @@ public class Tank {
 
 	public void getHit() {
 		System.out.println("tank: " + health);
-		this.health--; }
+		//this.health--;
+	}
 
 	public void setTurretTexture(String texturePath)
 	{
