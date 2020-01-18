@@ -22,7 +22,7 @@ public class TankShell extends RotatingObject{
 		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
 	}
-	
+
 	public void launchedForward()
 	{
 		xPos = xPos + (float)(shellSpeed * Math.sin(Math.toRadians(this.objectDirection)));

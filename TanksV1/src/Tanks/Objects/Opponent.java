@@ -15,11 +15,13 @@ import java.util.ArrayList;
 
 public class Opponent extends Tank {
 
+    private static final int RICOCHET_MAX = 3;
     private int movementCount = 0;
     private double direction = 0;
     private Tank player;
     private float playerXPos;
     private float playerYPos;
+    private int ricochetCount = 0;
 
     public Opponent(Tank player)
     {
@@ -33,7 +35,7 @@ public class Opponent extends Tank {
         super.update();
         if (movementCount == 0)
         {
-            for (int i  = 0; i< 18; i++) {
+            for (int i  = 0; i< 15; i++) {
 
                 rotateTurretRight();
             }
@@ -43,7 +45,7 @@ public class Opponent extends Tank {
         movementCount++;
         playerXPos = player.getXPos();
         playerYPos = player.getYPos();
-        if (player.isAlive() && action()) shoot();
+        if (player.isAlive()) action();
 
 
     }
@@ -53,10 +55,10 @@ public class Opponent extends Tank {
 
     }
 
-    private boolean action()
+    private void action()
     {
         float x1, y1, x2, y2, m, c, turnAmount, newx2, newy2, upperBound, lowerBound, playerConstant;
-
+        System.out.println(playerXPos + "|||" + playerYPos);
         //return false if player behind direction of turret
         turnAmount = getTurretDir();
         //System.out.println(turnAmount);
@@ -75,9 +77,8 @@ public class Opponent extends Tank {
         //System.out.println(x1 + "," + y1 + " " + x2 + "," + y2);
         char[] direction = new char[2];
         direction[0] = turnAmount >= 180 ? turnAmount == 180 ? 'D' : 'L' : turnAmount == 0 ? 'U' : 'R';
-
-        System.out.println(objectCollision(x1, y1, x2, y2));
-        return isPlayerInFiringLine(x1, y1, x2, y2);
+        ricochetCount = 0;
+        objectCollision(x1, y1, x2, y2, getTurretDir());
     }
 
     private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
@@ -113,7 +114,7 @@ public class Opponent extends Tank {
         return (upperBound > playerConstant && lowerBound < playerConstant);
     }
 
-    private boolean objectCollision(float x1, float y1, float x2, float y2)
+    private boolean objectCollision(float x1, float y1, float x2, float y2, float direction)
     {
         float m, c, x, y, newX, newY, playerConstant, upperBound, lowerBound;
         ArrayList<MapObject> objects = map.getObjectsInMap();
@@ -121,16 +122,21 @@ public class Opponent extends Tank {
         c =  y2 - (m*x2);
         for (MapObject obj : objects)
         {
-            if (x2 <= x1 && y2 <= y1) //can hit right side or bottom
+            if((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds()))
+            {
+
+                //do nothing
+            }
+            else if (x2 <= x1 && y2 <= y1) //can hit right side or top
             {
                 System.out.println("here1");
                 x = obj.getRightBounds();
                 y = (m*x) + c;
-                if (y > obj.getTopBounds() && y < obj.getBottomBounds())
+                if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -138,17 +144,24 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-
-                   if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerXPos + player.hull.getWidth()/2 > x && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
                 y = obj.getBottomBounds();
                 x = (y - c) / m;
-                if (x < obj.getRightBounds() && x > obj.getLeftBounds())
+                if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //bottom
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -156,21 +169,29 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                   if (playerYPos + player.hull.getHeight()/2 > y && isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerYPos + player.hull.getHeight()/2 > y && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
             }
-            else if (x2 <= x1 && y2 >= y1) //can hit left side or top
+            else if (x2 <= x1 && y2 >= y1) //can hit right side or top
             {
                 System.out.println("here2");
                 x = obj.getRightBounds();
                 y = (m*x) + c;
-                if (y > obj.getTopBounds() && y < obj.getBottomBounds())
+                if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right side
                 {
                     System.out.println("hereagain");
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -178,17 +199,24 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
-
+                    if (playerXPos + player.hull.getWidth()/2 > x && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
                 y = obj.getTopBounds();
                 x = (y - c) / m;
-                if (x < obj.getRightBounds() && x > obj.getLeftBounds())
+                if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -196,7 +224,15 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerYPos + player.hull.getHeight()/2 > y && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
             }
@@ -205,11 +241,11 @@ public class Opponent extends Tank {
                 System.out.println("here3");
                 x = obj.getLeftBounds();
                 y = (m*x) + c;
-                if (y > obj.getTopBounds() && y < obj.getBottomBounds())
+                if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -217,7 +253,15 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerXPos + player.hull.getWidth() / 2 > x && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
                 y = obj.getBottomBounds();
@@ -226,7 +270,7 @@ public class Opponent extends Tank {
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -234,7 +278,15 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerYPos + player.hull.getHeight()/2 > y && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
             }
@@ -243,11 +295,11 @@ public class Opponent extends Tank {
                 System.out.println("here4");
                 x = obj.getLeftBounds();
                 y = (m*x) + c;
-                if (y > obj.getTopBounds() && y < obj.getBottomBounds())
+                if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY,  0 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -255,16 +307,24 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerXPos + player.hull.getWidth() / 2 < x && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
                 y = obj.getTopBounds();
                 x = (y - c) / m;
-                if (x < obj.getRightBounds() && x > obj.getLeftBounds())
+                if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                 {
                     newX = x;
                     newY = y + 70;
-                    float coords[] = rotateCoordinates(x, y, newX, newY, 0 - getTurretDir());
+                    float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
                     newX = coords[0];
                     newY = coords[1];
                     System.out.println(x + "|" + y);
@@ -272,7 +332,15 @@ public class Opponent extends Tank {
                     b.setObjectTexture(Textures.TANKSHELL_DEFAULT);
                     b.setCenterLocation(x, y);
                     window.draw(b);
-                    if (isPlayerInFiringLine(x, y, newX, newY)) shoot();
+                    if (playerYPos + player.hull.getHeight()/2 < y && isPlayerInFiringLine(x, y, newX, newY))
+                    {
+                        shoot();
+                    }
+                    else if (ricochetCount < RICOCHET_MAX)
+                    {
+                        ricochetCount++;
+                        objectCollision(x, y, newX, newY, 180 - direction);
+                    }
                     return true;
                 }
             }
