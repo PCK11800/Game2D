@@ -11,6 +11,8 @@ public class TankShell extends RotatingObject{
 	protected Window window;
 	private Map map;
 	private boolean active = true;
+	private boolean ghost = false;
+	private boolean hitPlayer = false;
 	
 	public TankShell(TankTurret connectedTankTurret, String texturePath, Window window, float shellSpeed, Map map) 
 	{
@@ -22,6 +24,12 @@ public class TankShell extends RotatingObject{
 		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
 	}
+
+	public void setGhostMode()
+	{
+		ghost = true;
+	}
+
 
 	public void launchedForward()
 	{
@@ -93,25 +101,31 @@ public class TankShell extends RotatingObject{
 			if(tip_xPos >= t.getLeftBounds() && tip_xPos <= t.getRightBounds()) {
 				if(tip_yPos >= t.getBottomBounds() - margin && tip_yPos <= t.getBottomBounds()) {
 					active = false;
-					t.getHit();
+					if (!ghost) t.getHit();
 				}
 				else if (tip_yPos >= t.getTopBounds() - margin && tip_yPos <= t.getTopBounds() + margin) {
 					active = false;
-					t.getHit();
+					if (!ghost) t.getHit();
 				}
 			}
 
 			else if(tip_yPos >= t.getTopBounds() && tip_yPos <= t.getBottomBounds()) {
 				if(tip_xPos >= t.getRightBounds() - margin && tip_xPos <= t.getRightBounds() + margin) {
 					active = false;
-					t.getHit();
+					if (!ghost) t.getHit();
 				}
 				else if(tip_xPos >= t.getLeftBounds() - margin/2 && tip_xPos <= t.getLeftBounds() + margin) {
 					active = false;
-					t.getHit();
+					if (!ghost) t.getHit();
+
 				}
 			}
 		}
+	}
+
+	public void hitPlayer()
+	{
+
 	}
 
 

@@ -272,4 +272,6 @@ public class Tank {
 	public float getBottomBounds() { return hull.getBottomBounds(); }
 
 	public boolean isAlive() { return (health <= 0 ? false : true); }
+
+	public boolean isPlayer() { return isPlayerControlled; }
 }
