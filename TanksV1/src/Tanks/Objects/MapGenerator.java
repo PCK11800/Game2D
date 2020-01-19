@@ -6,16 +6,64 @@ import Tanks.ObjectComponents.Textures;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
 
 
 /**
  * This class is used to randomly generate a map given particular parameters
- * The method used to generate the map is a modified recursive division maze algorithm.
+ * The method used to generate the map is a recursive backtracking maze algorithm
  * The algorithms implementation is derived from the algorithm presented here: https://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html
  */
 public class MapGenerator
 {
+	//Instance variables
+	private ArrayList<MapObject> objectList = new ArrayList<>();
+	private Window window;
+	private Map map;
+
+	private MapObject levelObjects[][];
+	private int level[][];
+
+	private int x;
+	private int y;
+	private float maxX;
+	private float maxY;
+
+	private float tileSize;
+
+
+	private float wallShort;
+	private float wallLong;
+
+	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
+
+	
+	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, long seed)
+	{
+		this.window = w;
+		this.map = map;
+
+		this.x = x;
+		this.y = y;
+		this.maxX = tileSize * x;
+		this.maxY = tileSize * y;
+
+		this.wallShort = wallShort;
+		this.wallLong = tileSize;
+		this.tileSize = tileSize;
+
+		this.seed = seed;
+
+		this.level = new int[x][y];
+
+		generateLevel(0,0, seed);
+		createMap();
+	}
+
+
+	/**
+	 * A private enum called direction which stores 4 instances of the enum - north, south, east and west
+	 * A bit number - used for testing, direction on the x axis, as well direction on the y axis are stored, in addition to the the opposite of the current direction
+	 */
 	private enum Direction
 	{
 		//Creates instances of the enum - north, south, east and west, with the specified bits
@@ -26,7 +74,7 @@ public class MapGenerator
 		private final int dy;
 		private Direction opposite;
 
-		// use the static initializer to resolve forward references - this section of code is called before the constructor
+		//This is used to resolve forward references, as it is called before the constructor.
 		static
 		{
 			N.opposite = S;
@@ -35,7 +83,7 @@ public class MapGenerator
 			W.opposite = E;
 		}
 
-
+		//Constructor
 		private Direction(int bit, int dx, int dy)
 		{
 			this.bit = bit;
@@ -44,35 +92,7 @@ public class MapGenerator
 		}
 	};
 
-
-	private ArrayList<MapObject> objectList = new ArrayList<>();
-	private Window window;
-	private Map map;
-
-	private MapObject levelObjects[][];
-	private int level[][];
-
-	private int x;
-	private int y;
-	private int tileSize;
-	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
-
 	
-	public MapGenerator(Window w, Map map, int x, int y, int tileSize, long seed)
-	{
-		this.window = w;
-		this.map = map;
-		this.x = x;
-		this.y = y;
-
-		this.tileSize = tileSize;
-		this.seed = seed;
-
-		this.level = new int[x][y];
-		this.levelObjects = new MapObject[x][y];
-		generateLevel(0,0, seed);
-		display();
-	}
 
 	/**
 	 * This method is used to generate the level - it populates the level int 2D array which is used later to place all objects within the level
@@ -83,15 +103,18 @@ public class MapGenerator
 	private void generateLevel(int cx, int cy, long seed)
 	{
 		Direction[] dirs = Direction.values();
-		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable ,aps
+		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+
 		for (Direction dir : dirs)
 		{
 			int nx = cx + dir.dx;
 			int ny = cy + dir.dy;
+
 			if (between(nx, x) && between(ny, y) && (level[nx][ny] == 0))
 			{
 				level[cx][cy] |= dir.bit; //|=  is bitwise or equal (i.e. reads the same as +=)
 				level[nx][ny] |= dir.opposite.bit;
+
 				generateLevel(nx, ny, seed);
 			}
 		}
@@ -104,60 +127,70 @@ public class MapGenerator
 	 * @param upper the upper bound that is being tested againts
 	 * @return a boolean true if the value is between upper and 0, false if it isn't
 	 */
-	private boolean between(int i, int upper)
-	{
-		return (i >= 0) && (i < upper);
-	}
+	private boolean between(int i, int upper) { return (i >= 0) && (i < upper); }
 
 
 	/**
-	 * A function used to create and place the map objects
+	 * A function used to create and place the map objects within the map
+	 * The function iterates through the level 2D array and places a wall of the correct size and direction onto the map.
 	 */
-	public void display()
+	public void createMap()
 	{
 		for (int i = 0; i < y; i++)
 		{
-			float y = i * tileSize;
+			float yPos = i * tileSize;
 
-			// draw the north edge
+			//Creates the north edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float x = j * tileSize;
+				float xPos = j * tileSize;
 				System.out.print((level[j][i] & 1) == 0 ? "+---" : "+   "); //ternary operator if: level[j][i] & 1 == 0 print "+---" else print "+   "
 
-				if ((level[j][i] & 1) == 0) { addObject(x, y, 125, 25, Textures.BRICKBLOCK); } //Change this to be 1 100x25 and 1 25x25
+				if ((level[j][i] & 1) == 0)
+				{
+					addObject(xPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
+					addObject(xPos + wallShort, yPos, wallLong, wallShort, Textures.BRICKBLOCK);
+				}
 
-				else { addObject(x, y, 25, 25, Textures.BRICKBLOCK); }
+				else
+				{
+					addObject(xPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
+				}
 			}
 
-			//Will need to add a 25x25 block here
+			//Creates part of the east wall
 			System.out.println("+");
-			addObject(400, y, 25, 25, Textures.BRICKBLOCK);
+			addObject(maxX, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
 
-			// draw the west edge
+			//Creates the west edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float x = j * tileSize;
+				float xPos = j * tileSize;
 				System.out.print((level[j][i] & 8) == 0 ? "|   " : "    ");
 
-				if ((level[j][i] & 8) == 0) { addObject(x, y, 25, 100, Textures.BRICKBLOCK); }
+				if ((level[j][i] & 8) == 0)
+				{
+					addObject(xPos, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+				}
 			}
 
-			// draw the east side - right side of the maze
+			//Creates part of the east edge of the map
 			System.out.println("|");
-			addObject(400, y, 25, 100, Textures.BRICKBLOCK);
+			addObject(maxX, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
 		}
 
-		// draw the bottom line
+		//Creates the south edge of the map
 		for (int j = 0; j < x; j++)
 		{
 			System.out.print("+---");
-			addObject(j * tileSize, 400, 100, 25, Textures.BRICKBLOCK);
+			addObject(j * tileSize, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
+			addObject(j * tileSize + wallShort, maxY, wallLong, wallShort, Textures.BRICKBLOCK);
 		}
-		System.out.println("+");
-		addObject(400, 400, 25, 25, Textures.BRICKBLOCK);
-	}
 
+		//Creates the other part of the east edge of the map
+		System.out.println("+");
+		addObject(maxX, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
+	}
 
 
 	
@@ -174,25 +207,4 @@ public class MapGenerator
 		//Include scaling here - i.e. take the scale factor and multiply it by the given x and y - x and y should be the position in the grid?
 		map.getObjectsInMap().add(new MapObject(this.window, x, y, width, height, texture)); //window, x, y, width, height, texture
 	}
-
-	
-	
-	/**
-	 * Returns objectList - an array list of MapObjects which make up a level
-	 * @return objectList
-	 */
-	public ArrayList<MapObject> getObjectList() { return objectList; }
-	
-	/**
-	 * Returns a given mapObject based on a given index
-	 * @param index the index of the object you want in objectList
-	 * @return objectList
-	 */
-	public MapObject getObject(int index) { return objectList.get(index); }
-	
-	/**
-	 * Returns the size of objectList (i.e. the number of MapObjects in the objectList)
-	 * @return the size of objectList
-	 */
-	public int getObjectListSize() { return objectList.size(); } //The object list size is for some reason twice the size it should be
 }

@@ -23,7 +23,7 @@ public class LevelContainer
     {
         this.window = w;
         this.map = new Map(window);
-        this.mapGenerator = new MapGenerator(window, map, 4, 4, 100, System.currentTimeMillis());
+        this.mapGenerator = new MapGenerator(window, map, 3, 3, 25,250, System.currentTimeMillis());
 
 
         initPlayer(Textures.TANKHULL_GREEN, Textures.TANKTURRET_GREEN, Textures.TANKSHELL_DEFAULT);
