@@ -8,11 +8,15 @@ import org.jsfml.graphics.Color;
 
 import Tanks.Objects.LevelContainer;
 import Tanks.Window.Window;
+import org.jsfml.system.Clock;
+import org.jsfml.system.Time;
 
-public class Main {
+public class Main
+{
 	
-	Window window;
-	LevelContainer level;
+	private Window window;
+	private LevelContainer level;
+	private Clock frameClock = new Clock();
 
 	
 	@SuppressWarnings("unused")
@@ -22,7 +26,8 @@ public class Main {
 		window.setBackgroundColor(Color.WHITE);
 	}
 	
-	private void createFullScreenWindow(int frameRate) {
+	private void createFullScreenWindow(int frameRate)
+	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		window = new Window((int)screenSize.getWidth(), (int)screenSize.getHeight(), "Tanks", frameRate);
 		window.setBackgroundColor(Color.WHITE);
@@ -39,7 +44,11 @@ public class Main {
 	
 	private void loop()
 	{
-		while(window.isOpen()) {
+		while(window.isOpen())
+		{
+			Time deltaTime = frameClock.restart();
+			float deltaSeconds = deltaTime.asSeconds(); //Will need to pass this in to the update methods so that Tanks can move time independently
+
 			window.startOfFrame();
 
 			level.update();

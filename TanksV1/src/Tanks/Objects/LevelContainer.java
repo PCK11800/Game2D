@@ -11,17 +11,20 @@ import Tanks.Window.Window;
 public class LevelContainer
 {
     //Instance variables
-    Window window;
-    Map map;
+    private Window window;
+    private Map map;
+    private MapGenerator mapGenerator;
 
-    ArrayList<Tank> playerList = new ArrayList<Tank>();
-    ArrayList<Tank> enemyList = new ArrayList<Tank>(); //This should be changed once enemies are properly implemented
+    private ArrayList<Tank> playerList = new ArrayList<Tank>();
+    private ArrayList<Tank> enemyList = new ArrayList<Tank>(); //This should be changed once enemies are properly implemented
 
 
     public LevelContainer(Window w)
     {
-        window = w;
-        map = new Map(window);
+        this.window = w;
+        this.map = new Map(window);
+        this.mapGenerator = new MapGenerator(window, map, 4, 4, 100, System.currentTimeMillis());
+
 
         initPlayer(Textures.TANKHULL_GREEN, Textures.TANKTURRET_GREEN, Textures.TANKSHELL_DEFAULT);
     }

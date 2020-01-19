@@ -9,7 +9,8 @@ import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Window.Window;
 
-public class Tank {
+public class Tank
+{
 	/**
 	 * The tank class contains all the methods required to create a tank.
 	 * However, it is important to note that the methods are required to be
@@ -213,7 +214,7 @@ public class Tank {
 			{
 				if (!map.getMapExits().get(i).getLockedStatus()) //if unlocked load next level
 				{
-					map.getMapExits().get(i).displayUnlocked();
+					//map.getMapExits().get(i).displayUnlocked();
 				}
 				//Testing
 				else

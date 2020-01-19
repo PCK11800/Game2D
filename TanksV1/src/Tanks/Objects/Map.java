@@ -6,14 +6,12 @@ import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.Textures;
 import Tanks.Window.Window;
-import Tanks.ObjectComponents.MapGenerator;
 
 public class Map
 {
 	private Window window;
 	private ArrayList<MapObject> objectList = new ArrayList<>();
 	private ArrayList<MapExit> exitList = new ArrayList<>();
-	private MapGenerator mapGenerator;
 
 	private int numOfEnemies = 1;
 
@@ -21,7 +19,6 @@ public class Map
 	public Map(Window window)
 	{
 		this.window = window;
-		this.mapGenerator = new MapGenerator(window);
 		createMap();
 
 		//Purely for testing
@@ -31,7 +28,7 @@ public class Map
 
 	private void createMap()
 	{
-		exitList.add(new MapExit(window, 500, 500, 200, 100, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
+		exitList.add(new MapExit(window, 500, 500, 200, 25, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
 	}
 
 	public void enemyKilled()
@@ -55,11 +52,6 @@ public class Map
 	 */
 	private void setObjectList()
 	{
-		System.out.println("Object List Size:" + mapGenerator.getObjectListSize());
-		for (int i = 0; i < mapGenerator.getObjectListSize(); i++)
-		{
-			this.objectList.add(this.mapGenerator.getObject(i));
-		}
 		objectList.add(new MapObject(window, 500, 500, 100, 100, Textures.BRICKBLOCK));
 		objectList.add(new MapObject(window, 300, 500, 100, 100, Textures.BRICKBLOCK));
 	}
@@ -72,11 +64,17 @@ public class Map
 		{
 			objectList.get(i).update();
 		}
-
+		//Exits
 		for(int i = 0; i < exitList.size(); i++)
 		{
 			exitList.get(i).update();
 		}
+	}
+
+
+	public void addMapObject(float x, float y, float width, float height, String texture)
+	{
+		objectList.add(new MapObject(window, x, y, width, height, texture));
 	}
 
 
