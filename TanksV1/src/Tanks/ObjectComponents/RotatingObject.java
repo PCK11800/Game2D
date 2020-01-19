@@ -16,9 +16,11 @@ public class RotatingObject extends Sprite {
 	protected float xCenter, yCenter;
 	protected float objectDirection;
 	protected Texture objectTexture;
+	protected String texture;
 	
 	public void setObjectTexture(String texturePath) 
 	{
+		texture = texturePath;
 		Path imagePath = FileSystems.getDefault().getPath("..", texturePath);
 		objectTexture = new Texture();
 		try {
@@ -32,6 +34,7 @@ public class RotatingObject extends Sprite {
 			e.printStackTrace();
 		}
 	}
+
 	
 	/**
 	 * Moves the centroid to the center of the object.
@@ -144,4 +147,6 @@ public class RotatingObject extends Sprite {
 	{
 		return getGlobalBounds().top + getHeight();
 	}
+
+	public String getTexturePath() { return texture; }
 }

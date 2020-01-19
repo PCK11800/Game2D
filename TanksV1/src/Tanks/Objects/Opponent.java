@@ -2,6 +2,7 @@ package Tanks.Objects;
 
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.RotatingObject;
+import Tanks.ObjectComponents.TankTurret;
 import Tanks.ObjectComponents.Textures;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Sprite;
@@ -24,6 +25,7 @@ public class Opponent extends Tank {
     private int ricochetCount = 0;
     private int shotsFired = 0;
     private boolean isObjectInFiringLine = false;
+    private TankTurret clone;
 
     public Opponent(Tank player)
     {
@@ -41,18 +43,18 @@ public class Opponent extends Tank {
 
                 rotateTurretRight();
             }
-
+            clone = turret.stationaryCopy();
 
         }
+        clone.update();
         movementCount++;
         playerXPos = player.getXPos();
         playerYPos = player.getYPos();
 
         if (player.isAlive()) action();
 
-
     }
-    
+
 
     private void action()
     {
@@ -74,13 +76,17 @@ public class Opponent extends Tank {
         isObjectInFiringLine = false;
         if (objectCollision(x1, y1, x2, y2, getTurretDir()))
         {
+            turret.update();
             shoot();
+            clone = turret.stationaryCopy();
         }
         else if ((turnAmount <= 180 && playerXPos > x1) || (turnAmount > 180 && playerXPos < x1) && !isObjectInFiringLine)
         {
             if (isPlayerInFiringLine(x1, y1, x2, y2))
             {
+                turret.update();
                 shoot();
+                clone = turret.stationaryCopy();
             }
             else
             {

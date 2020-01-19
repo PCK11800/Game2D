@@ -153,7 +153,7 @@ public class Tank {
 	 */
 	public void shoot() 
 	{
-		if (((System.nanoTime() - lastShellFired) / 1000000) > 100) shellList.add(createShell());
+		if (((System.nanoTime() - lastShellFired) / 1000000) > 1000) shellList.add(createShell());
 	}
 	
 	/**
@@ -232,7 +232,7 @@ public class Tank {
 		}
 		
 		hull.update();
-		turret.update();
+		if (isPlayer()) turret.update();
 		
 		if(isPlayerControlled) {
 			listener.handleInput();
