@@ -37,6 +37,8 @@ public class Tank {
 	private float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
+
+	private int money = 0;
 	
 	private Map map;
 	
@@ -204,6 +206,11 @@ public class Tank {
 		}
 		return false;
 	}
+
+	public void increaseMoney(int i)
+	{
+		this.money += i;
+	}
 	
 	//Call this in game loop
 	public void update()
@@ -248,6 +255,11 @@ public class Tank {
 	public float getTurretTurningDistance()
 	{
 		return turret.getTurningDistance();
+	}
+
+	public int getMoney()
+	{
+		return this.money;
 	}
 	
 }
