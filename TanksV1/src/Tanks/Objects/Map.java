@@ -28,7 +28,7 @@ public class Map
 
 	private void createMap()
 	{
-		exitList.add(new MapExit(window, 500, 500, 200, 25, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
+		exitList.add(new MapExit(window, 1800, 500, 25, 250, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
 	}
 
 	public void enemyKilled()

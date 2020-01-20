@@ -11,7 +11,6 @@ import java.util.Collections;
 /**
  * This class is used to randomly generate a map given particular parameters
  * The method used to generate the map is a recursive backtracking maze algorithm
- * The algorithms implementation is derived from the algorithm presented here: https://weblog.jamisbuck.org/2015/1/15/better-recursive-division-algorithm.html
  */
 public class MapGenerator
 {
@@ -29,7 +28,8 @@ public class MapGenerator
 	private float maxY;
 
 	private float tileSize;
-
+	private float offsetX;
+	private float offsetY;
 
 	private float wallShort;
 	private float wallLong;
@@ -37,19 +37,22 @@ public class MapGenerator
 	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
 
 	
-	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, long seed)
+	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, float offsetX, float offsetY , long seed)
 	{
 		this.window = w;
 		this.map = map;
 
 		this.x = x;
 		this.y = y;
-		this.maxX = tileSize * x;
-		this.maxY = tileSize * y;
+		this.maxX = offsetX + (tileSize * x);
+		this.maxY = offsetY + (tileSize * y);
 
 		this.wallShort = wallShort;
 		this.wallLong = tileSize;
+
 		this.tileSize = tileSize;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
 
 		this.seed = seed;
 
@@ -92,7 +95,7 @@ public class MapGenerator
 		}
 	};
 
-	
+
 
 	/**
 	 * This method is used to generate the level - it populates the level int 2D array which is used later to place all objects within the level
@@ -136,14 +139,22 @@ public class MapGenerator
 	 */
 	public void createMap()
 	{
+		/* TODO:
+			Add an offset so that the center of the maze is the center of the screen
+			Change it so that instead of one long wall, a number of blocks that extend to the same length
+			Add a scale so that depending on the size of the maze (i.e. x and y size), the actual size of the maze is constant
+			Add the ability to randomly select textures from a list.
+			Add functionality to add the mapExit somewhere on the map. The easiest way to do this would be to add it on the east wall, and randomly choose a position.
+		 */
+
 		for (int i = 0; i < y; i++)
 		{
-			float yPos = i * tileSize;
+			float yPos = offsetY + (i * tileSize);
 
 			//Creates the north edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float xPos = j * tileSize;
+				float xPos = offsetX + (j * tileSize);
 				System.out.print((level[j][i] & 1) == 0 ? "+---" : "+   "); //ternary operator if: level[j][i] & 1 == 0 print "+---" else print "+   "
 
 				if ((level[j][i] & 1) == 0)
@@ -165,7 +176,7 @@ public class MapGenerator
 			//Creates the west edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float xPos = j * tileSize;
+				float xPos = offsetX + (j * tileSize);
 				System.out.print((level[j][i] & 8) == 0 ? "|   " : "    ");
 
 				if ((level[j][i] & 8) == 0)
@@ -182,9 +193,11 @@ public class MapGenerator
 		//Creates the south edge of the map
 		for (int j = 0; j < x; j++)
 		{
+			float xPos = offsetX + (j * tileSize);
+
 			System.out.print("+---");
-			addObject(j * tileSize, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
-			addObject(j * tileSize + wallShort, maxY, wallLong, wallShort, Textures.BRICKBLOCK);
+			addObject(xPos, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
+			addObject(xPos + wallShort, maxY, wallLong, wallShort, Textures.BRICKBLOCK);
 		}
 
 		//Creates the other part of the east edge of the map

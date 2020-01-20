@@ -23,8 +23,7 @@ public class LevelContainer
     {
         this.window = w;
         this.map = new Map(window);
-        this.mapGenerator = new MapGenerator(window, map, 3, 3, 25,250, System.currentTimeMillis());
-
+        this.mapGenerator = new MapGenerator(window, map, 4, 4, 10,100, 100, 20, System.currentTimeMillis());
 
         initPlayer(Textures.TANKHULL_GREEN, Textures.TANKTURRET_GREEN, Textures.TANKSHELL_DEFAULT);
     }
@@ -39,7 +38,7 @@ public class LevelContainer
         player.setShellTexture(shellTexture);
         player.setMap(map);
         player.setWindow(window);
-        player.setSize(100, 100);
+        player.setSize(50, 50);
         player.setTankLocation(800, 500);
         player.setHullTurningDistance(3);
         player.setTurretTurningDistance(3);
