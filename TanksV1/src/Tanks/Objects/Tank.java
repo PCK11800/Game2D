@@ -1,5 +1,7 @@
 package Tanks.Objects;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -8,6 +10,9 @@ import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Window.Window;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.Font;
+import org.jsfml.graphics.Text;
 
 public class Tank {
 	/**
@@ -31,7 +36,7 @@ public class Tank {
 	private TankTurret turret;
 	private Window window;
 	private PlayerListener listener;
-	private boolean isPlayerControlled = false;
+	private boolean isPlayerControlled = true;
 	
 	private String shellTexturePath;
 	private float shellSpeed;
@@ -39,6 +44,8 @@ public class Tank {
 	private int shellRicochetNumber;
 
 	private int money = 0;
+	private Font montserrat = new Font();
+	private Text moneyText = new Text();
 	
 	private Map map;
 	
@@ -47,6 +54,19 @@ public class Tank {
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
 		turret.setConnectedTankHull(hull);
+		this.loadFont();
+	}
+
+	public void loadFont()
+	{
+		try
+		{
+			montserrat.loadFromFile(Paths.get("TanksV1/Resources/Montserrat.otf"));
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
 	public void setHullTexture(String texturePath)
@@ -69,6 +89,7 @@ public class Tank {
 		hull.setWindow(window);
 		turret.setWindow(window);
 		this.window = window;
+		this.drawMoney();
 	}
 	
 	public void setMap(Map map)
@@ -207,9 +228,26 @@ public class Tank {
 		return false;
 	}
 
+	public void drawMoney()
+	{
+		moneyText = new Text();
+		moneyText.setString("Money: £0");
+		moneyText.setFont(montserrat);
+		moneyText.setCharacterSize(60);
+		moneyText.setPosition(20, 20);
+		moneyText.setColor(Color.BLACK);
+		window.draw(moneyText);
+	}
+
 	public void increaseMoney(int i)
 	{
 		this.money += i;
+	}
+
+	public void updateMoney()
+	{
+		moneyText.setString("Money: £" +money);
+		window.draw(moneyText);
 	}
 	
 	//Call this in game loop
@@ -239,6 +277,16 @@ public class Tank {
 		if(isPlayerControlled) {
 			listener.handleInput();
 			turret.setPlayerTurretDirection();
+		}
+
+		if(isPlayerControlled)
+		{
+			this.increaseMoney(10);
+		}
+
+		if(isPlayerControlled)
+		{
+			this.updateMoney();
 		}
 	}
 	
