@@ -1,11 +1,13 @@
 package Tanks.Objects;
 
+import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 
 /**
@@ -127,7 +129,7 @@ public class MapGenerator
 	/**
 	 * A helper function that determines if a value is between a given value and 0
 	 * @param i the integer that is being tested
-	 * @param upper the upper bound that is being tested againts
+	 * @param upper the upper bound that is being tested against
 	 * @return a boolean true if the value is between upper and 0, false if it isn't
 	 */
 	private boolean between(int i, int upper) { return (i >= 0) && (i < upper); }
@@ -139,6 +141,10 @@ public class MapGenerator
 	 */
 	public void createMap()
 	{
+		boolean exitAdded = false;
+		Random rand = new Random(this.seed);
+		int exitWall = rand.nextInt(y);  //This determines where on the east wall the exit is placed
+
 		/* TODO:
 			Add an offset so that the center of the maze is the center of the screen
 			Change it so that instead of one long wall, a number of blocks that extend to the same length
@@ -187,7 +193,15 @@ public class MapGenerator
 
 			//Creates part of the east edge of the map
 			System.out.println("|");
-			addObject(maxX, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+			if (exitAdded == false && i == exitWall)
+			{
+				addExit(maxX, yPos + wallShort, wallShort, wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+			}
+			else
+			{
+				addObject(maxX, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+			}
+
 		}
 
 		//Creates the south edge of the map
@@ -208,8 +222,8 @@ public class MapGenerator
 
 	
 	/**
-	 * This method adds a given object to the arrayList and therefore the map
-	 * @param x the x position of the object to be added in pixels (could use a grid system and this would be the x grid num)
+	 * This method adds a given object to the maps Object arrayList and therefore the map
+	 * @param x the x position of the object to be added in pixels
 	 * @param y the y position of the object to be added in pixels
 	 * @param width the width of the object to be added in pixels
 	 * @param height the height of the object to be added in pixels
@@ -217,7 +231,22 @@ public class MapGenerator
 	 */
 	private void addObject(float x, float y, float width, float height, String texture)
 	{
-		//Include scaling here - i.e. take the scale factor and multiply it by the given x and y - x and y should be the position in the grid?
 		map.getObjectsInMap().add(new MapObject(this.window, x, y, width, height, texture)); //window, x, y, width, height, texture
 	}
+
+
+	/**
+	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps MapExit arrayList instead.
+	 * @param x the x position of the object to be added in pixels
+	 * @param y the y position of the object to be added in pixels
+	 * @param width the width of the object to be added in pixels
+	 * @param height the height of the object to be added in pixels
+	 * @param lockedTexture the texture of the map exit when locked (Textures.NAME)
+	 * @param unlockedTexture the texture of the map exit when unlocked (Textures.NAME)
+	 */
+	private void addExit(float x, float y, float width, float height, String lockedTexture, String unlockedTexture)
+	{
+		map.getExitsInMap().add(new MapExit(this.window, x, y, width, height, lockedTexture, unlockedTexture)); //window, x, y, width, height, texture
+	}
+
 }

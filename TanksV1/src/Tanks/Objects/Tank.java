@@ -208,11 +208,11 @@ public class Tank
 		}
 
 		//Collisions for the MapExit
-		for(int i = 0; i < map.getMapExits().size(); i++)
+		for(int i = 0; i < map.getExitsInMap().size(); i++)
 		{
-			if(hull.getGlobalBounds().intersection(map.getMapExits().get(i).getGlobalBounds()) != null)
+			if(hull.getGlobalBounds().intersection(map.getExitsInMap().get(i).getGlobalBounds()) != null)
 			{
-				if (!map.getMapExits().get(i).getLockedStatus()) //if unlocked load next level
+				if (!map.getExitsInMap().get(i).getLockedStatus()) //if unlocked load next level
 				{
 					//map.getMapExits().get(i).displayUnlocked();
 				}

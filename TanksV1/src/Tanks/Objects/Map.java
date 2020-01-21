@@ -28,7 +28,7 @@ public class Map
 
 	private void createMap()
 	{
-		exitList.add(new MapExit(window, 1800, 500, 25, 250, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
+		//exitList.add(new MapExit(window, 1800, 500, 25, 250, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
 	}
 
 	public void enemyKilled()
@@ -43,17 +43,6 @@ public class Map
 				exitList.get(i).displayUnlocked();
 			}
 		}
-	}
-
-
-	/**
-	 * This method adds all of the mapObjects created within the MapGenerator class to objectList
-	 * It must be done this way as setting objectList = mapGenerator.getObjectList() doesn't work - the shells do not ricochet
-	 */
-	private void setObjectList()
-	{
-		objectList.add(new MapObject(window, 500, 500, 100, 100, Textures.BRICKBLOCK));
-		objectList.add(new MapObject(window, 300, 500, 100, 100, Textures.BRICKBLOCK));
 	}
 
 
@@ -72,14 +61,8 @@ public class Map
 	}
 
 
-	public void addMapObject(float x, float y, float width, float height, String texture)
-	{
-		objectList.add(new MapObject(window, x, y, width, height, texture));
-	}
-
-
 	//This is called in the tank class to check if the tank is colliding with an object in the map
 	public ArrayList<MapObject> getObjectsInMap() { return objectList; }
 
-	public ArrayList<MapExit> getMapExits() { return exitList; }
+	public ArrayList<MapExit> getExitsInMap() { return exitList; }
 }
