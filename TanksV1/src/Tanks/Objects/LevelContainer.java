@@ -32,20 +32,20 @@ public class LevelContainer
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture)
     {
         Tank player = new Tank();
-
-        player.setHullTexture(hullTexture);
-        player.setTurretTexture(turretTexture);
-        player.setShellTexture(shellTexture);
-        player.setMap(map);
+        player.setHullTexture(Textures.TANKHULL_GREEN);
+        player.setTurretTexture(Textures.TANKTURRET_GREEN);
+        player.setShellTexture(Textures.TANKSHELL_DEFAULT);
+        player.setMap(this.map);
         player.setWindow(window);
-        player.setSize(50, 50);
+        player.setSize((float) 1, (float) 1);
         player.setTankLocation(800, 500);
         player.setHullTurningDistance(3);
         player.setTurretTurningDistance(3);
         player.setMovementSpeed(5);
-        player.setInitialDirection(180);
+        player.setInitialDirection(0);
         player.setShellSpeed(10);
         player.setShellRicochetNumber(2);
+        player.setFireDelay(500);
         player.enablePlayerControl();
 
         playerList.add(player);

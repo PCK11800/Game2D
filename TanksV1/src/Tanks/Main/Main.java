@@ -46,13 +46,8 @@ public class Main
 	{
 		while(window.isOpen())
 		{
-			Time deltaTime = frameClock.restart();
-			float deltaSeconds = deltaTime.asSeconds(); //Will need to pass this in to the update methods so that Tanks can move time independently
-
 			window.startOfFrame();
-
 			level.update();
-
 			window.endOfFrame();
 		}
 	}

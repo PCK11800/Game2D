@@ -21,14 +21,17 @@ public class RotatingObject extends Sprite {
 	{
 		Path imagePath = FileSystems.getDefault().getPath("..", texturePath);
 		objectTexture = new Texture();
-		try {
+		try
+		{
 			objectTexture.loadFromFile(imagePath);
 			objectTexture.setSmooth(true);
 			setTexture(objectTexture);
 			
 			width = getTextureWidth();
 			height = getTextureHeight();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -53,11 +56,13 @@ public class RotatingObject extends Sprite {
 		centerObject();
 		this.objectDirection = objectDirection;
 		
-		if(this.objectDirection >= 360) {
+		if(this.objectDirection >= 360)
+		{
 			this.objectDirection = this.objectDirection - 360;
 		}
 		
-		else if(this.objectDirection <= 0) {
+		else if(this.objectDirection < 0)
+		{
 			this.objectDirection = this.objectDirection + 360;
 		}
 		setRotation(objectDirection);
@@ -88,7 +93,6 @@ public class RotatingObject extends Sprite {
 		
 		setScale(widthMultiplyer, heightMultiplyer);
 	}
-	
 	
 	public void draw(Window w) 
 	{
@@ -143,5 +147,69 @@ public class RotatingObject extends Sprite {
 	public float getBottomBounds() 
 	{
 		return getGlobalBounds().top + getHeight();
+	}
+	
+	public float getCornerCoordinates(String corner, String type) 
+	{
+		float cx, cy; //Center of square coordinates
+		float x, y; //Coordinates of a corner point of a square
+		float tempX, tempY;
+
+		cx = getxPos();
+		cy = getyPos();
+		
+		if(corner.equals("topleft"))
+		{
+			x = getxPos() - getWidth()/2;
+			y = getyPos() - getHeight()/2;
+		}
+
+		else if(corner.equals("topright"))
+		{
+			x = getxPos() + getWidth()/2;
+			y = getyPos() - getHeight()/2;
+		}
+
+		else if(corner.equals("bottomleft"))
+		{
+			x = getxPos() - getWidth()/2;
+			y = getyPos() + getHeight()/2;
+		}
+
+		else if(corner.equals("bottomright"))
+		{
+			x = getxPos() + getWidth()/2;
+			y = getyPos() + getHeight()/2;
+		}
+
+		else
+		{
+			x = 0;
+			y = 0;
+		}
+
+		tempX = x - cx;
+		tempY = y - cy;
+		
+		float rotatedX = (tempX * (float)Math.cos(Math.toRadians(objectDirection))) - (tempY * (float)Math.sin(Math.toRadians(objectDirection)));
+		float rotatedY = (tempX * (float)Math.sin(Math.toRadians(objectDirection))) + (tempY * (float)Math.cos(Math.toRadians(objectDirection)));
+		
+		x = rotatedX + cx;
+		y = rotatedY + cy;
+		
+		if(type.equals("x"))
+		{
+			return x;
+		}
+
+		else if(type.equals("y"))
+		{
+			return y;
+		}
+
+		else
+		{
+			return 0;
+		}
 	}
 }
