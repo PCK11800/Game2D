@@ -67,14 +67,15 @@ public class Main {
 		tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
 		tank.setMap(testMap);
 		tank.setWindow(window);
-		tank.setSize(100, 100);
+		tank.setSize((float) 1.5, (float) 1.5);
 		tank.setTankLocation(800, 500);
 		tank.setHullTurningDistance(3);
 		tank.setTurretTurningDistance(3);
 		tank.setMovementSpeed(5);
-		tank.setInitialDirection(180);
+		tank.setInitialDirection(0);
 		tank.setShellSpeed(10);
 		tank.setShellRicochetNumber(2);
+		tank.setFireDelay(500);
 		tank.enablePlayerControl();
 		
 		tankList.add(tank);

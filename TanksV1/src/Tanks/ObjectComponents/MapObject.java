@@ -10,7 +10,7 @@ public class MapObject extends RotatingObject{
 	{
 		this.window = window;
 		setObjectTexture(objectTexture);
-		setLocation(x, y);
+		setCenterLocation(x, y);
 		setSize(width, height);
 	}
 	
