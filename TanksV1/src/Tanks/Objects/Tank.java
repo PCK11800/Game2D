@@ -43,9 +43,14 @@ public class Tank {
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
 
-	private int money = 0;
 	private Font montserrat = new Font();
+
+	private int money = 0;
 	private Text moneyText = new Text();
+
+	private int currentHealth = 100;
+	private int maxHealth = 100;
+	private Text healthText = new Text();
 	
 	private Map map;
 	
@@ -89,6 +94,7 @@ public class Tank {
 		hull.setWindow(window);
 		turret.setWindow(window);
 		this.window = window;
+		this.drawHealth();
 		this.drawMoney();
 	}
 	
@@ -230,13 +236,23 @@ public class Tank {
 
 	public void drawMoney()
 	{
-		moneyText = new Text();
 		moneyText.setString("Money: £0");
 		moneyText.setFont(montserrat);
 		moneyText.setCharacterSize(60);
-		moneyText.setPosition(20, 20);
+		moneyText.setPosition(200, 20);
 		moneyText.setColor(Color.BLACK);
 		window.draw(moneyText);
+	}
+
+	public void drawHealth()
+	{
+		healthText.setString("Health: " +currentHealth +" / " +maxHealth);
+		healthText.setFont(montserrat);
+		healthText.setCharacterSize(60);
+		healthText.setPosition(1200, 20);
+		healthText.setColor(Color.BLACK);
+		window.draw(healthText);
+
 	}
 
 	public void increaseMoney(int i)
@@ -248,6 +264,12 @@ public class Tank {
 	{
 		moneyText.setString("Money: £" +money);
 		window.draw(moneyText);
+	}
+
+	public void updateHealth()
+	{
+		healthText.setString("Health: " +currentHealth +" / " +maxHealth);
+		window.draw(healthText);
 	}
 	
 	//Call this in game loop
@@ -281,12 +303,12 @@ public class Tank {
 
 		if(isPlayerControlled)
 		{
-			this.increaseMoney(10);
+			this.updateMoney();
 		}
 
 		if(isPlayerControlled)
 		{
-			this.updateMoney();
+			this.updateHealth();
 		}
 	}
 	
