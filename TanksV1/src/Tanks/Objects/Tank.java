@@ -255,11 +255,6 @@ public class Tank {
 
 	}
 
-	public void increaseMoney(int i)
-	{
-		this.money += i;
-	}
-
 	public void updateMoney()
 	{
 		moneyText.setString("Money: £" +money);
@@ -325,6 +320,16 @@ public class Tank {
 	public float getTurretTurningDistance()
 	{
 		return turret.getTurningDistance();
+	}
+
+	public void increaseMoney(int i)
+	{
+		this.money += i;
+	}
+
+	public void decreaseMoney(int i)
+	{
+		this.money -= i;
 	}
 
 	public int getMoney()
