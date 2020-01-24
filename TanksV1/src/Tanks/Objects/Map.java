@@ -19,17 +19,11 @@ public class Map
 	public Map(Window window)
 	{
 		this.window = window;
-		createMap();
 
 		//Purely for testing
 		enemyKilled();
 	}
 
-
-	private void createMap()
-	{
-		//exitList.add(new MapExit(window, 1800, 500, 25, 250, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED));
-	}
 
 	public void enemyKilled()
 	{
@@ -39,8 +33,7 @@ public class Map
 		{
 			for (int i = 0; i < exitList.size(); i++)
 			{
-				exitList.get(i).setLockedStatus(false);
-				exitList.get(i).displayUnlocked();
+				exitList.get(i).unlockExit();
 			}
 		}
 	}
