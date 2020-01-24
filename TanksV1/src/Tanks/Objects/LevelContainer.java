@@ -25,16 +25,16 @@ public class LevelContainer
         this.map = new Map(window);
         this.mapGenerator = new MapGenerator(window, map, 4, 4, 10,100, 100, 20, System.currentTimeMillis());
 
-        initPlayer(Textures.TANKHULL_GREEN, Textures.TANKTURRET_GREEN, Textures.TANKSHELL_DEFAULT);
+        initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
     }
 
     //This is primarily for testing as this should really be moved to some other class and the player(s)
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture)
     {
         Tank player = new Tank();
-        player.setHullTexture(Textures.TANKHULL_GREEN);
-        player.setTurretTexture(Textures.TANKTURRET_GREEN);
-        player.setShellTexture(Textures.TANKSHELL_DEFAULT);
+        player.setHullTexture(hullTexture);
+        player.setTurretTexture(turretTexture);
+        player.setShellTexture(shellTexture);
         player.setMap(this.map);
         player.setWindow(window);
         player.setSize((float) 1, (float) 1);

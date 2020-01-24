@@ -192,13 +192,15 @@ public class MapGenerator
 			}
 
 			//Creates part of the east edge of the map
-			System.out.println("|");
+
 			if (exitAdded == false && i == exitWall)
 			{
+				System.out.println("E");
 				addExit(maxX, yPos + wallShort, wallShort, wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
 			}
 			else
 			{
+				System.out.println("|");
 				addObject(maxX, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
 			}
 
@@ -223,30 +225,30 @@ public class MapGenerator
 	
 	/**
 	 * This method adds a given object to the maps Object arrayList and therefore the map
-	 * @param x the x position of the object to be added in pixels
-	 * @param y the y position of the object to be added in pixels
+	 * @param xPos the x position of the object to be added in pixels
+	 * @param yPos the y position of the object to be added in pixels
 	 * @param width the width of the object to be added in pixels
 	 * @param height the height of the object to be added in pixels
 	 * @param texture the texture of the object (Textures.NAME)
 	 */
-	private void addObject(float x, float y, float width, float height, String texture)
+	private void addObject(float xPos, float yPos, float width, float height, String texture)
 	{
-		map.getObjectsInMap().add(new MapObject(this.window, x, y, width, height, texture)); //window, x, y, width, height, texture
+		map.getObjectsInMap().add(new MapObject(this.window, (xPos + (width / 2)), (yPos + (height / 2)), width, height, texture)); //It is xPos + width / 2, is because mapObjects anchor point is its center, but to keep the map gen code cleaner, it is assumed the anchor point is the top left.
 	}
 
 
 	/**
 	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps MapExit arrayList instead.
-	 * @param x the x position of the object to be added in pixels
-	 * @param y the y position of the object to be added in pixels
+	 * @param xPos the x position of the object to be added in pixels
+	 * @param yPos the y position of the object to be added in pixels
 	 * @param width the width of the object to be added in pixels
 	 * @param height the height of the object to be added in pixels
 	 * @param lockedTexture the texture of the map exit when locked (Textures.NAME)
 	 * @param unlockedTexture the texture of the map exit when unlocked (Textures.NAME)
 	 */
-	private void addExit(float x, float y, float width, float height, String lockedTexture, String unlockedTexture)
+	private void addExit(float xPos, float yPos, float width, float height, String lockedTexture, String unlockedTexture)
 	{
-		map.getExitsInMap().add(new MapExit(this.window, x, y, width, height, lockedTexture, unlockedTexture)); //window, x, y, width, height, texture
+		map.getExitsInMap().add(new MapExit(this.window, (xPos + (width / 2)), (yPos + (height / 2)), width, height, lockedTexture, unlockedTexture));
 	}
 
 }
