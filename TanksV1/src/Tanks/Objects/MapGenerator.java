@@ -22,16 +22,19 @@ public class MapGenerator
 	private Map map;
 
 	private MapObject levelObjects[][];
-	private int level[][];
+	private int[][] level;
 
 	private int x;
 	private int y;
-	private float maxX;
-	private float maxY;
+	private float maxXPos;
+	private float maxYPos;
+	private float xScale;
+	private float yScale;
 
 	private float tileSize;
 	private float offsetX;
-	private float offsetY;
+	private float offsetTopY;
+	private float offsetBottomY;
 
 	private float wallShort;
 	private float wallLong;
@@ -39,30 +42,68 @@ public class MapGenerator
 	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
 
 	
-	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, float offsetX, float offsetY , long seed)
+	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, float offsetX, float offsetTopY, float offsetBottomY, long seed)
 	{
 		this.window = w;
 		this.map = map;
 
+        this.tileSize = tileSize + wallShort; //It is done this way so that a tile is the distance between walls (i.e. walls border a tile)
+
 		this.x = x;
 		this.y = y;
-		this.maxX = offsetX + (tileSize * x);
-		this.maxY = offsetY + (tileSize * y);
+		this.maxXPos = (this.tileSize * x);
+		this.maxYPos = (this.tileSize * y);
 
 		this.wallShort = wallShort;
-		this.wallLong = tileSize;
+		this.wallLong = this.tileSize - wallShort;
 
-		this.tileSize = tileSize;
+
 		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+		this.offsetTopY = offsetTopY;
+		this.offsetBottomY = offsetBottomY;
 
 		this.seed = seed;
 
 		this.level = new int[x][y];
 
+		setMapScale();
+
 		generateLevel(0,0, seed);
 		createMap();
 	}
+
+
+	/**
+	 * This method sets the mapObject sizes so that they scale based on the size of the map, but remain a constant screen size.
+	 */
+	private void setMapScale()
+	{
+		//Should be passing in the actual screen size values
+		float maxPixelsX = 1920 - (offsetX * 2);
+		float maxPixelsY = 1080 - (offsetTopY + offsetBottomY);
+
+		float initPixelsX = (wallLong * x) + (wallShort * (x + 1));
+		float initPixelsY = (wallLong * y) + (wallShort * (y + 1));
+
+		this.xScale = maxPixelsX / initPixelsX;
+		this.yScale = maxPixelsY / initPixelsY;
+		//this.xScale = 1;
+		//this.yScale = 1;
+
+		//Testing
+        /*
+		if (xScale > yScale)
+		{
+			this.xScale = this.yScale;
+		}
+		else
+		{
+			this.yScale = this.xScale;
+		}
+		*/
+
+	}
+
 
 
 	/**
@@ -145,22 +186,14 @@ public class MapGenerator
 		Random rand = new Random(this.seed);
 		int exitWall = rand.nextInt(y);  //This determines where on the east wall the exit is placed
 
-		/* TODO:
-			Add an offset so that the center of the maze is the center of the screen
-			Change it so that instead of one long wall, a number of blocks that extend to the same length
-			Add a scale so that depending on the size of the maze (i.e. x and y size), the actual size of the maze is constant
-			Add the ability to randomly select textures from a list.
-			Add functionality to add the mapExit somewhere on the map. The easiest way to do this would be to add it on the east wall, and randomly choose a position.
-		 */
-
 		for (int i = 0; i < y; i++)
 		{
-			float yPos = offsetY + (i * tileSize);
+			float yPos = (i * tileSize);
 
 			//Creates the north edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float xPos = offsetX + (j * tileSize);
+				float xPos = (j * tileSize);
 				System.out.print((level[j][i] & 1) == 0 ? "+---" : "+   "); //ternary operator if: level[j][i] & 1 == 0 print "+---" else print "+   "
 
 				if ((level[j][i] & 1) == 0)
@@ -177,12 +210,12 @@ public class MapGenerator
 
 			//Creates part of the east wall
 			System.out.println("+");
-			addObject(maxX, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
+			addObject(maxXPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
 
 			//Creates the west edge of the map
 			for (int j = 0; j < x; j++)
 			{
-				float xPos = offsetX + (j * tileSize);
+				float xPos = (j * tileSize);
 				System.out.print((level[j][i] & 8) == 0 ? "|   " : "    ");
 
 				if ((level[j][i] & 8) == 0)
@@ -193,15 +226,16 @@ public class MapGenerator
 
 			//Creates part of the east edge of the map
 
-			if (exitAdded == false && i == exitWall)
+			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
-				addExit(maxX, yPos + wallShort, wallShort, wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+				addExit(maxXPos, yPos + wallShort, wallShort, wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+				exitAdded = true;
 			}
 			else
 			{
 				System.out.println("|");
-				addObject(maxX, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+				addObject(maxXPos, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
 			}
 
 		}
@@ -209,16 +243,16 @@ public class MapGenerator
 		//Creates the south edge of the map
 		for (int j = 0; j < x; j++)
 		{
-			float xPos = offsetX + (j * tileSize);
+			float xPos = (j * tileSize);
 
 			System.out.print("+---");
-			addObject(xPos, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
-			addObject(xPos + wallShort, maxY, wallLong, wallShort, Textures.BRICKBLOCK);
+			addObject(xPos, maxYPos, wallShort, wallShort, Textures.EXIT_LOCKED);
+			addObject(xPos + wallShort, maxYPos, wallLong, wallShort, Textures.BRICKBLOCK);
 		}
 
 		//Creates the other part of the east edge of the map
 		System.out.println("+");
-		addObject(maxX, maxY, wallShort, wallShort, Textures.EXIT_LOCKED);
+		addObject(maxXPos, maxYPos, wallShort, wallShort, Textures.EXIT_LOCKED);
 	}
 
 
@@ -233,7 +267,21 @@ public class MapGenerator
 	 */
 	private void addObject(float xPos, float yPos, float width, float height, String texture)
 	{
-		map.getObjectsInMap().add(new MapObject(this.window, (xPos + (width / 2)), (yPos + (height / 2)), width, height, texture)); //It is xPos + width / 2, is because mapObjects anchor point is its center, but to keep the map gen code cleaner, it is assumed the anchor point is the top left.
+		//It is xPos + width / 2, is because mapObjects anchor point is its center, but to keep the map gen code cleaner, it is assumed the anchor point is the top left.
+        xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
+        yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
+		width *= this.xScale;
+		height *= this.yScale;
+
+		try
+		{
+			map.getObjectsInMap().add(new MapObject(this.window, xPos, yPos, width, height, texture));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 
@@ -248,7 +296,20 @@ public class MapGenerator
 	 */
 	private void addExit(float xPos, float yPos, float width, float height, String lockedTexture, String unlockedTexture)
 	{
-		map.getExitsInMap().add(new MapExit(this.window, (xPos + (width / 2)), (yPos + (height / 2)), width, height, lockedTexture, unlockedTexture));
+		xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
+		yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
+		width *= this.xScale;
+		height *= this.yScale;
+
+		try
+		{
+			map.getExitsInMap().add(new MapExit(this.window, xPos, yPos, width, height, lockedTexture, unlockedTexture));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 }
