@@ -74,7 +74,7 @@ public class Main {
 		tank.setTankLocation(800, 500);
 		tank.setHullTurningDistance(3);
 		tank.setTurretTurningDistance(3);
-		tank.setMovementSpeed(2);
+		tank.setMovementSpeed(5);
 		tank.setInitialDirection(180);
 		tank.setShellSpeed(5);
 		tank.setShellRicochetNumber(2);
@@ -93,12 +93,12 @@ public class Main {
 		tank.setMap(testMap);
 		tank.setWindow(window);
 		tank.setSize(100, 100);
-		tank.setTankLocation(800, 500);
+		tank.setTankLocation(500, 300);
 		tank.setHullTurningDistance(3);
 		tank.setTurretTurningDistance(3);
-		tank.setMovementSpeed(2);
+		tank.setMovementSpeed(5);
 		tank.setInitialDirection(180);
-		tank.setShellSpeed(2);
+		tank.setShellSpeed(5);
 		tank.setShellRicochetNumber(3);
 		tankList.add(tank);
 		testMap.addTank(tank);

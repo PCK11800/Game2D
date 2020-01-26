@@ -22,6 +22,29 @@ public class Map{
 	private void createMap() {
 		objectList.add(new MapObject(window, 500, 500, 100, 100, Textures.BRICKBLOCK));
 		objectList.add(new MapObject(window, 680, 600, 100, 100, Textures.BRICKBLOCK));
+		for (int i = 0; i < window.getWidth()/100; i++)
+		{
+			objectList.add(new MapObject(window, i * 100, 0, 100, 100, Textures.BRICKBLOCK));
+		}
+		for (int i = 0; i < window.getWidth()/100; i++)
+		{
+			objectList.add(new MapObject(window, i * 100, 700, 100, 100, Textures.BRICKBLOCK));
+		}
+		for (int i = 0; i < window.getHeight()/100; i++)
+		{
+			objectList.add(new MapObject(window, 0, i * 100, 100, 100, Textures.BRICKBLOCK));
+		}
+		for (int i = 0; i < window.getHeight()/100; i++)
+		{
+			objectList.add(new MapObject(window, 1400, i * 100, 100, 100, Textures.BRICKBLOCK));
+		}
+
+		for (int i = 0; i < window.getHeight()/100; i++)
+		{
+			if (i != 5) objectList.add(new MapObject(window, 900, i * 101, 100, 100, Textures.BRICKBLOCK));
+		}
+
+
 	}
 	
 	public void update() {
