@@ -50,6 +50,20 @@ public class TankTurret extends RotatingObject {
 
 	     rotateObject((float) rotationAngle - 90);
 	}
+
+
+	public TankTurret stationaryCopy()
+	{
+		TankTurret copy = new TankTurret();
+		copy.setConnectedTankHull(connectedTankHull);
+		copy.setObjectTexture(getTexturePath());
+		copy.setTurretLocation();
+		copy.setSize(getWidth(), getHeight());
+		copy.setTurningDistance(objectDirection);
+		copy.rotateRight();
+		copy.setWindow(window);
+		return copy;
+	}
 	
 	public void setConnectedTankHull(TankHull connectedTankHull) 
 	{
@@ -70,9 +84,15 @@ public class TankTurret extends RotatingObject {
 	{
 		this.window = window;
 	}
+
+	public float getDirection() { return this.objectDirection; }
 	
 	public void update()
 	{
 		draw(window);
 	}
+
+	public float getXPos() { return getxPos(); }
+
+	public float getYPos() { return getyPos(); }
 }

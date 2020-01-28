@@ -2,7 +2,7 @@ package Tanks.ObjectComponents;
 
 import Tanks.Window.Window;
 
-public class TankHull extends RotatingObject{
+public class TankHull extends RotatingObject implements Cloneable {
 
 	private float currentMovementSpeed;
 	private float movementSpeed;

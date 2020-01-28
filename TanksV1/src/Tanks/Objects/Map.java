@@ -1,6 +1,7 @@
 package Tanks.Objects;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
@@ -36,6 +37,7 @@ public class Map
 				exitList.get(i).unlockExit();
 			}
 		}
+		updateTanks();
 	}
 
 

@@ -2,9 +2,11 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
-
 import Tanks.Objects.GameMode;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import Tanks.Objects.Opponent;
 import org.jsfml.graphics.Color;
 
 import Tanks.Objects.LevelContainer;

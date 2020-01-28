@@ -16,17 +16,27 @@ public class TankShell extends RotatingObject{
 	private Map map;
 	private Clock movementClock = new Clock();
 	private Clock ricochetClock = new Clock();
+	private boolean active = true;
+	private boolean ghost = false;
+	private boolean hitPlayer = false;
 	
 	public TankShell(TankTurret connectedTankTurret, String texturePath, Window window, float shellSpeed, Map map) 
 	{
+		boolean hasFired = false;
 		this.window = window;
 		this.shellSpeed = shellSpeed;
 		this.map = map;
 		setObjectTexture(texturePath);
-		setCenterLocation(connectedTankTurret.getxPos(), connectedTankTurret.getyPos());
+		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
 	}
-	
+
+	public void setGhostMode()
+	{
+		ghost = true;
+	}
+
+
 	public void launchedForward()
 	{
 		if(movementClock.getElapsedTime().asMilliseconds() >= Tank.timePerFrame) {
@@ -51,8 +61,10 @@ public class TankShell extends RotatingObject{
 		return false;
 	}
 
-	public void collisionHandling() {
-		for(int i = 0; i < map.getObjectsInMap().size(); i++) {
+	public void collisionHandling() 
+	{
+		for(int i = 0; i < map.getObjectsInMap().size(); i++) 
+		{
 			
 			float x1, y1, x2, y2, x3, y3, x4, y4;
 			x1 = this.getCornerCoordinates("topleft", "x");
@@ -138,7 +150,13 @@ public class TankShell extends RotatingObject{
 			}
 		}
 	}
-	
+
+	public void hitPlayer()
+	{
+
+	}
+
+
 	public int getRicochetNum() {
 		return ricochetNum;
 	}
@@ -149,4 +167,6 @@ public class TankShell extends RotatingObject{
 		launchedForward();
 		draw(window);
 	}
+
+	public boolean isActive() { return active; }
 }

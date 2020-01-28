@@ -2,6 +2,8 @@ package Tanks.Objects;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jsfml.system.Clock;
 
@@ -30,17 +32,18 @@ public class Tank
 	 * setPlayerControlled() : This enables the tank to be controlled by the player
 	 */
 
-	private Window window;
-	private Map map;
-
-	private TankHull hull;
-	private TankTurret turret;
-
+	protected Map map;
+	protected Window window;
+	
+	protected TankHull hull;
+	protected TankTurret turret;
+	
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
-
+	private int health = 100;
+	
 	private String shellTexturePath;
-	private float shellSpeed;
+	protected float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
 
@@ -55,7 +58,11 @@ public class Tank
 
 	private boolean loadNextLevel = false;
 
-	public Tank()
+	private long lastShellFired = System.nanoTime();
+	
+
+	
+	public Tank() 
 	{
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
@@ -65,6 +72,13 @@ public class Tank
 	public void setHullTexture(String texturePath)
 	{
 		hull.setObjectTexture(texturePath);
+	}
+
+	public void setHealth(int health) {this.health = health; }
+
+	public void getHit() {
+		System.out.println("tank: " + health);
+		//this.health--;
 	}
 
 	public void setTurretTexture(String texturePath)
@@ -136,6 +150,7 @@ public class Tank
 	{
 		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, map);
 		shell.setSize((float) (turret.getWidth()/10), turret.getHeight()/5);
+		lastShellFired = System.nanoTime();
 		return shell;
 
 	}
@@ -450,34 +465,23 @@ public class Tank
 	//Call this in game loop
 	public boolean update()
 	{
-		for(int i = 0; i < shellList.size(); i++)
-		{
-			if(shellList.get(i).checkOutOfBounds())
-			{
-				shellList.remove(i);
-				shellList.trimToSize();
-			}
-			else if(shellList.get(i).getRicochetNum() == shellRicochetNumber)
-			{
-				shellList.remove(i);
-				shellList.trimToSize();
-			}
-			else
-			{
-				shellList.get(i).update();
-			}
-		}
+		shellList = new ArrayList<TankShell>
+				(shellList.stream()
+				.filter(s -> !s.checkOutOfBounds() && s.isActive() && s.getRicochetNum() != shellRicochetNumber)
+				.collect(Collectors.toList()));
+		for (TankShell s : shellList) { s.update(); }
+
 
 		//hull.unbrake();
 		tankCollisionHandling();
 		previousMove = 0;
 		previousTurn = 0;
 
+		
 		hull.update();
-		turret.update();
-
-		if(isPlayerControlled)
-		{
+		if (isPlayer()) turret.update();
+		
+		if(isPlayerControlled) {
 			listener.handleInput();
 			turret.setPlayerTurretDirection();
 		}
@@ -485,6 +489,7 @@ public class Tank
 		return loadNextLevel;
 	}
 
+	public boolean isOpponent() { return !isPlayerControlled; }
 
 	public float getMovementSpeed()
 	{
@@ -506,4 +511,21 @@ public class Tank
 		return delayBetweenShell;
 	}
 
+	public float getXPos() { return turret.getxPos(); }
+
+	public float getYPos() { return turret.getyPos(); }
+
+	public float getTurretDir() { return turret.getDirection(); }
+
+	public float getLeftBounds() { return hull.getLeftBounds(); }
+
+	public float getRightBounds() { return hull.getRightBounds(); }
+
+	public float getTopBounds() { return hull.getTopBounds(); }
+
+	public float getBottomBounds() { return hull.getBottomBounds(); }
+
+	public boolean isAlive() { return (health <= 0 ? false : true); }
+
+	public boolean isPlayer() { return isPlayerControlled; }
 }
