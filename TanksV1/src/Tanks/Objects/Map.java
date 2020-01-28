@@ -37,7 +37,7 @@ public class Map
 				exitList.get(i).unlockExit();
 			}
 		}
-		updateTanks();
+		//updateTanks();
 	}
 
 

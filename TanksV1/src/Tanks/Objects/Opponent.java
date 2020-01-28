@@ -36,7 +36,7 @@ public class Opponent extends Tank {
 
     }
 
-    public void update()
+    public boolean update()
     {
         super.update();
         if (movementCount == 0)
@@ -55,6 +55,7 @@ public class Opponent extends Tank {
 
         if (player.isAlive()) action();
 
+        return false;
     }
 
 

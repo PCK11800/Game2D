@@ -65,6 +65,28 @@ public class LevelContainer
     }
 
 
+    private void initEnemy(String hullTexture, String turretTexture, String shellTexture)
+    {
+        Opponent player = new Opponent(playerList.get(0));
+        player.setHullTexture(hullTexture);
+        player.setTurretTexture(turretTexture);
+        player.setShellTexture(shellTexture);
+        player.setMap(this.map);
+        player.setWindow(window);
+        player.setSize((float) 1, (float) 1);
+        player.setTankLocation(100, 450);
+        player.setHullTurningDistance(3);
+        player.setTurretTurningDistance(3);
+        player.setMovementSpeed(5);
+        player.setInitialDirection(0);
+        player.setShellSpeed(10);
+        player.setShellRicochetNumber(2);
+        player.setFireDelay(500);
+
+        enemyList.add(player);
+    }
+
+
     /**
      * This is used to create / initialise the map. It places all of the map objects within the level as well as the players & enemies
      */
@@ -72,6 +94,7 @@ public class LevelContainer
     {
        this.mapGenerator.createMap();
        initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
+       initEnemy(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
     }
 
 
