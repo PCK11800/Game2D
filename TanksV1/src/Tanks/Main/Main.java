@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 
+import Tanks.Objects.GameMode;
 import org.jsfml.graphics.Color;
 
 import Tanks.Objects.LevelContainer;
@@ -15,7 +16,7 @@ public class Main
 {
 	
 	private Window window;
-	private LevelContainer level;
+	private GameMode gm;
 	private Clock frameClock = new Clock();
 
 	
@@ -39,7 +40,7 @@ public class Main
 		createFullScreenWindow(60);
 
 		//In future builds call the main menu here
-		level = new LevelContainer(window);
+		gm = new GameMode(this.window);
 	}
 	
 	private void loop()
@@ -47,7 +48,7 @@ public class Main
 		while(window.isOpen())
 		{
 			window.startOfFrame();
-			level.update();
+			gm.update();
 			window.endOfFrame();
 		}
 	}

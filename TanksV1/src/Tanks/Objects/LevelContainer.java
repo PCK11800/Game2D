@@ -19,13 +19,14 @@ public class LevelContainer
     private ArrayList<Tank> enemyList = new ArrayList<Tank>(); //This should be changed once enemies are properly implemented
 
 
-    public LevelContainer(Window w)
+    public LevelContainer(Window w, int mapXSize, int mapYSize) //Maybe should include a seed here? that is passed to the mapGen
     {
         this.window = w;
         this.map = new Map(window);
-        this.mapGenerator = new MapGenerator(window, map, 8, 4, 10,100, 0, 50, 0, System.currentTimeMillis());
+        this.mapGenerator = new MapGenerator(window, map, mapXSize, mapYSize, System.currentTimeMillis());
 
-        initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
+        //this.mapGenerator.createMap();
+        //initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
     }
 
     //This is primarily for testing as this should really be moved to some other class and the player(s)
@@ -38,7 +39,7 @@ public class LevelContainer
         player.setMap(this.map);
         player.setWindow(window);
         player.setSize((float) 1, (float) 1);
-        player.setTankLocation(800, 500);
+        player.setTankLocation(100, 150);
         player.setHullTurningDistance(3);
         player.setTurretTurningDistance(3);
         player.setMovementSpeed(5);
@@ -51,20 +52,43 @@ public class LevelContainer
         playerList.add(player);
     }
 
-    public void update()
+
+    public void createLevel()
     {
-        //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
-        updatePlayers();
-        updateEnemies();
-        updateMap();
+       this.mapGenerator.createMap();
+       initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
     }
 
-    private void updatePlayers()
+
+    public boolean update()
     {
+        //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
+        updateEnemies();
+        updateMap();
+
+        //If need to load the next level
+        if (updatePlayers())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private boolean updatePlayers()
+    {
+        boolean load = false;
+
         for (Tank player : playerList)
         {
-            player.update();
+            if (player.update())
+            {
+                load = true;
+            }
         }
+        return load;
     }
 
     private void updateEnemies()

@@ -13,7 +13,7 @@ public class Map
 	private ArrayList<MapObject> objectList = new ArrayList<>();
 	private ArrayList<MapExit> exitList = new ArrayList<>();
 
-	private int numOfEnemies = 1;
+	private int numOfEnemies = 0;
 
 
 	public Map(Window window)

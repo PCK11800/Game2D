@@ -17,11 +17,9 @@ import java.util.Random;
 public class MapGenerator
 {
 	//Instance variables
-	private ArrayList<MapObject> objectList = new ArrayList<>();
 	private Window window;
 	private Map map;
-
-	private MapObject levelObjects[][];
+	
 	private int[][] level;
 
 	private int x;
@@ -30,46 +28,45 @@ public class MapGenerator
 	private float maxYPos;
 	private float xScale;
 	private float yScale;
+	private float smallestScale;
 
-	private float tileSize;
-	private float offsetX;
-	private float offsetTopY;
-	private float offsetBottomY;
+	//Default values
+	private int screenWidth; //= 1920;
+	private int screenHeight; // = 1080;
 
-	private float wallShort;
-	private float wallLong;
+	private float offsetX = 0;
+	private float offsetTopY = 50;
+	private float offsetBottomY = 0;
+
+	private float wallShort = 10;
+	private float wallLong = 100;
+	private float tileSize = wallShort + wallLong; //This makes the actual tile size (space between walls), 1 wall wide
+
+	private boolean uniformWallThickness = false;
 
 	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
 
 	
-	public MapGenerator(Window w, Map map, int x, int y, float wallShort, float tileSize, float offsetX, float offsetTopY, float offsetBottomY, long seed)
+	public MapGenerator(Window w, Map map, int x, int y, long seed)
 	{
 		this.window = w;
-		this.map = map;
+		this.screenHeight = this.window.getHeight();
+		this.screenWidth = this.window.getWidth();
 
-        this.tileSize = tileSize + wallShort; //It is done this way so that a tile is the distance between walls (i.e. walls border a tile)
+		this.map = map;
 
 		this.x = x;
 		this.y = y;
 		this.maxXPos = (this.tileSize * x);
 		this.maxYPos = (this.tileSize * y);
 
-		this.wallShort = wallShort;
-		this.wallLong = this.tileSize - wallShort;
-
-
-		this.offsetX = offsetX;
-		this.offsetTopY = offsetTopY;
-		this.offsetBottomY = offsetBottomY;
-
 		this.seed = seed;
 
 		this.level = new int[x][y];
 
 		setMapScale();
-
 		generateLevel(0,0, seed);
-		createMap();
+		//createMap();
 	}
 
 
@@ -79,19 +76,23 @@ public class MapGenerator
 	private void setMapScale()
 	{
 		//Should be passing in the actual screen size values
-		float maxPixelsX = 1920 - (offsetX * 2);
-		float maxPixelsY = 1080 - (offsetTopY + offsetBottomY);
+		float maxPixelsX = this.screenWidth - (this.offsetX * 2);
+		float maxPixelsY = this.screenHeight - (this.offsetTopY + this.offsetBottomY);
 
-		float initPixelsX = (wallLong * x) + (wallShort * (x + 1));
-		float initPixelsY = (wallLong * y) + (wallShort * (y + 1));
+		float initPixelsX = (this.wallLong * x) + (this.wallShort * (x + 1));
+		float initPixelsY = (this.wallLong * y) + (this.wallShort * (y + 1));
 
 		this.xScale = maxPixelsX / initPixelsX;
 		this.yScale = maxPixelsY / initPixelsY;
-		//this.xScale = 1;
-		//this.yScale = 1;
+	}
 
-		//Testing
-        /*
+
+	/**
+	 * This method can be called to make the map scale uniformly (i.e. the dimensions of all walls will remain constant)
+	 * As as result the map will no longer fill the screen if this function is called
+	 */
+	public void setUniformScale()
+	{
 		if (xScale > yScale)
 		{
 			this.xScale = this.yScale;
@@ -100,10 +101,7 @@ public class MapGenerator
 		{
 			this.yScale = this.xScale;
 		}
-		*/
-
 	}
-
 
 
 	/**
@@ -137,7 +135,6 @@ public class MapGenerator
 			this.dy = dy;
 		}
 	};
-
 
 
 	/**
@@ -182,77 +179,76 @@ public class MapGenerator
 	 */
 	public void createMap()
 	{
-		boolean exitAdded = false;
 		Random rand = new Random(this.seed);
-		int exitWall = rand.nextInt(y);  //This determines where on the east wall the exit is placed
 
-		for (int i = 0; i < y; i++)
+		boolean exitAdded = false;
+		int exitWall = rand.nextInt(this.y);  //This determines where on the east wall the exit is placed
+
+		for (int i = 0; i < this.y; i++)
 		{
-			float yPos = (i * tileSize);
+			float yPos = (i * this.tileSize);
 
 			//Creates the north edge of the map
-			for (int j = 0; j < x; j++)
+			for (int j = 0; j < this.x; j++)
 			{
-				float xPos = (j * tileSize);
-				System.out.print((level[j][i] & 1) == 0 ? "+---" : "+   "); //ternary operator if: level[j][i] & 1 == 0 print "+---" else print "+   "
+				float xPos = (j * this.tileSize);
+				System.out.print((this.level[j][i] & 1) == 0 ? "+---" : "+   "); //ternary operator if: level[j][i] & 1 == 0 print "+---" else print "+   "
 
 				if ((level[j][i] & 1) == 0)
 				{
-					addObject(xPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
-					addObject(xPos + wallShort, yPos, wallLong, wallShort, Textures.BRICKBLOCK);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+					addObject(xPos + this.wallShort, yPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
 				}
 
 				else
 				{
-					addObject(xPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
-				}
-			}
-
-			//Creates part of the east wall
-			System.out.println("+");
-			addObject(maxXPos, yPos, wallShort, wallShort, Textures.EXIT_LOCKED);
-
-			//Creates the west edge of the map
-			for (int j = 0; j < x; j++)
-			{
-				float xPos = (j * tileSize);
-				System.out.print((level[j][i] & 8) == 0 ? "|   " : "    ");
-
-				if ((level[j][i] & 8) == 0)
-				{
-					addObject(xPos, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
 				}
 			}
 
 			//Creates part of the east edge of the map
+			System.out.println("+");
+			addObject(this.maxXPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
 
+			//Creates the west edge of the map
+			for (int j = 0; j < x; j++)
+			{
+				float xPos = (j * this.tileSize);
+				System.out.print((this.level[j][i] & 8) == 0 ? "|   " : "    ");
+
+				if ((this.level[j][i] & 8) == 0)
+				{
+					addObject(xPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
+				}
+			}
+
+			//Creates part of the east edge of the map
 			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
-				addExit(maxXPos, yPos + wallShort, wallShort, wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
 				exitAdded = true;
 			}
 			else
 			{
 				System.out.println("|");
-				addObject(maxXPos, yPos + wallShort, wallShort, wallLong, Textures.BRICKBLOCK);
+				addObject(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
 			}
-
 		}
 
 		//Creates the south edge of the map
 		for (int j = 0; j < x; j++)
 		{
-			float xPos = (j * tileSize);
+			float xPos = (j * this.tileSize);
 
 			System.out.print("+---");
-			addObject(xPos, maxYPos, wallShort, wallShort, Textures.EXIT_LOCKED);
-			addObject(xPos + wallShort, maxYPos, wallLong, wallShort, Textures.BRICKBLOCK);
+			addObject(xPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+			addObject(xPos + this.wallShort, this.maxYPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
 		}
 
 		//Creates the other part of the east edge of the map
 		System.out.println("+");
-		addObject(maxXPos, maxYPos, wallShort, wallShort, Textures.EXIT_LOCKED);
+		addObject(this.maxXPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
 	}
 
 
@@ -270,8 +266,9 @@ public class MapGenerator
 		//It is xPos + width / 2, is because mapObjects anchor point is its center, but to keep the map gen code cleaner, it is assumed the anchor point is the top left.
         xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
         yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
-		width *= this.xScale;
-		height *= this.yScale;
+
+        width *= this.xScale;
+        height *= this.yScale;
 
 		try
 		{
@@ -281,7 +278,6 @@ public class MapGenerator
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 
@@ -298,6 +294,7 @@ public class MapGenerator
 	{
 		xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
 		yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
+
 		width *= this.xScale;
 		height *= this.yScale;
 
@@ -309,7 +306,5 @@ public class MapGenerator
 		{
 			e.printStackTrace();
 		}
-
 	}
-
 }

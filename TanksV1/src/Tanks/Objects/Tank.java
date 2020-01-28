@@ -11,7 +11,8 @@ import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Window.Window;
 
-public class Tank {
+public class Tank
+{
 	/**
 	 * The tank class contains all the methods required to create a tank.
 	 * However, it is important to note that the methods are required to be
@@ -29,9 +30,12 @@ public class Tank {
 	 * setPlayerControlled() : This enables the tank to be controlled by the player
 	 */
 
+	private Window window;
+	private Map map;
+
 	private TankHull hull;
 	private TankTurret turret;
-	private Window window;
+
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
 
@@ -39,8 +43,6 @@ public class Tank {
 	private float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	private int shellRicochetNumber;
-
-	private Map map;
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
@@ -50,6 +52,8 @@ public class Tank {
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
 	private int previousTurn; //1 = turn left, 2 = turn right
+
+	private boolean loadNextLevel = false;
 
 	public Tank()
 	{
@@ -362,6 +366,7 @@ public class Tank {
 				if (map.getExitsInMap().get(i).getLockedStatus() == false)
 				{
 					System.out.println("NEXT LEVEL!");
+					this.loadNextLevel = true;
 				}
 				//testing
 				else
@@ -443,7 +448,7 @@ public class Tank {
 
 
 	//Call this in game loop
-	public void update()
+	public boolean update()
 	{
 		for(int i = 0; i < shellList.size(); i++)
 		{
@@ -476,6 +481,8 @@ public class Tank {
 			listener.handleInput();
 			turret.setPlayerTurretDirection();
 		}
+
+		return loadNextLevel;
 	}
 
 

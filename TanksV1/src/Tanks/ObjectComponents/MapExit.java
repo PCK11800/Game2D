@@ -19,12 +19,15 @@ public class MapExit extends MapObject
     {
         super(window, x, y, width, height, lockedTexture); //The locked texture is assumed to be its default / initial texture
         this.unlockedTexture = unlockedTexture;
+        unlockExit();
     }
+
 
     public void update()
     {
         draw(window);
     }
+
 
     public void unlockExit()
     {
