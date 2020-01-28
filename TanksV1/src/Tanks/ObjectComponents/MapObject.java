@@ -2,7 +2,8 @@ package Tanks.ObjectComponents;
 
 import Tanks.Window.Window;
 
-public class MapObject extends RotatingObject{
+public class MapObject extends RotatingObject
+{
 	
 	protected Window window;
 	

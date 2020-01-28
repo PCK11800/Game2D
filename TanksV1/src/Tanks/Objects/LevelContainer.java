@@ -19,6 +19,12 @@ public class LevelContainer
     private ArrayList<Tank> enemyList = new ArrayList<Tank>(); //This should be changed once enemies are properly implemented
 
 
+    /**
+     * THe constructor
+     * @param w the window that is to be drawn into
+     * @param mapXSize the size of the map in the x axis (measured in "tiles")
+     * @param mapYSize the size of the map in the y axis
+     */
     public LevelContainer(Window w, int mapXSize, int mapYSize) //Maybe should include a seed here? that is passed to the mapGen
     {
         this.window = w;
@@ -29,7 +35,13 @@ public class LevelContainer
         //initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT);
     }
 
-    //This is primarily for testing as this should really be moved to some other class and the player(s)
+
+    /**
+     * This method is used to initialise the player - i.e. place them in the map, set their textures, etc.
+     * @param hullTexture the texture for the tanks hull
+     * @param turretTexture the texture for the tanks turret
+     * @param shellTexture the texture for the tanks shell / projectile
+     */
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture)
     {
         Tank player = new Tank();
@@ -53,6 +65,9 @@ public class LevelContainer
     }
 
 
+    /**
+     * This is used to create / initialise the map. It places all of the map objects within the level as well as the players & enemies
+     */
     public void createLevel()
     {
        this.mapGenerator.createMap();
@@ -60,6 +75,11 @@ public class LevelContainer
     }
 
 
+    /**
+     * This is the update method that is called once per frame
+     * It updates the enemies the players and the map
+     * @return returns true if a new level should be loaded
+     */
     public boolean update()
     {
         //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
@@ -77,6 +97,11 @@ public class LevelContainer
         }
     }
 
+
+    /**
+     * This method updates all players in a level
+     * @return returns true if a new level is to be loaded
+     */
     private boolean updatePlayers()
     {
         boolean load = false;
@@ -91,6 +116,10 @@ public class LevelContainer
         return load;
     }
 
+
+    /**
+     * Updates all of the enemies within a map
+     */
     private void updateEnemies()
     {
         for (Tank enemy : enemyList)
@@ -99,5 +128,9 @@ public class LevelContainer
         }
     }
 
+
+    /**
+     * Updates all of the map objects within a map
+     */
     private void updateMap() { map.update(); }
 }

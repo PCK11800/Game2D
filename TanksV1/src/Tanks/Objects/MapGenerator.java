@@ -28,12 +28,12 @@ public class MapGenerator
 	private float maxYPos;
 	private float xScale;
 	private float yScale;
-	private float smallestScale;
 
-	//Default values
+
 	private int screenWidth; //= 1920;
 	private int screenHeight; // = 1080;
 
+	//Default values
 	private float offsetX = 0;
 	private float offsetTopY = 50;
 	private float offsetBottomY = 0;
@@ -46,7 +46,15 @@ public class MapGenerator
 
 	private long seed; //seed is usually system.CurrentTimeMillis(), but can be changed to a specific value for testing
 
-	
+
+	/**
+	 * The constructor for the map generator
+	 * @param w the window that map is to be drawn into
+	 * @param map the map object that the mapObjects need to placed into
+	 * @param x the size of the map in the x direction (measured in "tiles")
+	 * @param y the size of the map in the y direction
+	 * @param seed the seed - used for random generation - providing it with a seed will produce repeatable results
+	 */
 	public MapGenerator(Window w, Map map, int x, int y, long seed)
 	{
 		this.window = w;
@@ -223,12 +231,15 @@ public class MapGenerator
 			}
 
 			//Creates part of the east edge of the map
+			//This will randomly add the mapExit to the east wall
 			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
 				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+
 				exitAdded = true;
 			}
+			//Otherwise add a standard wall
 			else
 			{
 				System.out.println("|");
