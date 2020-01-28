@@ -16,22 +16,28 @@ public class RotatingObject extends Sprite {
 	protected float xCenter, yCenter;
 	protected float objectDirection;
 	protected Texture objectTexture;
+	protected String texture;
 	
 	public void setObjectTexture(String texturePath) 
 	{
+		texture = texturePath;
 		Path imagePath = FileSystems.getDefault().getPath("..", texturePath);
 		objectTexture = new Texture();
-		try {
+		try
+		{
 			objectTexture.loadFromFile(imagePath);
 			objectTexture.setSmooth(true);
 			setTexture(objectTexture);
 			
 			width = getTextureWidth();
 			height = getTextureHeight();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
+
 	
 	/**
 	 * Moves the centroid to the center of the object.
@@ -53,11 +59,13 @@ public class RotatingObject extends Sprite {
 		centerObject();
 		this.objectDirection = objectDirection;
 		
-		if(this.objectDirection >= 360) {
+		if(this.objectDirection >= 360)
+		{
 			this.objectDirection = this.objectDirection - 360;
 		}
 		
-		else if(this.objectDirection < 0) {
+		else if(this.objectDirection < 0)
+		{
 			this.objectDirection = this.objectDirection + 360;
 		}
 		setRotation(objectDirection);
@@ -153,23 +161,32 @@ public class RotatingObject extends Sprite {
 		cx = getxPos();
 		cy = getyPos();
 		
-		if(corner.equals("topleft")) {
+		if(corner.equals("topleft"))
+		{
 			x = getxPos() - getWidth()/2;
 			y = getyPos() - getHeight()/2;
 		}
-		else if(corner.equals("topright")){
+
+		else if(corner.equals("topright"))
+		{
 			x = getxPos() + getWidth()/2;
 			y = getyPos() - getHeight()/2;
 		}
-		else if(corner.equals("bottomleft")){
+
+		else if(corner.equals("bottomleft"))
+		{
 			x = getxPos() - getWidth()/2;
 			y = getyPos() + getHeight()/2;
 		}
-		else if(corner.equals("bottomright")){
+
+		else if(corner.equals("bottomright"))
+		{
 			x = getxPos() + getWidth()/2;
 			y = getyPos() + getHeight()/2;
 		}
-		else{
+
+		else
+		{
 			x = 0;
 			y = 0;
 		}
@@ -183,14 +200,21 @@ public class RotatingObject extends Sprite {
 		x = rotatedX + cx;
 		y = rotatedY + cy;
 		
-		if(type.equals("x")) {
+		if(type.equals("x"))
+		{
 			return x;
 		}
-		else if(type.equals("y")) {
+
+		else if(type.equals("y"))
+		{
 			return y;
 		}
-		else {
+
+		else
+		{
 			return 0;
 		}
 	}
+
+	public String getTexturePath() { return texture; }
 }
