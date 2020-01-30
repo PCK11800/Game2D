@@ -1,10 +1,9 @@
 package Tanks.Objects;
 
-import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -311,7 +310,10 @@ public class MapGenerator
 
 		try
 		{
-			map.getExitsInMap().add(new MapExit(this.window, xPos, yPos, width, height, lockedTexture, unlockedTexture));
+			MapObject exit = new MapObject(this.window, xPos, yPos, width, height, lockedTexture);
+			exit.makeExit(unlockedTexture);
+
+			map.getObjectsInMap().add(exit);
 		}
 		catch (Exception e)
 		{
