@@ -17,7 +17,7 @@ public class LevelContainer
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Tank> enemyList = new ArrayList<Tank>(); //This should be changed once enemies are properly implemented
-
+    private int mapXSize, mapYSize;
 
     /**
      * THe constructor
@@ -29,6 +29,8 @@ public class LevelContainer
     {
         this.window = w;
         this.map = new Map(window);
+        this.mapXSize = mapXSize;
+        this.mapYSize = mapYSize;
         this.mapGenerator = new MapGenerator(window, map, mapXSize, mapYSize, System.currentTimeMillis());
 
         //this.mapGenerator.createMap();
@@ -67,11 +69,12 @@ public class LevelContainer
 
     private void initEnemy(String hullTexture, String turretTexture, String shellTexture)
     {
-        Opponent player = new Opponent(playerList.get(0));
+        Opponent player = new Opponent(playerList.get(0), mapGenerator.getMap());
         player.setHullTexture(hullTexture);
         player.setTurretTexture(turretTexture);
         player.setShellTexture(shellTexture);
         player.setMap(this.map);
+        player.setMaxPos(mapGenerator.getMaxXPos(), mapGenerator.getMaxYPos());
         player.setWindow(window);
         player.setSize((float) 1, (float) 1);
         player.setTankLocation(100, 450);
@@ -80,7 +83,7 @@ public class LevelContainer
         player.setMovementSpeed(5);
         player.setInitialDirection(0);
         player.setShellSpeed(10);
-        player.setShellRicochetNumber(2);
+        player.setShellRicochetNumber(3);
         player.setFireDelay(500);
 
         enemyList.add(player);

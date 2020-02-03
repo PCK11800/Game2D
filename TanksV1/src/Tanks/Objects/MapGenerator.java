@@ -318,4 +318,10 @@ public class MapGenerator
 			e.printStackTrace();
 		}
 	}
+
+	public int[][] getMap() { return level; }
+
+	public float getMaxXPos() { return maxXPos; }
+
+	public float getMaxYPos() { return maxYPos; }
 }

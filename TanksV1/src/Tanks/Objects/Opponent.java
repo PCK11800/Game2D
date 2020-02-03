@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 
 public class Opponent extends Tank {
@@ -28,13 +30,52 @@ public class Opponent extends Tank {
     private int shotsFired = 0;
     private float[] objectCoords = new float[2];
     private TankTurret clone;
+    private String[][] mapGrid;
+    private float maxXPos, maxYPos;
 
-    public Opponent(Tank player)
+
+    public Opponent(Tank player, int[][] grid)
     {
         super();
         this.player = player;
+        mapGrid = new String[grid.length][grid[0].length];
+        int j;
+        for (int i = 0; i < grid[0].length; i++)
+        {
+            for (j = 0; j < grid.length; j++)
+            {
+                mapGrid[j][i] = "";
+                if ((grid[j][i] & 1) == 0)
+                {
+                    mapGrid[j][i] += "T";
+                }
+                if ((grid[j][i] & 8) == 0)
+                {
+                    mapGrid[j][i] += "L";
+                }
+                if (i == grid[0].length - 1)
+                {
+                    mapGrid[j][i] += "B";
+                }
+            }
+            mapGrid[j - 1][i] += "R";
+        }
 
+        for (int i = 0; i < mapGrid[0].length; i++)
+        {
+            for (j = 0; j < mapGrid.length; j++)
+            {
+                System.out.println(mapGrid[j][i]);
+            }
+        }
     }
+
+    public void setMaxPos(float x, float y)
+    {
+        this.maxXPos = x;
+        this.maxYPos = y;
+    }
+
 
     public boolean update()
     {
@@ -45,9 +86,11 @@ public class Opponent extends Tank {
 
                 rotateTurretRight();
             }
+           //move();
             clone = turret.stationaryCopy();
 
         }
+        move();
         clone.update();
         movementCount++;
         playerXPos = player.getXPos();
@@ -88,6 +131,127 @@ public class Opponent extends Tank {
 
 
     }
+
+    private void move()
+    {
+        //work out which grid space in map opponent is at
+        //tile size = 110 (just for testing)
+        //max x
+        int x, y, playerX, playerY;
+        System.out.println(map.getWidth() + "|" + map.getHeight());
+        System.out.println(getXPos() + "|" + getYPos());
+       // int tempX = map.getWidth() / mapGrid[0].length
+        x = (int) Math.floor(getXPos());
+        x = (x == 0 ? 0 : (int) Math.floor( x / (map.getWidth() / mapGrid.length)));
+        y =  (int) Math.floor(getYPos());
+        y = (y == 0 ? 0 : (int) Math.floor(y / (map.getHeight() / mapGrid[0].length)));
+        System.out.println(x + "|" + y + "|" + mapGrid.length + "|" + mapGrid[0].length);
+
+        playerX = (int) Math.floor(playerXPos);
+        playerX = (playerX == 0 ? 0 : (int) Math.floor( playerX / (map.getWidth() / mapGrid.length)));
+        playerY = (int) Math.floor(playerYPos);
+        playerY = (playerY == 0 ? 0 : (int) Math.floor(playerY / (map.getHeight() / mapGrid[0].length)));
+        System.out.println(playerX + "|" + playerY);
+        System.out.println(mapGrid[playerX][playerY]);
+        findPath(x, y, playerX, playerY);
+    }
+
+    private void findPath(int srcX, int srcY, int destX, int destY)
+    {
+
+        ArrayList<String> path = new ArrayList<>();
+        ArrayList<String> found = new ArrayList<>();
+        String temp = "";
+
+
+        int x = srcX, y = srcY;
+        Stack<Integer[]> prev = new Stack<>();
+        prev.push(new Integer[]{x, y});
+        temp = x + "," + y;
+        found.add(temp);
+        temp = "";
+        while (x != destX || y != destY)
+        {
+            String current = mapGrid[x][y];
+            System.out.println(x + "|" + y);
+            System.out.println(current);
+            boolean action = false;
+            if (!current.contains("T")) {
+                temp = Integer.toString(x) + "," + Integer.toString(y-1);
+                //System.out.println(found.contains(temp) + "TOP");
+                if (!found.contains(temp)) {
+                    System.out.println("TOP");
+                    path.add(temp);
+                    prev.push(new Integer[]{x, y - 1});
+                    found.add(temp);
+                    y = y - 1;
+                    action = true;
+                }
+            }
+            if (!action && !current.contains("L"))
+            {
+                temp = Integer.toString(x - 1) + "," + Integer.toString(y);
+                System.out.println(found.contains(temp) + "LEFT");
+                if (!found.contains(temp))
+                {
+                    System.out.println("LEFT");
+                    path.add(temp);
+                    prev.push(new Integer[]{x - 1, y});
+                    found.add(temp);
+                    x = x - 1;
+                    action = true;
+                }
+            }
+            if (!action && !current.contains("B"))
+            {
+                String bottom = mapGrid[x][y + 1];
+
+                if (!bottom.contains("T")) {
+                    temp = Integer.toString(x) + "," + Integer.toString(y+1);
+                    System.out.println(found.contains(temp) + "BOTTOM");
+                    if (!found.contains(temp)) {
+                        System.out.println("BOTTOM");
+                        path.add(temp);
+                        prev.push(new Integer[]{x, y + 1});
+                        found.add(temp);
+                        y = y + 1;
+                        action = true;
+                    }
+                }
+            }
+            if (!action && !current.contains("R")) {
+                String right = mapGrid[x + 1][y];
+
+                if (!right.contains("L")) {
+                    temp = Integer.toString(x + 1) + "," + Integer.toString(y);
+                    System.out.println(found.contains(temp) + "RIGHT");
+                    if (!found.contains(temp)) {
+                        System.out.println("RIGHT");
+                        path.add(temp);
+                        prev.push(new Integer[]{x + 1, y});
+                        found.add(temp);
+                        x = x + 1;
+                        action = true;
+                    }
+                }
+            }
+            if (!action)
+            {
+                System.out.println("BACK");
+                temp = Integer.toString(x) + "," + Integer.toString(y);
+                path.remove(temp);
+                prev.pop();
+                Integer[] p = prev.peek();
+                x = p[0]; y = p[1];
+            }
+            temp = "";
+        }
+        for (String space : path)
+        {
+            System.out.println(space);
+        }
+    }
+
 
     private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
@@ -235,7 +399,7 @@ public class Opponent extends Tank {
             }
             else if (x2 >= x1 && y2 <= y1) //can hit left side or bottom
             {
-                System.out.println("here3");
+                //System.out.println("here3");
                 for (MapObject obj : objects) {
                     if(((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds())) || ((x2 > x1) && (x2 > obj.getRightBounds())) || ((x2 < x1) && (x2 < obj.getLeftBounds())) || ((y2 > y1) && (y2 > obj.getBottomBounds())) || ((y2 < y1) && (y2 < obj.getTopBounds())))
                     {
@@ -279,7 +443,7 @@ public class Opponent extends Tank {
             }
             else //left side or top
             {
-                System.out.println("here4");
+                //System.out.println("here4");
                 for (MapObject obj : objects) {
                     if(((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds())) || ((x2 > x1) && (x2 > obj.getRightBounds())) || ((x2 < x1) && (x2 < obj.getLeftBounds())) || ((y2 > y1) && (y2 > obj.getBottomBounds())) || ((y2 < y1) && (y2 < obj.getTopBounds())))
                     {

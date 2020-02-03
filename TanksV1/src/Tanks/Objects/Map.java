@@ -60,4 +60,8 @@ public class Map
 	public ArrayList<MapObject> getObjectsInMap() { return objectList; }
 
 	public ArrayList<MapExit> getExitsInMap() { return exitList; }
+
+	public float getWidth() { return window.getWidth(); }
+
+	public float getHeight() { return window.getHeight(); }
 }
