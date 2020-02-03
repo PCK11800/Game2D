@@ -2,11 +2,12 @@ package Tanks.ObjectComponents;
 
 import Tanks.Window.Window;
 
-public class TankHull extends RotatingObject{
+public class TankHull extends RotatingObject implements Cloneable {
 
 	private float currentMovementSpeed;
 	private float movementSpeed;
 	protected float turningDistance; //The amount a tank will turn every time a turnLeft/Right method is called
+	protected float currentTurningDistance;
 	protected Window window;
 	
 	/**
@@ -31,24 +32,26 @@ public class TankHull extends RotatingObject{
 	
 	public void turnRight() 
 	{
-		rotateObject(objectDirection + turningDistance);
+		rotateObject(objectDirection + currentTurningDistance);
 		unbrake();
 	}
 	
 	public void turnLeft()
 	{
-		rotateObject(objectDirection - turningDistance);
+		rotateObject(objectDirection - currentTurningDistance);
 		unbrake();
 	}
 	
 	public void brake() 
 	{
 		currentMovementSpeed = 0;
+		currentTurningDistance = 0;
 	}
 	
 	public void unbrake()
 	{
 		currentMovementSpeed = movementSpeed;
+		currentTurningDistance = turningDistance;
 	}
 	
 	public float getTurningDistance()
@@ -59,6 +62,7 @@ public class TankHull extends RotatingObject{
 	public void setTurningDistance(float turningDistance) 
 	{
 		this.turningDistance = turningDistance;
+		this.currentTurningDistance = turningDistance;
 	}
 	
 	public float getMovementSpeed() 

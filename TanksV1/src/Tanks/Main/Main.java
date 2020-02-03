@@ -2,23 +2,25 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import Tanks.Objects.GameMode;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
+import Tanks.Objects.Opponent;
 import org.jsfml.graphics.Color;
 
-import Tanks.ObjectComponents.Textures;
-import Tanks.Objects.Map;
-import Tanks.Objects.Tank;
+import Tanks.Objects.LevelContainer;
 import Tanks.Window.Window;
+import org.jsfml.system.Clock;
+import org.jsfml.system.Time;
 
-public class Main {
+public class Main
+{
 	
-	Window window;
-	
-	Map testMap;
-	
-	//ArrayList holding game objects 
-	ArrayList<Tank> tankList = new ArrayList<>();
+	private Window window;
+	private GameMode gm;
+	private Clock frameClock = new Clock();
+
 	
 	@SuppressWarnings("unused")
 	private void createWindow(int x, int y, String name, int frameRate) 
@@ -27,7 +29,8 @@ public class Main {
 		window.setBackgroundColor(Color.WHITE);
 	}
 	
-	private void createFullScreenWindow(int frameRate) {
+	private void createFullScreenWindow(int frameRate)
+	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		window = new Window((int)screenSize.getWidth(), (int)screenSize.getHeight(), "Tanks", frameRate);
 		window.setBackgroundColor(Color.WHITE);
@@ -36,57 +39,22 @@ public class Main {
 	private void iniGame() 
 	{
 		//createWindow(1000, 1000, "Tanks", 60);
-		createFullScreenWindow(60);
-		drawMapTest();
-		drawTankTest();
+		createFullScreenWindow(120);
+
+		//In future builds call the main menu here
+		gm = new GameMode(this.window);
 	}
 	
 	private void loop()
 	{
-		while(window.isOpen()) {
+		while(window.isOpen())
+		{
 			window.startOfFrame();
-			
-			updateTanks();
-			updateMap();
-			
+			gm.update();
 			window.endOfFrame();
 		}
 	}
-	
-	private void updateTanks() {
-		for (Tank tank : tankList) {
-			tank.update();
-		}
-	}
-	
-	private void drawTankTest() 
-	{
-		Tank tank = new Tank();
-		tank.setHullTexture(Textures.TANKHULL_GREEN);
-		tank.setTurretTexture(Textures.TANKTURRET_GREEN);
-		tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
-		tank.setMap(testMap);
-		tank.setWindow(window);
-		tank.setSize(100, 100);
-		tank.setTankLocation(800, 500);
-		tank.setHullTurningDistance(3);
-		tank.setTurretTurningDistance(3);
-		tank.setMovementSpeed(5);
-		tank.setInitialDirection(180);
-		tank.setShellSpeed(10);
-		tank.setShellRicochetNumber(2);
-		tank.enablePlayerControl();
-		
-		tankList.add(tank);
-	}
-	
-	private void drawMapTest() {
-		testMap = new Map(window);
-	}
-	
-	private void updateMap() {
-		testMap.update();
-	}
+
 	
 	public static void main(String[] args) 
 	{

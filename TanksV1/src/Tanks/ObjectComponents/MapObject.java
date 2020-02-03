@@ -2,7 +2,8 @@ package Tanks.ObjectComponents;
 
 import Tanks.Window.Window;
 
-public class MapObject extends RotatingObject{
+public class MapObject extends RotatingObject
+{
 	
 	protected Window window;
 	
@@ -10,7 +11,7 @@ public class MapObject extends RotatingObject{
 	{
 		this.window = window;
 		setObjectTexture(objectTexture);
-		setLocation(x, y);
+		setCenterLocation(x, y);
 		setSize(width, height);
 	}
 	
