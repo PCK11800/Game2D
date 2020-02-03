@@ -2,6 +2,7 @@ package Tanks.Objects;
 
 import Tanks.Window.Window;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class GameMode
 {
@@ -9,17 +10,22 @@ public class GameMode
     private Window window;
     private LevelContainer currentLevel;
     private int currentIndex = 0;
-    //Maybe create the random object here so that you can seed it here?
+
+    private Random random;
+    private long seed;
 
     /**
      * The constructor
      * @param w the window for everything to be drawn into
      */
-    public GameMode(Window w)
+    public GameMode(Window w, long seed)
     {
         this.window = w;
+        this.seed = seed;
         setLevels();
         initGameMode();
+
+        this.random = new Random(this.seed);
     }
 
 
@@ -29,8 +35,8 @@ public class GameMode
      */
     public void setLevels()
     {
-        levels.add(new LevelContainer(this.window, 3, 3));
-        levels.add(new LevelContainer(this.window, 8, 4));
+        levels.add(new LevelContainer(this.window, 2, 2, 3, this.seed));
+        levels.add(new LevelContainer(this.window, 8, 4, 4, this.seed));
 
         currentLevel = levels.get(0);
     }
