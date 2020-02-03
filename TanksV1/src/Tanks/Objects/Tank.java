@@ -1,22 +1,21 @@
 package Tanks.Objects;
 
-import java.awt.geom.Line2D;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.jsfml.system.Clock;
-
 import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Window.Window;
+
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Text;
+import org.jsfml.system.Clock;
+
+import java.awt.geom.Line2D;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Tank
 {
@@ -547,19 +546,11 @@ public class Tank
 		if(isPlayerControlled) {
 			listener.handleInput();
 			turret.setPlayerTurretDirection();
+			this.updateMoney();
+			this.updateHealth();
 		}
 
 		return loadNextLevel;
-
-		if(isPlayerControlled)
-		{
-			this.updateMoney();
-		}
-
-		if(isPlayerControlled)
-		{
-			this.updateHealth();
-		}
 	}
 
 	public boolean isOpponent() { return !isPlayerControlled; }
