@@ -44,7 +44,7 @@ public class LevelContainer
      */
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture)
     {
-        Tank player = new Tank();
+        Tank player = new Tank(true);
         player.setHullTexture(hullTexture);
         player.setTurretTexture(turretTexture);
         player.setShellTexture(shellTexture);

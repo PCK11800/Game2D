@@ -2,14 +2,10 @@ package Tanks.Upgrades;
 
 import Tanks.Objects.Tank;
 
-public class MaxHealth extends Upgrade
+public class MaxHealth
 {
-    private Tank tank;
-    private int upgradeType;
-
-    @Override
-    public void applyUpgrade()
+    public static void applyUpgrade(Tank t)
     {
-        tank.increaseMaxHealth(1);
+        t.increaseMaxHealth(1);
     }
 }

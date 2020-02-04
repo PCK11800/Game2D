@@ -31,7 +31,7 @@ public class Opponent extends Tank {
 
     public Opponent(Tank player)
     {
-        super();
+        super(false);
         this.player = player;
 
     }

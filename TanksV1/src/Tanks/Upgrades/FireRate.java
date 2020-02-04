@@ -2,14 +2,10 @@ package Tanks.Upgrades;
 
 import Tanks.Objects.Tank;
 
-public class FireRate extends Upgrade
+public class FireRate
 {
-    private Tank tank;
-    private int upgradeType;
-
-    @Override
-    public void applyUpgrade()
+    public static void applyUpgrade(Tank t)
     {
-        tank.setFireDelay(tank.getFireDelay() + 10);
+        t.setFireDelay(t.getFireDelay() - 1);
     }
 }

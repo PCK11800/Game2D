@@ -4,6 +4,9 @@ import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
+import Tanks.Upgrades.FireRate;
+import Tanks.Upgrades.Heal;
+import Tanks.Upgrades.MaxHealth;
 import Tanks.Window.Window;
 
 import org.jsfml.graphics.Color;
@@ -43,7 +46,7 @@ public class Tank
 	protected TankTurret turret;
 
 	private PlayerListener listener;
-	private boolean isPlayerControlled = true;
+	private boolean isPlayerControlled = false;
 	private int health = 100;
 
 	private String shellTexturePath;
@@ -75,12 +78,14 @@ public class Tank
 
 
 	
-	public Tank() 
+	public Tank(Boolean player)
 	{
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
 		turret.setConnectedTankHull(hull);
 		this.loadFont();
+
+		isPlayerControlled = player;
 	}
 
 	public void loadFont()
@@ -208,6 +213,10 @@ public class Tank
 			shellList.add(createShell());
 			fireDelayClock.restart();
 		}
+
+		MaxHealth.applyUpgrade(this);
+		Heal.applyUpgrade(this);
+		FireRate.applyUpgrade(this);
 	}
 
 
@@ -546,10 +555,9 @@ public class Tank
 		if(isPlayerControlled) {
 			listener.handleInput();
 			turret.setPlayerTurretDirection();
-			this.updateMoney();
 			this.updateHealth();
+			this.updateMoney();
 		}
-
 		return loadNextLevel;
 	}
 
