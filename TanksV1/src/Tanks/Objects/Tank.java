@@ -47,7 +47,6 @@ public class Tank
 
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
-	private int health = 100;
 
 	private String shellTexturePath;
 	protected float shellSpeed;
@@ -59,8 +58,8 @@ public class Tank
 	private int money = 0;
 	private Text moneyText = new Text();
 
-	private int currentHealth = 10;
-	private int maxHealth = 10;
+	private int currentHealth = 6;
+	private int maxHealth = 6;
 	private Text healthText = new Text();
 
 	private Clock turretDelayClock = new Clock();
@@ -105,11 +104,11 @@ public class Tank
 		hull.setObjectTexture(texturePath);
 	}
 
-	public void setHealth(int health) {this.health = health; }
+	public void setHealth(int health) {this.currentHealth = health; }
 
 	public void getHit() {
-		System.out.println("tank: " + health);
-		//this.health--;
+		System.out.println("tank: " + currentHealth);
+		//this.currentHealth--;
 	}
 
 	public void setTurretTexture(String texturePath)
@@ -213,10 +212,6 @@ public class Tank
 			shellList.add(createShell());
 			fireDelayClock.restart();
 		}
-
-		MaxHealth.applyUpgrade(this);
-		Heal.applyUpgrade(this);
-		FireRate.applyUpgrade(this);
 	}
 
 
@@ -623,7 +618,7 @@ public class Tank
 
 	public float getBottomBounds() { return hull.getBottomBounds(); }
 
-	public boolean isAlive() { return (health <= 0 ? false : true); }
+	public boolean isAlive() { return (currentHealth <= 0 ? false : true); }
 
 	public boolean isPlayer() { return isPlayerControlled; }
 }
