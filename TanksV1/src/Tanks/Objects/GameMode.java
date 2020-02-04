@@ -49,9 +49,9 @@ public class GameMode
         levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 4), (rand.nextInt(3) + 3), (rand.nextInt(1) + 5), this.seed));
 
         //Round 3
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 5),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 6), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 7), (rand.nextInt(3) + 5), (rand.nextInt(2) + 8), this.seed));
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(1) + 4),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 4), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 4), (rand.nextInt(2) + 4), (rand.nextInt(2) + 8), this.seed));
 
         currentLevel = levels.get(0);
     }
