@@ -53,7 +53,8 @@ public class LevelContainer
 
         this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.playerList, this.map, this.mapGenerator, this.numEnemies);
         //testing
-        enemyKilled(0);
+        //enemyKilled(0);
+        unlockExits();
     }
 
 
@@ -152,6 +153,13 @@ public class LevelContainer
         {
             this.map.unlockExits();
         }
+    }
+
+
+    //Testing function
+    public void unlockExits()
+    {
+        this.map.unlockExits();
     }
 
 

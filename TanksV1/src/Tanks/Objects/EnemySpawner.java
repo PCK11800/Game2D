@@ -125,6 +125,7 @@ public class EnemySpawner
         float tileCenterY = (this.mapGenerator.getTileSize() * this.mapGenerator.getYScale()) / 2;
 
         Collections.shuffle(availableTiles); //this shuffles the tiles randomly - this is what causes the enemies to be placed randomly
+        Collections.shuffle(availableTiles);
 
         //Placing enemies
         if (this.availableTiles.size() >= this.numEnemies)
@@ -134,7 +135,7 @@ public class EnemySpawner
                 Tile currentTile = availableTiles.get(i);
 
                 float enemyXPos = tileCenterX + ((tileCenterX * 2) * (currentTile.xPos));
-                enemyXPos += this.mapGenerator.getWallShort() * this.mapGenerator.getXScale();
+                enemyXPos += (this.mapGenerator.getWallShort() * this.mapGenerator.getXScale());
 
                 float enemyYPos = tileCenterY + ((tileCenterY * 2) * (currentTile.yPos));
                 enemyYPos += this.mapGenerator.getOffsetTopY();

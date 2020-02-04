@@ -10,7 +10,8 @@ public class MapObject extends RotatingObject
 
 	private String unlockedTexture;
 	private boolean isLocked = true; //This only matters if the object is an exit
-	
+
+
 	public MapObject(Window window, float x, float y, float width, float height, String objectTexture)
 	{
 		this.window = window;
