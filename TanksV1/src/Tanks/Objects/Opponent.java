@@ -32,6 +32,9 @@ public class Opponent extends Tank {
     private TankTurret clone;
     private String[][] mapGrid;
     private float maxXPos, maxYPos;
+    private Stack<Integer[]> movementPath;
+    private Integer[] currSpace = new Integer[2];
+    private float gridSpaceWidth, gridSpaceHeight;
 
 
     public Opponent(Tank player, int[][] grid)
@@ -86,7 +89,7 @@ public class Opponent extends Tank {
 
                 rotateTurretRight();
             }
-           //move();
+           generateMovementPathToPlayer();
             clone = turret.stationaryCopy();
 
         }
@@ -134,36 +137,137 @@ public class Opponent extends Tank {
 
     private void move()
     {
-        //work out which grid space in map opponent is at
-        //tile size = 110 (just for testing)
-        //max x
-        int x, y, playerX, playerY;
-        System.out.println(map.getWidth() + "|" + map.getHeight());
-        System.out.println(getXPos() + "|" + getYPos());
-       // int tempX = map.getWidth() / mapGrid[0].length
-        x = (int) Math.floor(getXPos());
-        x = (x == 0 ? 0 : (int) Math.floor( x / (map.getWidth() / mapGrid.length)));
-        y =  (int) Math.floor(getYPos());
-        y = (y == 0 ? 0 : (int) Math.floor(y / (map.getHeight() / mapGrid[0].length)));
-        System.out.println(x + "|" + y + "|" + mapGrid.length + "|" + mapGrid[0].length);
+        if (movementPath.isEmpty()) return;
+        Integer[] nextMove = movementPath.peek();
+        currSpace = generateGridPos(getXPos() , getYPos());
+        gridSpaceWidth = map.getWidth() / mapGrid.length;
+        gridSpaceHeight = map.getHeight() / mapGrid[0].length;
+        System.out.println(map.getWidth() + "||" + gridSpaceWidth + "{}{}" + map.getHeight() + "||" + map.getHeight());
+        Integer[] borderCheck1 = generateGridPos(getXPos() - (gridSpaceWidth/6), getYPos());
+        Integer[] borderCheck2 = generateGridPos(getXPos() + (gridSpaceWidth/6), getYPos());
+        Integer[] borderCheck3 = generateGridPos(getXPos(), getYPos() - (gridSpaceHeight/6));
+        Integer[] borderCheck4 = generateGridPos(getXPos(), getYPos() + (gridSpaceHeight/6));
+        if (borderCheck1[0] != borderCheck2[0] || borderCheck2[0] != borderCheck3[0] || borderCheck3[0] != borderCheck4[0] || borderCheck1[1] != borderCheck2[1] || borderCheck2[1] != borderCheck3[1] || borderCheck3[1] != borderCheck4[1])
+        {
+            moveForward();
+            turret.update();
+            clone = turret.stationaryCopy();
+            return;
+        }
+        if (nextMove[0] != currSpace[0])
+        {
+            if (nextMove[0] < currSpace[0]) {
+                if (hull.getObjectDirection() != 270) // turn left
+                {
+                    if (direction < 180 || direction > 270) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+                else
+                {
+                    moveForward();
+                    turret.update();
+                    clone = turret.stationaryCopy();
+                }
+            }
+            else {
+                if (hull.getObjectDirection() != 90) //turn right
+                {
+                    if ((direction < 270 && direction > 90)) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+                else
+                {
+                    moveForward();
+                    turret.update();
+                    clone = turret.stationaryCopy();
+                }
+            }
+        }
+        else if (nextMove[1] != currSpace[1])
+        {
+            if (nextMove[1] > currSpace[1])
+            {
+                if (hull.getObjectDirection() != 180) //turn down
+                {
+                    if (direction > 180) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+                else
+                {
+                    moveForward();
+                    turret.update();
+                    clone = turret.stationaryCopy();
+                }
+            }
+            else
+            {
+                if (hull.getObjectDirection() != 0) //turn up
+                {
+                    if (direction < 180) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+                else
+                {
+                    moveForward();
+                    turret.update();
+                    clone = turret.stationaryCopy();
+                }
+            }
+        }
+        else //opponent in next path space
+        {
+            movementPath.pop();
+        }
+        turret.update();
+        clone = turret.stationaryCopy();
 
-        playerX = (int) Math.floor(playerXPos);
-        playerX = (playerX == 0 ? 0 : (int) Math.floor( playerX / (map.getWidth() / mapGrid.length)));
-        playerY = (int) Math.floor(playerYPos);
-        playerY = (playerY == 0 ? 0 : (int) Math.floor(playerY / (map.getHeight() / mapGrid[0].length)));
-        System.out.println(playerX + "|" + playerY);
-        System.out.println(mapGrid[playerX][playerY]);
-        findPath(x, y, playerX, playerY);
+
+
     }
 
-    private void findPath(int srcX, int srcY, int destX, int destY)
+    private void generateMovementPathToPlayer()
     {
+        int x, y, playerX, playerY;
 
-        ArrayList<String> path = new ArrayList<>();
+        Integer[] pos = generateGridPos(getXPos(), getYPos());
+        x = pos[0];
+        y = pos[1];
+
+        Integer[] playerPos = generateGridPos(playerXPos, playerYPos);
+        playerX = playerPos[0]; playerY = playerPos[1];
+        currSpace[0] = x;
+        currSpace[1] = y;
+        movementPath = findPath(x, y, playerX, playerY);
+        movementPath.pop(); //remove current space position from path
+    }
+
+    private Integer[] generateGridPos(float x, float y)
+    {
+        int newX, newY;
+        newX = (int) Math.floor(x);
+        newX = (newX == 0 ? 0 : (int) Math.floor( newX / (map.getWidth() / mapGrid.length)));
+        newY =  (int) Math.floor(y);
+        newY = (newY == 0 ? 0 : (int) Math.floor(newY / (map.getHeight() / mapGrid[0].length)));
+        return new Integer[]{newX, newY};
+    }
+
+
+    private Stack<Integer[]> findPath(int srcX, int srcY, int destX, int destY)
+    {
         ArrayList<String> found = new ArrayList<>();
         String temp = "";
-
-
         int x = srcX, y = srcY;
         Stack<Integer[]> prev = new Stack<>();
         prev.push(new Integer[]{x, y});
@@ -178,10 +282,8 @@ public class Opponent extends Tank {
             boolean action = false;
             if (!current.contains("T")) {
                 temp = Integer.toString(x) + "," + Integer.toString(y-1);
-                //System.out.println(found.contains(temp) + "TOP");
                 if (!found.contains(temp)) {
                     System.out.println("TOP");
-                    path.add(temp);
                     prev.push(new Integer[]{x, y - 1});
                     found.add(temp);
                     y = y - 1;
@@ -195,7 +297,6 @@ public class Opponent extends Tank {
                 if (!found.contains(temp))
                 {
                     System.out.println("LEFT");
-                    path.add(temp);
                     prev.push(new Integer[]{x - 1, y});
                     found.add(temp);
                     x = x - 1;
@@ -211,7 +312,6 @@ public class Opponent extends Tank {
                     System.out.println(found.contains(temp) + "BOTTOM");
                     if (!found.contains(temp)) {
                         System.out.println("BOTTOM");
-                        path.add(temp);
                         prev.push(new Integer[]{x, y + 1});
                         found.add(temp);
                         y = y + 1;
@@ -227,7 +327,6 @@ public class Opponent extends Tank {
                     System.out.println(found.contains(temp) + "RIGHT");
                     if (!found.contains(temp)) {
                         System.out.println("RIGHT");
-                        path.add(temp);
                         prev.push(new Integer[]{x + 1, y});
                         found.add(temp);
                         x = x + 1;
@@ -239,19 +338,43 @@ public class Opponent extends Tank {
             {
                 System.out.println("BACK");
                 temp = Integer.toString(x) + "," + Integer.toString(y);
-                path.remove(temp);
                 prev.pop();
                 Integer[] p = prev.peek();
                 x = p[0]; y = p[1];
             }
             temp = "";
         }
-        for (String space : path)
-        {
-            System.out.println(space);
-        }
+
+        prev = reverseStack(prev);
+        return prev;
     }
 
+    private Stack<Integer[]> reverseStack(Stack<Integer[]> s)
+    {
+        if (s.isEmpty())
+        {
+            return s;
+        }
+        Integer[] bottom = popBottom(s);
+        reverseStack(s);
+        s.push(bottom);
+        return s;
+    }
+
+    private Integer[] popBottom(Stack<Integer[]> s)
+    {
+        Integer[] top = s.pop();
+        if (s.isEmpty())
+        {
+            return top;
+        }
+        else
+        {
+            Integer[] bottom = popBottom(s);
+            s.push(top);
+            return bottom;
+        }
+    }
 
     private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
