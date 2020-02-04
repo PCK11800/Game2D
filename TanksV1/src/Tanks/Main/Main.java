@@ -6,6 +6,7 @@ import Tanks.Objects.GameMode;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import Tanks.Objects.MenuManager;
 import Tanks.Objects.Opponent;
 import org.jsfml.graphics.Color;
 
@@ -19,6 +20,7 @@ public class Main
 	
 	private Window window;
 	private GameMode gm;
+	private MenuManager menuManager;
 	private Clock frameClock = new Clock();
 
 	
