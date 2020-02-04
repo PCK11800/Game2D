@@ -372,6 +372,7 @@ public class Tank
 					{
 						System.out.println("NEXT LEVEL!");
 						this.loadNextLevel = true;
+						this.increaseMoney(50);
 					}
 				}
 			}
@@ -430,7 +431,7 @@ public class Tank
 		moneyText.setString("Money: £0");
 		moneyText.setFont(montserrat);
 		moneyText.setCharacterSize(60);
-		moneyText.setPosition(200, 20);
+		moneyText.setPosition(200, 0);
 		moneyText.setColor(Color.BLACK);
 		window.draw(moneyText);
 	}
@@ -440,7 +441,7 @@ public class Tank
 		healthText.setString("Health: " +currentHealth +" / " +maxHealth);
 		healthText.setFont(montserrat);
 		healthText.setCharacterSize(60);
-		healthText.setPosition(1200, 20);
+		healthText.setPosition(1200, 0);
 		healthText.setColor(Color.BLACK);
 		window.draw(healthText);
 
