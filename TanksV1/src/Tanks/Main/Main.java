@@ -39,7 +39,7 @@ public class Main
 	private void iniGame() 
 	{
 		//createWindow(1000, 1000, "Tanks", 60);
-		createFullScreenWindow(120);
+		createFullScreenWindow(60);
 
 		//In future builds call the main menu here
 		gm = new GameMode(this.window);

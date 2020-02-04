@@ -138,16 +138,25 @@ public class Opponent extends Tank {
     private void move()
     {
         if (movementPath.isEmpty()) return;
+        direction = hull.getObjectDirection();
         Integer[] nextMove = movementPath.peek();
         currSpace = generateGridPos(getXPos() , getYPos());
         gridSpaceWidth = map.getWidth() / mapGrid.length;
         gridSpaceHeight = map.getHeight() / mapGrid[0].length;
-        System.out.println(map.getWidth() + "||" + gridSpaceWidth + "{}{}" + map.getHeight() + "||" + map.getHeight());
-        Integer[] borderCheck1 = generateGridPos(getXPos() - (gridSpaceWidth/6), getYPos());
-        Integer[] borderCheck2 = generateGridPos(getXPos() + (gridSpaceWidth/6), getYPos());
-        Integer[] borderCheck3 = generateGridPos(getXPos(), getYPos() - (gridSpaceHeight/6));
-        Integer[] borderCheck4 = generateGridPos(getXPos(), getYPos() + (gridSpaceHeight/6));
+       // System.out.println(map.getWidth() + "||" + gridSpaceWidth + "{}{}" + map.getHeight() + "||" + map.getHeight());
+        /*
+        Integer[] borderCheck1 = generateGridPos(getXPos() - (gridSpaceWidth/6) - 10, getYPos());
+        Integer[] borderCheck2 = generateGridPos(getXPos() + (gridSpaceWidth/6) + 10, getYPos());
+        Integer[] borderCheck3 = generateGridPos(getXPos(), getYPos() - (gridSpaceHeight/5));
+        Integer[] borderCheck4 = generateGridPos(getXPos(), getYPos() + (gridSpaceHeight/5));
         if (borderCheck1[0] != borderCheck2[0] || borderCheck2[0] != borderCheck3[0] || borderCheck3[0] != borderCheck4[0] || borderCheck1[1] != borderCheck2[1] || borderCheck2[1] != borderCheck3[1] || borderCheck3[1] != borderCheck4[1])
+        {
+            moveForward();
+            turret.update();
+            clone = turret.stationaryCopy();
+            return;
+        }*/
+        if (!middleOfSpace(getXPos(), getYPos()))
         {
             moveForward();
             turret.update();
@@ -159,7 +168,8 @@ public class Opponent extends Tank {
             if (nextMove[0] < currSpace[0]) {
                 if (hull.getObjectDirection() != 270) // turn left
                 {
-                    if (direction < 180 || direction > 270) {
+                   // System.out.println(direction);
+                    if (direction < 90 || direction > 270) {
                         turnLeft();
                     } else {
                         turnRight();
@@ -175,10 +185,10 @@ public class Opponent extends Tank {
             else {
                 if (hull.getObjectDirection() != 90) //turn right
                 {
-                    if ((direction < 270 && direction > 90)) {
-                        turnLeft();
-                    } else {
+                    if ((direction < 270 || direction > 90)) {
                         turnRight();
+                    } else {
+                        turnLeft();
                     }
                 }
                 else
@@ -251,6 +261,25 @@ public class Opponent extends Tank {
         currSpace[1] = y;
         movementPath = findPath(x, y, playerX, playerY);
         movementPath.pop(); //remove current space position from path
+    }
+
+    private boolean middleOfSpace(float x, float y)
+    {
+        float newX, newY;
+        newX = (float) Math.floor(x);
+        newX = newX / (map.getWidth() / mapGrid.length);
+        int temp = (int) Math.floor(newX);
+        float xResult = newX - temp;
+        newY =  (float) Math.floor(y);
+        newY = newY / (map.getHeight() / mapGrid[0].length);
+        temp = (int) Math.floor(newY);
+        float yResult = newY - temp;
+     //   System.out.println(xResult + "||" + yResult);
+        if (xResult < 0.6 && xResult > 0.4 && yResult < 0.6 && yResult > 0.4)
+        {
+            return true;
+        }
+        return false;
     }
 
     private Integer[] generateGridPos(float x, float y)

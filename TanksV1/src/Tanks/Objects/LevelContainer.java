@@ -77,7 +77,7 @@ public class LevelContainer
         player.setMaxPos(mapGenerator.getMaxXPos(), mapGenerator.getMaxYPos());
         player.setWindow(window);
         player.setSize((float) 1, (float) 1);
-        player.setTankLocation(100, 450);
+        player.setTankLocation(300, 450);
         player.setHullTurningDistance(3);
         player.setTurretTurningDistance(3);
         player.setMovementSpeed(5);
