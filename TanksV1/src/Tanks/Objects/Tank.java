@@ -326,7 +326,6 @@ public class Tank
 
 		//Collision Handling
 		objectCollisionHandling(top, bottom, left, right);
-		exitCollisionHandling(top, bottom, left, right);
 	}
 
 
@@ -366,62 +365,19 @@ public class Tank
 					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
 			{
 				checkPreviousMove();
-			}
-		}
-	}
 
-
-	/**
-	 * This method is used to handle player collisions with mapExits
-	 * @param top
-	 * @param bottom
-	 * @param left
-	 * @param right
-	 */
-	private void exitCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
-	{
-		float i1, j1, i2, j2, i3, j3, i4, j4;
-
-		for(int i = 0; i < map.getExitsInMap().size(); i++)
-		{
-			float[] cCoords = getExitCornerCoordinates(i);
-
-			i1 = cCoords[0];
-			j1 = cCoords[1];
-			i2 = cCoords[2];
-			j2 = cCoords[3];
-			i3 = cCoords[4];
-			j3 = cCoords[5];
-			i4 = cCoords[6];
-			j4 = cCoords[7];
-
-			Line2D map_top = new Line2D.Float(i1, j1, i2, j2);
-			Line2D map_bottom = new Line2D.Float(i3, j3, i4, j4);
-			Line2D map_left = new Line2D.Float(i1, j1, i3, j3);
-			Line2D map_right = new Line2D.Float(i2, j2, i4, j4);
-
-
-			if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top) || bottom.intersectsLine(map_top) ||
-					top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right) || bottom.intersectsLine(map_right) ||
-					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
-					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
-			{
-				checkPreviousMove();
-
-				//Check if the current exit it is unlocked
-				if (map.getExitsInMap().get(i).getLockedStatus() == false)
+				if (map.getObjectsInMap().get(i).isExit() == true) //If it is an exit
 				{
-					System.out.println("NEXT LEVEL!");
-					this.loadNextLevel = true;
-				}
-				//testing
-				else
-				{
-					System.out.println("WE'RE CLOSED!");
+					if (map.getObjectsInMap().get(i).getLockedStatus() == false) //is unlocked
+					{
+						System.out.println("NEXT LEVEL!");
+						this.loadNextLevel = true;
+					}
 				}
 			}
 		}
 	}
+
 
 	/**
 	 * This method returns all of the corner coordinates of a given map object
@@ -443,29 +399,6 @@ public class Tank
 
 		return cCoords;
 	}
-
-
-	/**
-	 * This method returns all of the corner coordinates of a given map exit
-	 * @param i the index of the map object in the mapExit ArrayList
-	 * @return an array of corner coordinates
-	 */
-	private float[] getExitCornerCoordinates(int i)
-	{
-		float[] cCoords = new float[8];
-
-		cCoords[0] = map.getExitsInMap().get(i).getCornerCoordinates("topleft", "x");
-		cCoords[1] = map.getExitsInMap().get(i).getCornerCoordinates("topleft", "y") * -1;
-		cCoords[2] = map.getExitsInMap().get(i).getCornerCoordinates("topright", "x");
-		cCoords[3] = map.getExitsInMap().get(i).getCornerCoordinates("topright", "y") * -1;
-		cCoords[4] = map.getExitsInMap().get(i).getCornerCoordinates("bottomleft", "x");
-		cCoords[5] = map.getExitsInMap().get(i).getCornerCoordinates("bottomleft", "y") * -1;
-		cCoords[6] = map.getExitsInMap().get(i).getCornerCoordinates("bottomright", "x");
-		cCoords[7] = map.getExitsInMap().get(i).getCornerCoordinates("bottomright", "y") * -1;
-
-		return cCoords;
-	}
-
 
 
 	private void checkPreviousMove()
