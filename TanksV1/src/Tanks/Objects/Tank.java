@@ -11,6 +11,7 @@ import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
+import Tanks.ObjectComponents.Textures;
 import Tanks.Window.Window;
 
 public class Tank
@@ -33,6 +34,7 @@ public class Tank
 	 */
 
 	protected Map map;
+	protected LevelContainer levelContainer;
 	protected Window window;
 	
 	protected TankHull hull;
@@ -44,14 +46,15 @@ public class Tank
 	
 	private String shellTexturePath;
 	protected float shellSpeed;
-	private ArrayList<TankShell> shellList = new ArrayList<>();
+	private ArrayList<TankShell> shellList;
 	private int shellRicochetNumber;
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
 	private Clock movementDelayClock = new Clock();
 	private Clock rotationDelayClock = new Clock();
-	public static float timePerFrame = 8; //Approx 120 fps
+	public static float timePerFrame = 4; //Approx 120 fps
+	private int damagePerShell;
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
 	private int previousTurn; //1 = turn left, 2 = turn right
@@ -98,9 +101,11 @@ public class Tank
 		this.window = window;
 	}
 
-	public void setMap(Map map)
+	public void setLevelContainer(LevelContainer levelContainer)
 	{
-		this.map = map;
+		this.levelContainer = levelContainer;
+		this.map = levelContainer.getMap();
+		this.shellList = levelContainer.getShellList();
 	}
 
 	public void setTankLocation(float xPos, float yPos)
@@ -145,10 +150,14 @@ public class Tank
 	{
 		this.delayBetweenShell = rateOfFire;
 	}
+	
+	public void setDamagePerShell(int damagePerShell) {
+		this.damagePerShell = damagePerShell;
+	}
 
 	private TankShell createShell()
 	{
-		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, map);
+		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, levelContainer);
 		shell.setSize((float) (turret.getWidth()/10), turret.getHeight()/5);
 		lastShellFired = System.nanoTime();
 		return shell;
@@ -269,11 +278,11 @@ public class Tank
 		}
 	}
 
-
 	/**
-	 * This method is used to handle collisions with the player
+	 * Returns an array holding the four lines of a tank.
+	 * @return Line2D[top, bottom, left, right]
 	 */
-	private void tankCollisionHandling()
+	public Line2D[] getTankBounds() 
 	{
 		//If you want to have multiple player tanks, just add a for loop for the playerList
 		float x1, y1, x2, y2, x3, y3, x4, y4;
@@ -292,9 +301,57 @@ public class Tank
 		Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
 		Line2D left = new Line2D.Float(x1, y1, x3, y3);
 		Line2D right = new Line2D.Float(x2, y2, x4, y4);
-
+		
+		Line2D linesArray[] = new Line2D[4];
+		linesArray[0] = top;
+		linesArray[1] = bottom;
+		linesArray[2] = left;
+		linesArray[3] = right;
+		
+		return linesArray;
+	}
+	/**
+	 * This method is used to handle collisions with the player
+	 */
+	private void tankCollisionHandling()
+	{
+		Line2D linesArray[] = getTankBounds();
+		
 		//Collision Handling
-		objectCollisionHandling(top, bottom, left, right);
+		objectCollisionHandling(linesArray[0], linesArray[1], linesArray[2], linesArray[3]);
+		exitCollisionHandling(linesArray[0], linesArray[1], linesArray[2], linesArray[3]);
+		tankTotankCollisionHandling(linesArray[0], linesArray[1], linesArray[2], linesArray[3]);
+	}
+	
+	private void tankTotankCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
+	{
+		for(int i = 0; i < levelContainer.getEnemyList().size(); i++)
+		{
+			float x1, y1, x2, y2, x3, y3, x4, y4;
+			Tank thisEnemy = levelContainer.getEnemyList().get(i);
+			x1 = thisEnemy.hull.getCornerCoordinates("topleft", "x");
+			y1 = thisEnemy.hull.getCornerCoordinates("topleft", "y") * -1;
+			x2 = thisEnemy.hull.getCornerCoordinates("topright", "x");
+			y2 = thisEnemy.hull.getCornerCoordinates("topright", "y") * -1;
+			x3 = thisEnemy.hull.getCornerCoordinates("bottomleft", "x");
+			y3 = thisEnemy.hull.getCornerCoordinates("bottomleft", "y") * -1;
+			x4 = thisEnemy.hull.getCornerCoordinates("bottomright", "x");
+			y4 = thisEnemy.hull.getCornerCoordinates("bottomright", "y") * -1;
+
+			//Lines of tank hull
+			Line2D enemy_top = new Line2D.Float(x1, y1, x2, y2);
+			Line2D enemy_bottom = new Line2D.Float(x3, y3, x4, y4);
+			Line2D enemy_left = new Line2D.Float(x1, y1, x3, y3);
+			Line2D enemy_right = new Line2D.Float(x2, y2, x4, y4);
+			
+			if (top.intersectsLine(enemy_top) || right.intersectsLine(enemy_top) || left.intersectsLine(enemy_top) || bottom.intersectsLine(enemy_top) ||
+					top.intersectsLine(enemy_right) || right.intersectsLine(enemy_right) || left.intersectsLine(enemy_right) || bottom.intersectsLine(enemy_right) ||
+					top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
+					top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom))
+			{
+				checkPreviousMove();
+			}
+		}
 	}
 
 
@@ -334,19 +391,62 @@ public class Tank
 					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
 			{
 				checkPreviousMove();
-
-				if (map.getObjectsInMap().get(i).isExit() == true) //If it is an exit
-				{
-					if (map.getObjectsInMap().get(i).getLockedStatus() == false) //is unlocked
-					{
-						System.out.println("NEXT LEVEL!");
-						this.loadNextLevel = true;
-					}
-				}
 			}
 		}
 	}
 
+
+	/**
+	 * This method is used to handle player collisions with mapExits
+	 * @param top
+	 * @param bottom
+	 * @param left
+	 * @param right
+	 */
+	private void exitCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
+	{
+		float i1, j1, i2, j2, i3, j3, i4, j4;
+
+		for(int i = 0; i < map.getExitsInMap().size(); i++)
+		{
+			float[] cCoords = getExitCornerCoordinates(i);
+
+			i1 = cCoords[0];
+			j1 = cCoords[1];
+			i2 = cCoords[2];
+			j2 = cCoords[3];
+			i3 = cCoords[4];
+			j3 = cCoords[5];
+			i4 = cCoords[6];
+			j4 = cCoords[7];
+
+			Line2D map_top = new Line2D.Float(i1, j1, i2, j2);
+			Line2D map_bottom = new Line2D.Float(i3, j3, i4, j4);
+			Line2D map_left = new Line2D.Float(i1, j1, i3, j3);
+			Line2D map_right = new Line2D.Float(i2, j2, i4, j4);
+
+
+			if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top) || bottom.intersectsLine(map_top) ||
+					top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right) || bottom.intersectsLine(map_right) ||
+					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
+					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
+			{
+				checkPreviousMove();
+
+				//Check if the current exit it is unlocked
+				if (map.getExitsInMap().get(i).getLockedStatus() == false)
+				{
+					System.out.println("NEXT LEVEL!");
+					this.loadNextLevel = true;
+				}
+				//testing
+				else
+				{
+					System.out.println("WE'RE CLOSED!");
+				}
+			}
+		}
+	}
 
 	/**
 	 * This method returns all of the corner coordinates of a given map object
@@ -368,6 +468,28 @@ public class Tank
 
 		return cCoords;
 	}
+
+	/**
+	 * This method returns all of the corner coordinates of a given map exit
+	 * @param i the index of the map object in the mapExit ArrayList
+	 * @return an array of corner coordinates
+	 */
+	private float[] getExitCornerCoordinates(int i)
+	{
+		float[] cCoords = new float[8];
+
+		cCoords[0] = map.getExitsInMap().get(i).getCornerCoordinates("topleft", "x");
+		cCoords[1] = map.getExitsInMap().get(i).getCornerCoordinates("topleft", "y") * -1;
+		cCoords[2] = map.getExitsInMap().get(i).getCornerCoordinates("topright", "x");
+		cCoords[3] = map.getExitsInMap().get(i).getCornerCoordinates("topright", "y") * -1;
+		cCoords[4] = map.getExitsInMap().get(i).getCornerCoordinates("bottomleft", "x");
+		cCoords[5] = map.getExitsInMap().get(i).getCornerCoordinates("bottomleft", "y") * -1;
+		cCoords[6] = map.getExitsInMap().get(i).getCornerCoordinates("bottomright", "x");
+		cCoords[7] = map.getExitsInMap().get(i).getCornerCoordinates("bottomright", "y") * -1;
+
+		return cCoords;
+	}
+
 
 
 	private void checkPreviousMove()
@@ -394,6 +516,20 @@ public class Tank
 		}
 	}
 
+	public void tankIsHit()
+	{
+		health = health - damagePerShell;
+	}
+	
+	/**
+	 * Function to handle what happens to the tank when dead.
+	 * NOT FINISHED YET.
+	 */
+	public void handleDestruction()
+	{
+		setHullTexture(Textures.DEADTANKTEMP);
+		setTurretTexture(Textures.DEADTANKTEMP);
+	}
 
 	//Call this in game loop
 	public boolean update()
@@ -403,8 +539,7 @@ public class Tank
 				.filter(s -> !s.checkOutOfBounds() && s.isActive() && s.getRicochetNum() != shellRicochetNumber)
 				.collect(Collectors.toList()));
 		for (TankShell s : shellList) { s.update(); }
-
-
+		
 		//hull.unbrake();
 		tankCollisionHandling();
 		previousMove = 0;
@@ -457,6 +592,8 @@ public class Tank
 	public float getTopBounds() { return hull.getTopBounds(); }
 
 	public float getBottomBounds() { return hull.getBottomBounds(); }
+	
+	public int getDamagePerShell() { return damagePerShell; }
 
 	public boolean isAlive() { return (health <= 0 ? false : true); }
 

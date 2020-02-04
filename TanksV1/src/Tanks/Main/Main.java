@@ -2,25 +2,17 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import Tanks.Objects.GameMode;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-import Tanks.Objects.Opponent;
 import org.jsfml.graphics.Color;
-
-import Tanks.Objects.LevelContainer;
 import Tanks.Window.Window;
-import org.jsfml.system.Clock;
-import org.jsfml.system.Time;
 
 public class Main
 {
 	
 	private Window window;
 	private GameMode gm;
-	private Clock frameClock = new Clock();
-
 	
 	@SuppressWarnings("unused")
 	private void createWindow(int x, int y, String name, int frameRate) 
@@ -40,9 +32,9 @@ public class Main
 	{
 		//createWindow(1000, 1000, "Tanks", 60);
 		createFullScreenWindow(120);
-
+		
 		//In future builds call the main menu here
-		gm = new GameMode(this.window, System.nanoTime());
+		gm = new GameMode(this.window);
 	}
 	
 	private void loop()
@@ -58,6 +50,9 @@ public class Main
 	
 	public static void main(String[] args) 
 	{
+		//Fix XinitThreads() Bug on Linux - remove it if you dont need it
+		//System.load("/home/pck11800/Desktop/eclipse workspace/game2d/TanksV1/src/Tanks/Main/libfixXInitThreads.so");
+		
 		Main main = new Main();
 		main.iniGame();
 		main.loop();

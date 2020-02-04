@@ -1,9 +1,10 @@
 package Tanks.Objects;
 
+import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -203,19 +204,19 @@ public class MapGenerator
 
 				if ((level[j][i] & 1) == 0)
 				{
-					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
-					addObject(xPos + this.wallShort, yPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
+					addObject(xPos + this.wallShort, yPos, this.wallLong, this.wallShort, Textures.BLACKWALL);
 				}
 
 				else
 				{
-					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 				}
 			}
 
 			//Creates part of the east edge of the map
 			System.out.println("+");
-			addObject(this.maxXPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+			addObject(this.maxXPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 
 			//Creates the west edge of the map
 			for (int j = 0; j < x; j++)
@@ -225,7 +226,7 @@ public class MapGenerator
 
 				if ((this.level[j][i] & 8) == 0)
 				{
-					addObject(xPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
+					addObject(xPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL);
 				}
 			}
 
@@ -234,7 +235,7 @@ public class MapGenerator
 			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
-				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL, Textures.EXIT_UNLOCKED);
 
 				exitAdded = true;
 			}
@@ -242,7 +243,7 @@ public class MapGenerator
 			else
 			{
 				System.out.println("|");
-				addObject(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
+				addObject(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL);
 			}
 		}
 
@@ -252,13 +253,13 @@ public class MapGenerator
 			float xPos = (j * this.tileSize);
 
 			System.out.print("+---");
-			addObject(xPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
-			addObject(xPos + this.wallShort, this.maxYPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
+			addObject(xPos, this.maxYPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
+			addObject(xPos + this.wallShort, this.maxYPos, this.wallLong, this.wallShort, Textures.BLACKWALL);
 		}
 
 		//Creates the other part of the east edge of the map
 		System.out.println("+");
-		addObject(this.maxXPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+		addObject(this.maxXPos, this.maxYPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 	}
 
 
@@ -292,7 +293,7 @@ public class MapGenerator
 
 
 	/**
-	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps mapObject arrayList instead.
+	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps MapExit arrayList instead.
 	 * @param xPos the x position of the object to be added in pixels
 	 * @param yPos the y position of the object to be added in pixels
 	 * @param width the width of the object to be added in pixels
@@ -310,31 +311,11 @@ public class MapGenerator
 
 		try
 		{
-			map.getObjectsInMap().add(new MapObject(this.window, xPos, yPos, width, height, lockedTexture));
-
-			MapObject exit = map.getObjectsInMap().get(map.getObjectsInMap().size() -1);
-			exit.makeExit(unlockedTexture);
+			map.getExitsInMap().add(new MapExit(this.window, xPos, yPos, width, height, lockedTexture, unlockedTexture));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-
-
-	public int getXSize() { return this.x; }
-
-    public int getYSize() { return this.y; }
-
-    public float getXScale() { return this.xScale; }
-
-    public float getYScale() { return this.yScale; }
-
-    public float getWallLong() { return this.wallLong; }
-
-    public float getWallShort() { return this.wallShort; }
-
-    public float getTileSize() { return this.tileSize; }
-
-    public float getOffsetTopY() { return this.offsetTopY; }
 }

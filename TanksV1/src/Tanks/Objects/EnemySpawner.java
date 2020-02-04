@@ -14,6 +14,7 @@ public class EnemySpawner
     private Window window;
     private ArrayList<Opponent> enemyList;
     private ArrayList<Tank> playerList;
+    private LevelContainer levelContainer;
     private Map map;
     private MapGenerator mapGenerator;
     private int numEnemies;
@@ -31,12 +32,13 @@ public class EnemySpawner
      * @param mapGenerator the mapGenerator contained within the levelContainer class - used to get the map's size, scale, etc.
      * @param numEnemies the number of enemies to be spawned into a level
      */
-    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies)
+    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, LevelContainer levelContainer, MapGenerator mapGenerator, int numEnemies)
     {
         this.window = window;
         this.enemyList = enemyList;
         this.playerList = playerList;
-        this.map = map;
+        this.levelContainer = levelContainer;
+        this.map = levelContainer.getMap();
         this.mapGenerator = mapGenerator;
         this.numEnemies = numEnemies;
 
@@ -172,7 +174,7 @@ public class EnemySpawner
         enemy.setHullTexture(Textures.TANKHULL_GREEN);
         enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
         enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        enemy.setMap(this.map);
+        enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setSize((float) 1, (float) 1);
         enemy.setTankLocation(xPos, yPos);
