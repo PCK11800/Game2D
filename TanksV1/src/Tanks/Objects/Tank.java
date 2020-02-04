@@ -4,9 +4,6 @@ import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
-import Tanks.Upgrades.FireRate;
-import Tanks.Upgrades.Heal;
-import Tanks.Upgrades.MaxHealth;
 import Tanks.Window.Window;
 
 import org.jsfml.graphics.Color;
@@ -58,9 +55,11 @@ public class Tank
 	private int money = 0;
 	private Text moneyText = new Text();
 
-	private int currentHealth = 6;
-	private int maxHealth = 6;
+	private double currentHealth = 6;
+	private double maxHealth = 6;
 	private Text healthText = new Text();
+
+	private double damage;
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
@@ -598,6 +597,10 @@ public class Tank
 		this.maxHealth += i;
 	}
 
+	public void setDamage(double i)
+	{
+		damage = i;
+	}
 
 	public int getFireDelay()
 	{
