@@ -61,7 +61,8 @@ public class Window extends RenderWindow{
 	public void endOfFrame()
 	{
 		display();
-		for (Event event : pollEvents( )) {
+		for (Event event : pollEvents( ))
+		{
 			switch(event.type)
 			{
 				case CLOSED:

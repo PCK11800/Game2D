@@ -2,23 +2,20 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import Tanks.Objects.GameMode;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-import Tanks.Objects.Opponent;
+import Tanks.ObjectComponents.MainMenu;
+import Tanks.Objects.GameMode;
 import org.jsfml.graphics.Color;
 
-import Tanks.Objects.LevelContainer;
 import Tanks.Window.Window;
 import org.jsfml.system.Clock;
-import org.jsfml.system.Time;
 
 public class Main
 {
 	
 	private Window window;
 	private GameMode gm;
+	private MainMenu mainMenu;
 	private Clock frameClock = new Clock();
 
 	
@@ -42,7 +39,8 @@ public class Main
 		createFullScreenWindow(120);
 
 		//In future builds call the main menu here
-		gm = new GameMode(this.window, System.nanoTime());
+		//gm = new GameMode(this.window, System.nanoTime());
+		mainMenu = new MainMenu(this.window);
 	}
 	
 	private void loop()
@@ -50,7 +48,8 @@ public class Main
 		while(window.isOpen())
 		{
 			window.startOfFrame();
-			gm.update();
+			//gm.update();
+			//mainMenu.update();
 			window.endOfFrame();
 		}
 	}
