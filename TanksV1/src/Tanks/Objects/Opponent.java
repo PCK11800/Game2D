@@ -20,29 +20,33 @@ import java.util.Stack;
 
 public class Opponent extends Tank {
 
-    private static final int RICOCHET_MAX = 3;
+    private final int RICOCHET_MAX = 3;
     private int movementCount = 0;
     private double direction = 0;
     private Tank player;
     private float playerXPos;
     private float playerYPos;
     private int ricochetCount = 0;
-    private int shotsFired = 0;
-    private float[] objectCoords = new float[2];
     private TankTurret clone;
     private String[][] mapGrid;
-    private float maxXPos, maxYPos;
     private Stack<Integer[]> movementPath;
     private Integer[] currSpace = new Integer[2];
     private float gridSpaceWidth, gridSpaceHeight;
 
 
+    /**
+     * Constructor. Creates new instance of Opponent.
+     * @param player the Tank this opponent will be targeting
+     * @param grid the map grid of the level this opponent exists on
+     */
     public Opponent(Tank player, int[][] grid)
     {
         super();
         this.player = player;
         mapGrid = new String[grid.length][grid[0].length];
         int j;
+
+        //generate grid of obstacles in the current level
         for (int i = 0; i < grid[0].length; i++)
         {
             for (j = 0; j < grid.length; j++)
@@ -73,13 +77,11 @@ public class Opponent extends Tank {
         }
     }
 
-    public void setMaxPos(float x, float y)
-    {
-        this.maxXPos = x;
-        this.maxYPos = y;
-    }
 
-
+    /**
+     * Update method called every game loop. First loop includes pathfinding the route from current position to player.
+     * @return
+     */
     public boolean update()
     {
         super.update();
@@ -104,7 +106,9 @@ public class Opponent extends Tank {
         return false;
     }
 
-
+    /**
+     * Method for detecting if player can be hit by the opponent at any rotation of the opponent's turret given the opponents' current position within the level.
+     */
     private void action()
     {
         float x1, y1, x2, y2;
@@ -121,7 +125,7 @@ public class Opponent extends Tank {
         y2 = coords[1];
 
         ricochetCount = 0;
-        if (objectCollision(x1, y1, x2, y2, getTurretDir()))
+        if (canHitPlayer(x1, y1, x2, y2, getTurretDir()))
         {
             turret.update();
             shoot();
@@ -135,6 +139,9 @@ public class Opponent extends Tank {
 
     }
 
+    /**
+     * Method moves opponent to 'target' space in the grid. Returns immediately if opponent already at location.
+     */
     private void move()
     {
         if (movementPath.isEmpty()) return;
@@ -242,11 +249,11 @@ public class Opponent extends Tank {
         }
         turret.update();
         clone = turret.stationaryCopy();
-
-
-
     }
 
+    /**
+     * Method for generating the movement path between the opponent and the player.
+     */
     private void generateMovementPathToPlayer()
     {
         int x, y, playerX, playerY;
@@ -263,6 +270,13 @@ public class Opponent extends Tank {
         movementPath.pop(); //remove current space position from path
     }
 
+
+    /**
+     * Method to determine whether a position is in the (approx) middle of a grid space.
+     * @param x the x position
+     * @param y the y position
+     * @return true if position is in the (approx) middle, false if not
+     */
     private boolean middleOfSpace(float x, float y)
     {
         float newX, newY;
@@ -274,7 +288,6 @@ public class Opponent extends Tank {
         newY = newY / (map.getHeight() / mapGrid[0].length);
         temp = (int) Math.floor(newY);
         float yResult = newY - temp;
-     //   System.out.println(xResult + "||" + yResult);
         if (xResult < 0.6 && xResult > 0.4 && yResult < 0.6 && yResult > 0.4)
         {
             return true;
@@ -282,6 +295,12 @@ public class Opponent extends Tank {
         return false;
     }
 
+    /**
+     * Function to generate the coordinates on the map grid given the window coordinates of a position on screen
+     * @param x window x position
+     * @param y window y position
+     * @return Integer array, index 0 being x coord, index 1 being y coord
+     */
     private Integer[] generateGridPos(float x, float y)
     {
         int newX, newY;
@@ -293,6 +312,15 @@ public class Opponent extends Tank {
     }
 
 
+    /**
+     * Function to find path between two points on grid.     *
+     * @param srcX starting point X coord
+     * @param srcY starting point Y coord
+     * @param destX destination point X coord
+     * @param destY destination point Y coord
+     * @return Stack of coords mapping out the path between the starting point and end point such that calling .pop() repeatedly on the stack until empty will provide the full route
+     * excluding the starting point.
+     */
     private Stack<Integer[]> findPath(int srcX, int srcY, int destX, int destY)
     {
         ArrayList<String> found = new ArrayList<>();
@@ -306,13 +334,10 @@ public class Opponent extends Tank {
         while (x != destX || y != destY)
         {
             String current = mapGrid[x][y];
-            System.out.println(x + "|" + y);
-            System.out.println(current);
             boolean action = false;
             if (!current.contains("T")) {
                 temp = Integer.toString(x) + "," + Integer.toString(y-1);
                 if (!found.contains(temp)) {
-                    System.out.println("TOP");
                     prev.push(new Integer[]{x, y - 1});
                     found.add(temp);
                     y = y - 1;
@@ -322,10 +347,8 @@ public class Opponent extends Tank {
             if (!action && !current.contains("L"))
             {
                 temp = Integer.toString(x - 1) + "," + Integer.toString(y);
-                System.out.println(found.contains(temp) + "LEFT");
                 if (!found.contains(temp))
                 {
-                    System.out.println("LEFT");
                     prev.push(new Integer[]{x - 1, y});
                     found.add(temp);
                     x = x - 1;
@@ -338,9 +361,7 @@ public class Opponent extends Tank {
 
                 if (!bottom.contains("T")) {
                     temp = Integer.toString(x) + "," + Integer.toString(y+1);
-                    System.out.println(found.contains(temp) + "BOTTOM");
                     if (!found.contains(temp)) {
-                        System.out.println("BOTTOM");
                         prev.push(new Integer[]{x, y + 1});
                         found.add(temp);
                         y = y + 1;
@@ -353,9 +374,7 @@ public class Opponent extends Tank {
 
                 if (!right.contains("L")) {
                     temp = Integer.toString(x + 1) + "," + Integer.toString(y);
-                    System.out.println(found.contains(temp) + "RIGHT");
                     if (!found.contains(temp)) {
-                        System.out.println("RIGHT");
                         prev.push(new Integer[]{x + 1, y});
                         found.add(temp);
                         x = x + 1;
@@ -365,7 +384,6 @@ public class Opponent extends Tank {
             }
             if (!action)
             {
-                System.out.println("BACK");
                 temp = Integer.toString(x) + "," + Integer.toString(y);
                 prev.pop();
                 Integer[] p = prev.peek();
@@ -378,6 +396,12 @@ public class Opponent extends Tank {
         return prev;
     }
 
+
+    /**
+     * Function to reverse a Stack of integer arrays
+     * @param s stack to reverse
+     * @return reversed stack
+     */
     private Stack<Integer[]> reverseStack(Stack<Integer[]> s)
     {
         if (s.isEmpty())
@@ -390,6 +414,11 @@ public class Opponent extends Tank {
         return s;
     }
 
+    /**
+     * Function to return the 'bottom' of stack (first item that was added)
+     * @param s stack (of integer arrays)
+     * @return bottom item of stack
+     */
     private Integer[] popBottom(Stack<Integer[]> s)
     {
         Integer[] top = s.pop();
@@ -405,6 +434,14 @@ public class Opponent extends Tank {
         }
     }
 
+    /**
+     * Function to determine if player lies on a line between two points.
+     * @param x1 start point of line x position
+     * @param y1 start point of line y position
+     * @param x2 end point of line x position
+     * @param y2 end point of line y position
+     * @return true if player lies on the line between start and end points, false if not.
+     */
     private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
         Float m, c, playerConstant, upperBound, lowerBound;
@@ -427,11 +464,20 @@ public class Opponent extends Tank {
                 if (playerYPos < (y1 + player.hull.getWidth()/2) && playerYPos > (y1 - player.hull.getWidth()/2)) return true;
             }
         }
-        //test rotation
+
         playerConstant = (playerYPos - (m*playerXPos));
-        return (upperBound > playerConstant && lowerBound < playerConstant);
+        return (upperBound > playerConstant && lowerBound < playerConstant); //check player between two parallel lines
     }
 
+
+    /**
+     * Function to determine if a MapObject lies on the line between two points
+     * @param x1 start point of line x position
+     * @param y1 start point of line y position
+     * @param x2 end point of line x position
+     * @param y2 end point of line y position
+     * @return true if MapObject lies on line, false if not
+     */
     private boolean isObjectInPath(float x1, float y1, float x2, float y2)
     {
         Line2D line = new Line2D.Float(x1, y1, x2, y2);
@@ -451,13 +497,23 @@ public class Opponent extends Tank {
     }
 
 
-    private boolean objectCollision(float x1, float y1, float x2, float y2, float direction)
+    /**
+     * Function to determine if player can be shot from opponent's current position.
+     * Calls itself recursively until the max number of ricochets for a tank shell fired from this opponent has been reached.
+     * @param x1 start x position of shell
+     * @param y1 start y position of shell
+     * @param x2 x position used to create equation for line of fire from (x1, y1) (will be a point that has been rotated around (x1, y1))
+     * @param y2 y position use to create equation for line of fire from (x1, y1) (will be a point that has been rotated around (x1, y1))
+     * @param direction rotation angle (in degrees) between (x1, y1) and (x2, y2)
+     * @return true if player can be shot from current position, false if not
+     */
+    private boolean canHitPlayer(float x1, float y1, float x2, float y2, float direction)
     {
         float m, c, x, y, newX, newY;
         ArrayList<MapObject> objects = map.getObjectsInMap();
         m = (y1 - y2) / (x1 - x2);
         c =  y2 - (m*x2);
-            if (x2 <= x1 && y2 <= y1) //can hit right side or bottom
+            if (x2 <= x1 && y2 <= y1) //can hit right side or bottom of object
             {
                 for (MapObject obj : objects)
                 {
@@ -480,7 +536,7 @@ public class Opponent extends Tank {
                                 return true;
                             } else if (ricochetCount <= RICOCHET_MAX) {
                                 ricochetCount++;
-                                return objectCollision(x, y, newX, newY, 180 - direction);
+                                return canHitPlayer(x, y, newX, newY, 180 - direction);
                             }
                         }
                     }
@@ -498,13 +554,13 @@ public class Opponent extends Tank {
                                 return true;
                             } else if (ricochetCount < RICOCHET_MAX) {
                                 ricochetCount++;
-                                return objectCollision(x, y, newX, newY, 0 - direction);
+                                return canHitPlayer(x, y, newX, newY, 0 - direction);
                             }
                         }
                     }
                 }
             }
-            else if (x2 <= x1 && y2 >= y1) //can hit right side or top
+            else if (x2 <= x1 && y2 >= y1) //can hit right side or top of object
              {
                  for (MapObject obj : objects) {
                      if(((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds())) || ((x2 > x1) && (x2 > obj.getRightBounds())) || ((x2 < x1) && (x2 < obj.getLeftBounds())) || ((y2 > y1) && (y2 > obj.getBottomBounds())) || ((y2 < y1) && (y2 < obj.getTopBounds())))
@@ -525,7 +581,7 @@ public class Opponent extends Tank {
                                  return true;
                              } else if (ricochetCount < RICOCHET_MAX) {
                                  ricochetCount++;
-                                 return objectCollision(x, y, newX, newY, 180 - direction);
+                                 return canHitPlayer(x, y, newX, newY, 180 - direction);
                              }
                          }
                      }
@@ -543,13 +599,13 @@ public class Opponent extends Tank {
                                  return true;
                              } else if (ricochetCount < RICOCHET_MAX) {
                                  ricochetCount++;
-                                 return objectCollision(x, y, newX, newY, 0 - direction);
+                                 return canHitPlayer(x, y, newX, newY, 0 - direction);
                              }
                          }
                      }
                  }
             }
-            else if (x2 >= x1 && y2 <= y1) //can hit left side or bottom
+            else if (x2 >= x1 && y2 <= y1) //can hit left side or bottom of object
             {
                 //System.out.println("here3");
                 for (MapObject obj : objects) {
@@ -571,7 +627,7 @@ public class Opponent extends Tank {
                                 return true;
                             } else if (ricochetCount < RICOCHET_MAX) {
                                 ricochetCount++;
-                                return objectCollision(x, y, newX, newY, 180 - direction);
+                                return canHitPlayer(x, y, newX, newY, 180 - direction);
                             }
                         }
                     }
@@ -587,15 +643,14 @@ public class Opponent extends Tank {
                             if (playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1 && isPlayerInFiringLine(x1, y1, x2, y2)) {
                                 return true;
                             } else if (ricochetCount < RICOCHET_MAX) {
-                                return objectCollision(x, y, newX, newY, 0 - direction);
+                                return canHitPlayer(x, y, newX, newY, 0 - direction);
                             }
                         }
                     }
                 }
             }
-            else //left side or top
+            else //left side or top of object
             {
-                //System.out.println("here4");
                 for (MapObject obj : objects) {
                     if(((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds())) || ((x2 > x1) && (x2 > obj.getRightBounds())) || ((x2 < x1) && (x2 < obj.getLeftBounds())) || ((y2 > y1) && (y2 > obj.getBottomBounds())) || ((y2 < y1) && (y2 < obj.getTopBounds())))
                     {
@@ -615,7 +670,7 @@ public class Opponent extends Tank {
                                 return true;
                             } else if (ricochetCount < RICOCHET_MAX) {
                                 ricochetCount++;
-                                return objectCollision(x, y, newX, newY, 0 - direction);
+                                return canHitPlayer(x, y, newX, newY, 0 - direction);
                             }
                         }
                     }
@@ -633,7 +688,7 @@ public class Opponent extends Tank {
                                 return true;
                             } else if (ricochetCount < RICOCHET_MAX) {
                                 ricochetCount++;
-                                return objectCollision(x, y, newX, newY, 180 - direction);
+                                return canHitPlayer(x, y, newX, newY, 180 - direction);
                             }
                         }
                     }
@@ -644,6 +699,15 @@ public class Opponent extends Tank {
     }
 
 
+    /**
+     * Function to rotate coordinates around an origin by a certain amount
+     * @param x1 origin point x pos
+     * @param y1 origin point y pos
+     * @param x2 point to rotate x pos
+     * @param y2 point to rotate y pos
+     * @param turnAmount amount to turn
+     * @return float array of rotated coords (index 0 = x pos, index 1 = y pos)
+     */
     private float[] rotateCoordinates(float x1, float y1, float x2, float y2, float turnAmount)
     {
         float newx2, newy2;

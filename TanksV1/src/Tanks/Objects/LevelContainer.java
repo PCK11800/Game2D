@@ -74,7 +74,6 @@ public class LevelContainer
         player.setTurretTexture(turretTexture);
         player.setShellTexture(shellTexture);
         player.setMap(this.map);
-        player.setMaxPos(mapGenerator.getMaxXPos(), mapGenerator.getMaxYPos());
         player.setWindow(window);
         player.setSize((float) 1, (float) 1);
         player.setTankLocation(300, 450);
