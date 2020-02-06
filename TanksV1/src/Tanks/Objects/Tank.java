@@ -335,7 +335,7 @@ public class Tank
 			{
 				checkPreviousMove();
 
-				if (map.getObjectsInMap().get(i).isExit() == true) //If it is an exit
+				if (map.getObjectsInMap().get(i).isExit()) //If it is an exit
 				{
 					if (map.getObjectsInMap().get(i).getLockedStatus() == false) //is unlocked
 					{

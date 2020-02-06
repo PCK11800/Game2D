@@ -3,7 +3,7 @@ package Tanks.Main;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import Tanks.ObjectComponents.MainMenu;
+import Tanks.UIScreens.MainMenu;
 import Tanks.Objects.GameMode;
 import org.jsfml.graphics.Color;
 
@@ -49,7 +49,7 @@ public class Main
 		{
 			window.startOfFrame();
 			//gm.update();
-			//mainMenu.update();
+			mainMenu.update();
 			window.endOfFrame();
 		}
 	}

@@ -1,13 +1,14 @@
-package Tanks.ObjectComponents;
+package Tanks.Objects;
 
 
+import Tanks.ObjectComponents.RotatingObject;
 import Tanks.Window.Window;
 import org.jsfml.graphics.FloatRect;
 
 /** This class represents a button that the user can interact with
  *
  */
-public class Button extends RotatingObject
+public abstract class Button extends RotatingObject
 {
     private Window window;
     private FloatRect collider;
@@ -35,7 +36,7 @@ public class Button extends RotatingObject
         setCenterLocation(x, y);
         setSize(width, height);
 
-        this.collider = new FloatRect(x - (width / 2), y - (height / 2), width, height + (height/3)); //Left anchor point - height += h/3 as without it there is large area that cannot be pressed that is on the button
+        this.collider = new FloatRect(x - (width / 2), y - (height / 2), width, height); //Left anchor point - height += h/3 as without it there is large area that cannot be pressed that is on the button
     }
 
 
@@ -74,16 +75,10 @@ public class Button extends RotatingObject
     }
 
 
-    private void performOperation() //Will pass in a function here
-    {
-        System.out.println("Button Pressed!");
-        //Run function passed in
-    }
+    protected abstract void performOperation();
 
 
-    public void update()
-    {
-        draw(window);
-    }
+
+    public abstract void update();
 
 }
