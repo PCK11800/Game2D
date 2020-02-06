@@ -1,20 +1,12 @@
 package Tanks.Objects;
 
 import Tanks.ObjectComponents.MapObject;
-import Tanks.ObjectComponents.RotatingObject;
 import Tanks.ObjectComponents.TankTurret;
-import Tanks.ObjectComponents.Textures;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Sprite;
-import org.jsfml.graphics.Texture;
 
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
+import org.jsfml.system.Clock;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
 
 
@@ -31,7 +23,8 @@ public class Opponent extends Tank {
     private String[][] mapGrid;
     private Stack<Integer[]> movementPath;
     private Integer[] currSpace = new Integer[2];
-    private float gridSpaceWidth, gridSpaceHeight;
+    protected Clock timer = new Clock();
+    protected int pathCalcDelay = 5;
 
 
     /**
@@ -79,7 +72,7 @@ public class Opponent extends Tank {
 
 
     /**
-     * Update method called every game loop. First loop includes pathfinding the route from current position to player.
+     * Update method called every game loop.
      * @return
      */
     public boolean update()
@@ -91,9 +84,14 @@ public class Opponent extends Tank {
 
                 rotateTurretRight();
             }
-           generateMovementPathToPlayer();
+            generateMovementPathToPlayer();
             clone = turret.stationaryCopy();
 
+        }
+        if (timer.getElapsedTime().asSeconds() > pathCalcDelay)
+        {
+            generateMovementPathToPlayer();
+            timer.restart();
         }
         move();
         clone.update();
@@ -148,21 +146,6 @@ public class Opponent extends Tank {
         direction = hull.getObjectDirection();
         Integer[] nextMove = movementPath.peek();
         currSpace = generateGridPos(getXPos() , getYPos());
-        gridSpaceWidth = map.getWidth() / mapGrid.length;
-        gridSpaceHeight = map.getHeight() / mapGrid[0].length;
-       // System.out.println(map.getWidth() + "||" + gridSpaceWidth + "{}{}" + map.getHeight() + "||" + map.getHeight());
-        /*
-        Integer[] borderCheck1 = generateGridPos(getXPos() - (gridSpaceWidth/6) - 10, getYPos());
-        Integer[] borderCheck2 = generateGridPos(getXPos() + (gridSpaceWidth/6) + 10, getYPos());
-        Integer[] borderCheck3 = generateGridPos(getXPos(), getYPos() - (gridSpaceHeight/5));
-        Integer[] borderCheck4 = generateGridPos(getXPos(), getYPos() + (gridSpaceHeight/5));
-        if (borderCheck1[0] != borderCheck2[0] || borderCheck2[0] != borderCheck3[0] || borderCheck3[0] != borderCheck4[0] || borderCheck1[1] != borderCheck2[1] || borderCheck2[1] != borderCheck3[1] || borderCheck3[1] != borderCheck4[1])
-        {
-            moveForward();
-            turret.update();
-            clone = turret.stationaryCopy();
-            return;
-        }*/
         if (!middleOfSpace(getXPos(), getYPos()))
         {
             moveForward();
@@ -175,7 +158,6 @@ public class Opponent extends Tank {
             if (nextMove[0] < currSpace[0]) {
                 if (hull.getObjectDirection() != 270) // turn left
                 {
-                   // System.out.println(direction);
                     if (direction < 90 || direction > 270) {
                         turnLeft();
                     } else {
@@ -192,7 +174,7 @@ public class Opponent extends Tank {
             else {
                 if (hull.getObjectDirection() != 90) //turn right
                 {
-                    if ((direction < 270 || direction > 90)) {
+                    if ((direction > 270 || direction < 90)) {
                         turnRight();
                     } else {
                         turnLeft();
