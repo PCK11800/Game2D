@@ -149,8 +149,7 @@ public class Opponent extends Tank {
         if (!middleOfSpace(getXPos(), getYPos()))
         {
             moveForward();
-            turret.update();
-            clone = turret.stationaryCopy();
+            clone.setNewPosition(getXPos(), getYPos());
             return;
         }
         if (nextMove[0] != currSpace[0])
@@ -167,8 +166,7 @@ public class Opponent extends Tank {
                 else
                 {
                     moveForward();
-                    turret.update();
-                    clone = turret.stationaryCopy();
+                    clone.setNewPosition(getXPos(), getYPos());
                 }
             }
             else {
@@ -183,8 +181,7 @@ public class Opponent extends Tank {
                 else
                 {
                     moveForward();
-                    turret.update();
-                    clone = turret.stationaryCopy();
+                    clone.setNewPosition(getXPos(), getYPos());
                 }
             }
         }
@@ -203,8 +200,7 @@ public class Opponent extends Tank {
                 else
                 {
                     moveForward();
-                    turret.update();
-                    clone = turret.stationaryCopy();
+                    clone.setNewPosition(getXPos(), getYPos());
                 }
             }
             else
@@ -220,8 +216,7 @@ public class Opponent extends Tank {
                 else
                 {
                     moveForward();
-                    turret.update();
-                    clone = turret.stationaryCopy();
+                    clone.setNewPosition(getXPos(), getYPos());
                 }
             }
         }
@@ -229,8 +224,7 @@ public class Opponent extends Tank {
         {
             movementPath.pop();
         }
-        turret.update();
-        clone = turret.stationaryCopy();
+        clone.setNewPosition(getXPos(), getYPos());
     }
 
     /**
@@ -417,11 +411,12 @@ public class Opponent extends Tank {
     }
 
     /**
-     * Function to determine if player lies on a line between two points.
+     * Function to determine if a tank lies on a line between two points.
      * @param x1 start point of line x position
      * @param y1 start point of line y position
      * @param x2 end point of line x position
      * @param y2 end point of line y position
+     * @param isSelf indicates whether the tank to checked is the player tank or this opponent (true if self, false if player)
      * @return true if player lies on the line between start and end points, false if not.
      */
     private boolean isTankInFiringLine(float x1, float y1, float x2, float y2, boolean isSelf)
