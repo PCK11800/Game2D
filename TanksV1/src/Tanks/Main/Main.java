@@ -42,7 +42,7 @@ public class Main
 		createFullScreenWindow(60);
 
 		//In future builds call the main menu here
-		gm = new GameMode(this.window);
+		gm = new GameMode(this.window, System.nanoTime());
 	}
 	
 	private void loop()

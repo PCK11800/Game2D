@@ -1,10 +1,9 @@
 package Tanks.Objects;
 
-import Tanks.ObjectComponents.MapExit;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -155,6 +154,7 @@ public class MapGenerator
 	{
 		Direction[] dirs = Direction.values();
 		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+		Collections.shuffle(Arrays.asList(dirs)); //Done twice so that it is less likely to produce the same map 
 
 		for (Direction dir : dirs)
 		{
@@ -293,7 +293,7 @@ public class MapGenerator
 
 
 	/**
-	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps MapExit arrayList instead.
+	 * This method almost identical to the addObject method, however this methods adds a given mapExit to the maps mapObject arrayList instead.
 	 * @param xPos the x position of the object to be added in pixels
 	 * @param yPos the y position of the object to be added in pixels
 	 * @param width the width of the object to be added in pixels
@@ -311,7 +311,10 @@ public class MapGenerator
 
 		try
 		{
-			map.getExitsInMap().add(new MapExit(this.window, xPos, yPos, width, height, lockedTexture, unlockedTexture));
+			map.getObjectsInMap().add(new MapObject(this.window, xPos, yPos, width, height, lockedTexture));
+
+			MapObject exit = map.getObjectsInMap().get(map.getObjectsInMap().size() -1);
+			exit.makeExit(unlockedTexture);
 		}
 		catch (Exception e)
 		{
@@ -319,9 +322,27 @@ public class MapGenerator
 		}
 	}
 
+
 	public int[][] getMap() { return level; }
 
 	public float getMaxXPos() { return maxXPos; }
 
 	public float getMaxYPos() { return maxYPos; }
+
+
+	public int getXSize() { return this.x; }
+
+    public int getYSize() { return this.y; }
+
+    public float getXScale() { return this.xScale; }
+
+    public float getYScale() { return this.yScale; }
+
+    public float getWallLong() { return this.wallLong; }
+
+    public float getWallShort() { return this.wallShort; }
+
+    public float getTileSize() { return this.tileSize; }
+
+    public float getOffsetTopY() { return this.offsetTopY; }
 }
