@@ -6,7 +6,7 @@ import Tanks.Window.Window;
 
 public class MainMenu extends UIScreen
 {
-    public MainMenu(Window window)
+    public MainMenu(Window window, LeaderboardScreen leaderboard, TutorialScreen tutorial)
     {
         super(window);
 
@@ -16,9 +16,9 @@ public class MainMenu extends UIScreen
         //Play
         addGameModeButton(centerX, (centerY - 200), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
         //Leaderboard
-        addLoadUIScreenButton(centerX, centerY, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addLoadUIScreenButton(centerX, centerY, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, leaderboard);
         //Tutorial
-        addLoadUIScreenButton(centerX, (centerY + 200), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addLoadUIScreenButton(centerX, (centerY + 200), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, tutorial);
         //Quit
         addQuitButton(centerX, (centerY + 400), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
     }

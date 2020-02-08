@@ -1,6 +1,7 @@
 package Tanks.Buttons;
 
 import Tanks.Objects.Button;
+import Tanks.Objects.GameMode;
 import Tanks.Window.Window;
 
 public class LoadGameModeButton extends Button
@@ -18,6 +19,7 @@ public class LoadGameModeButton extends Button
     {
         System.out.println("Load game mode");
     }
+
 
     public void update()
     {

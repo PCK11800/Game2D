@@ -3,6 +3,7 @@ package Tanks.Main;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import Tanks.Objects.UIScreenManager;
 import Tanks.UIScreens.MainMenu;
 import Tanks.Objects.GameMode;
 import org.jsfml.graphics.Color;
@@ -14,8 +15,8 @@ public class Main
 {
 	
 	private Window window;
-	private GameMode gm;
-	private MainMenu mainMenu;
+	private GameMode gameMode;
+
 	private Clock frameClock = new Clock();
 
 	
@@ -38,9 +39,7 @@ public class Main
 		//createWindow(1000, 1000, "Tanks", 60);
 		createFullScreenWindow(120);
 
-		//In future builds call the main menu here
-		//gm = new GameMode(this.window, System.nanoTime());
-		mainMenu = new MainMenu(this.window);
+		this.gameMode = new GameMode(this.window, System.nanoTime());
 	}
 	
 	private void loop()
@@ -48,8 +47,7 @@ public class Main
 		while(window.isOpen())
 		{
 			window.startOfFrame();
-			//gm.update();
-			mainMenu.update();
+			gameMode.update();
 			window.endOfFrame();
 		}
 	}
