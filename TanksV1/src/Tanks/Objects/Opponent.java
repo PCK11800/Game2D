@@ -21,13 +21,16 @@ public class Opponent extends Tank {
     private float playerYPos;
     private int ricochetCount = 0;
     private TankTurret clone;
-    private String[][] mapGrid;
+    protected String[][] mapGrid;
     private Stack<Integer[]> movementPath;
     private Integer[] currSpace = new Integer[2];
     protected Clock timer = new Clock();
     protected int pathCalcDelay = 4;
     private int moveDir = 1;
     private float xMax, yMax;
+    protected boolean targetingPlayer = true;
+    protected Integer[] targetTile = new Integer[2];
+    protected boolean tileReached = false;
 
 
     /**
@@ -41,9 +44,6 @@ public class Opponent extends Tank {
         this.player = player;
         mapGrid = new String[grid.length][grid[0].length];
         int j;
-
-
-
         //generate grid of obstacles in the current level
         for (int i = 0; i < grid[0].length; i++)
         {
@@ -83,13 +83,22 @@ public class Opponent extends Tank {
     public boolean update()
     {
         super.update();
+        if (tileReached) generateMovementPathToTile();
+        tileReached = false;
         if (movementCount == 0)
         {
             for (int i  = 0; i< 210; i++) {
 
                 rotateTurretRight();
             }
-            generateMovementPathToPlayer();
+            if (targetingPlayer)
+            {
+                generateMovementPathToPlayer();
+            }
+            else
+            {
+              generateMovementPathToTile();
+            }
             setInitialDirection();
             clone = turret.stationaryCopy();
             float newX, newY;
@@ -107,7 +116,10 @@ public class Opponent extends Tank {
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
-            generateMovementPathToPlayer();
+            if (targetingPlayer)
+            {
+                generateMovementPathToPlayer();
+            }
             timer.restart();
         }
         move();
@@ -156,7 +168,15 @@ public class Opponent extends Tank {
 
     private void setInitialDirection()
     {
-        Integer[] nextMove = movementPath.peek();
+        Integer[] nextMove;
+        try
+        {
+            nextMove = movementPath.peek();
+        }
+        catch (EmptyStackException e)
+        {
+            return;
+        }
         if (nextMove[0] != currSpace[0])
         {
             if (nextMove[0] < currSpace[0]) {
@@ -212,8 +232,11 @@ public class Opponent extends Tank {
      */
     private void move()
     {
-        if (movementPath.isEmpty()) return;
-        boolean moved = false;
+        if (movementPath.isEmpty())
+        {
+           if (!targetingPlayer) tileReached = true;
+            return;
+        }
         direction = hull.getObjectDirection();
         Integer[] nextMove = movementPath.peek();
         currSpace = generateGridPos(hull.getxPos() , hull.getyPos());
@@ -328,6 +351,15 @@ public class Opponent extends Tank {
         currSpace[1] = y;
         movementPath = findPath(x, y, playerX, playerY);
         movementPath.pop(); //remove current space position from path
+    }
+
+    private void generateMovementPathToTile()
+    {
+        Integer[] pos = generateGridPos(getXPos(), getYPos());
+        currSpace[0] = pos[0];
+        currSpace[1] = pos[1];
+        movementPath = findPath(currSpace[0], currSpace[1], targetTile[0], targetTile[1]);
+        movementPath.pop();
     }
 
 
