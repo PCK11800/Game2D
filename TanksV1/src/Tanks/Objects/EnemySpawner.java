@@ -168,7 +168,7 @@ public class EnemySpawner
      */
     private void initEnemy(float xPos, float yPos)
     {
-        PatrollingOpponent enemy = new PatrollingOpponent(playerList.get(0), mapGenerator.getMap());
+        ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0), mapGenerator.getMap());
         enemy.setHullTexture(Textures.TANKHULL_GREEN);
         enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
         enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
