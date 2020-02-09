@@ -55,7 +55,7 @@ public class Tank
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
 	private int previousTurn; //1 = turn left, 2 = turn right
-
+	private boolean collisionLastMove = false;
 	private boolean loadNextLevel = false;
 
 	private long lastShellFired = System.nanoTime();
@@ -333,6 +333,7 @@ public class Tank
 					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
 					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
 			{
+				collisionLastMove = true;
 				checkPreviousMove();
 
 				if (map.getObjectsInMap().get(i).isExit() == true) //If it is an exit
@@ -457,6 +458,10 @@ public class Tank
 	public float getTopBounds() { return hull.getTopBounds(); }
 
 	public float getBottomBounds() { return hull.getBottomBounds(); }
+
+	public boolean collision() { return collisionLastMove; }
+
+	public void resetCollision() { collisionLastMove = false; }
 
 	public boolean isAlive() { return (health <= 0 ? false : true); }
 

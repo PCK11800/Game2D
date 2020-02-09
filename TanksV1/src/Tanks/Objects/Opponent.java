@@ -7,6 +7,7 @@ import java.awt.geom.Line2D;
 import org.jsfml.system.Clock;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 
@@ -24,7 +25,9 @@ public class Opponent extends Tank {
     private Stack<Integer[]> movementPath;
     private Integer[] currSpace = new Integer[2];
     protected Clock timer = new Clock();
-    protected int pathCalcDelay = 2;
+    protected int pathCalcDelay = 4;
+    private int moveDir = 1;
+    private float xMax, yMax;
 
 
     /**
@@ -38,6 +41,8 @@ public class Opponent extends Tank {
         this.player = player;
         mapGrid = new String[grid.length][grid[0].length];
         int j;
+
+
 
         //generate grid of obstacles in the current level
         for (int i = 0; i < grid[0].length; i++)
@@ -85,10 +90,22 @@ public class Opponent extends Tank {
                 rotateTurretRight();
             }
             generateMovementPathToPlayer();
+            setInitialDirection();
             clone = turret.stationaryCopy();
+            float newX, newY;
+            newX = (float) Math.floor(hull.getxPos());
+            newX = newX / (map.getWidth() / mapGrid.length);
+            int temp = (int) Math.floor(newX);
+            float xResult = newX - temp;
+            newY =  (float) Math.floor(hull.getyPos());
+            newY = newY / (map.getHeight() / mapGrid[0].length);
+            temp = (int) Math.floor(newY);
+            float yResult = newY - temp;
+            xMax = xResult;
+            yMax = yResult;
 
         }
-        if (timer.getElapsedTime().asSeconds() > pathCalcDelay)
+        if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
             generateMovementPathToPlayer();
             timer.restart();
@@ -137,21 +154,88 @@ public class Opponent extends Tank {
 
     }
 
+    private void setInitialDirection()
+    {
+        Integer[] nextMove = movementPath.peek();
+        if (nextMove[0] != currSpace[0])
+        {
+            if (nextMove[0] < currSpace[0]) {
+                while (hull.getObjectDirection() != 270) // turn left
+                {
+                    if (direction < 90 || direction > 270) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+            }
+            else {
+                while (hull.getObjectDirection() != 90) //turn right
+                {
+                    if ((direction > 270 || direction < 90)) {
+                        turnRight();
+                    } else {
+                        turnLeft();
+                    }
+                }
+            }
+        }
+        else if (nextMove[1] != currSpace[1])
+        {
+            if (nextMove[1] > currSpace[1])
+            {
+                while (hull.getObjectDirection() != 180) //turn down
+                {
+                    if (direction > 180) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+            }
+            else
+            {
+                while (hull.getObjectDirection() != 0) //turn up
+                {
+                    if (direction < 180) {
+                        turnLeft();
+                    } else {
+                        turnRight();
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Method moves opponent to 'target' space in the grid. Returns immediately if opponent already at location.
      */
     private void move()
     {
         if (movementPath.isEmpty()) return;
+        boolean moved = false;
         direction = hull.getObjectDirection();
         Integer[] nextMove = movementPath.peek();
-        currSpace = generateGridPos(getXPos() , getYPos());
-        if (!middleOfSpace(getXPos(), getYPos()))
+        currSpace = generateGridPos(hull.getxPos() , hull.getyPos());
+        if (collision())
         {
-            moveForward();
+            moveDir = 0;
+            resetCollision();
+        }
+        if (!middleOfSpace(hull.getxPos(), hull.getyPos()))
+        {
+            if (moveDir == 1)
+            {
+                moveForward();
+            }
+            else
+            {
+                moveBackward();
+            }
             clone.setNewPosition(getXPos(), getYPos());
             return;
         }
+        moveDir = 1;
         if (nextMove[0] != currSpace[0])
         {
             if (nextMove[0] < currSpace[0]) {
@@ -264,10 +348,12 @@ public class Opponent extends Tank {
         newY = newY / (map.getHeight() / mapGrid[0].length);
         temp = (int) Math.floor(newY);
         float yResult = newY - temp;
-        if (xResult < 0.6 && xResult > 0.4 && yResult < 0.6 && yResult > 0.4)
+        if (xResult < xMax + 0.02 && xResult > xMax - 0.02 && yResult < yMax + 0.1 && yResult >= yMax)
         {
             return true;
         }
+
+
         return false;
     }
 
@@ -281,7 +367,7 @@ public class Opponent extends Tank {
     {
         int newX, newY;
         newX = (int) Math.floor(x);
-        newX = (newX == 0 ? 0 : (int) Math.floor( newX / (map.getWidth() / mapGrid.length)));
+        newX = (newX == 0 ? 0 : (int) Math.floor(newX / (map.getWidth() / mapGrid.length)));
         newY =  (int) Math.floor(y);
         newY = (newY == 0 ? 0 : (int) Math.floor(newY / (map.getHeight() / mapGrid[0].length)));
         return new Integer[]{newX, newY};
@@ -310,6 +396,7 @@ public class Opponent extends Tank {
         while (x != destX || y != destY)
         {
             String current = mapGrid[x][y];
+            System.out.println(current);
             boolean action = false;
             if (!current.contains("T")) {
                 temp = Integer.toString(x) + "," + Integer.toString(y-1);
@@ -361,9 +448,32 @@ public class Opponent extends Tank {
             if (!action)
             {
                 temp = Integer.toString(x) + "," + Integer.toString(y);
+                System.out.println(temp);
+                Integer[] t = prev.peek();
                 prev.pop();
-                Integer[] p = prev.peek();
-                x = p[0]; y = p[1];
+                try
+                {
+                    Integer[] p = prev.peek();
+                    x = p[0]; y = p[1];
+                }
+                catch (EmptyStackException e)
+                {
+                    System.out.println("Player: " + playerXPos + "," + playerYPos);
+                    System.out.println("Map: " + map.getWidth() + "," + map.getHeight());
+                    System.out.println("Source: " + srcX + "," + srcY);
+                    System.out.println("Dest: " + destX + "," + destY);
+                    System.out.println(t[0] + "," + t[1]);
+                    System.out.println(mapGrid[t[0]][t[1]]);
+                    System.out.println("FOUND: ");
+                    for (String s : found)
+                    {
+                        System.out.println(s);
+                    }
+                    System.out.println("END");
+                    e.printStackTrace();
+                }
+                //prev.pop();
+
             }
             temp = "";
         }
