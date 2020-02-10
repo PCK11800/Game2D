@@ -45,7 +45,7 @@ public class Tank
 	private String shellTexturePath;
 	protected float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
-	private int shellRicochetNumber;
+	protected int shellRicochetNumber;
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();

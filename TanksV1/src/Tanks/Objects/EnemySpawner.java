@@ -183,7 +183,7 @@ public class EnemySpawner
         enemy.setShellSpeed(10);
         enemy.setShellRicochetNumber(2);
         enemy.setFireDelay(500);
-
+        enemy.setNoticeDistance(3);
         enemyList.add(enemy);
     }
 

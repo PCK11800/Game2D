@@ -17,8 +17,6 @@ public class TankShell extends RotatingObject{
 	private Clock movementClock = new Clock();
 	private Clock ricochetClock = new Clock();
 	private boolean active = true;
-	private boolean ghost = false;
-	private boolean hitPlayer = false;
 	
 	public TankShell(TankTurret connectedTankTurret, String texturePath, Window window, float shellSpeed, Map map) 
 	{
@@ -31,10 +29,6 @@ public class TankShell extends RotatingObject{
 		rotateObject(connectedTankTurret.objectDirection);
 	}
 
-	public void setGhostMode()
-	{
-		ghost = true;
-	}
 
 
 	public void launchedForward()
@@ -151,10 +145,6 @@ public class TankShell extends RotatingObject{
 		}
 	}
 
-	public void hitPlayer()
-	{
-
-	}
 
 
 	public int getRicochetNum() {
