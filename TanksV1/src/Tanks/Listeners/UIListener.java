@@ -12,7 +12,6 @@ public class UIListener
 {
     private UIScreen uiScreen;
 
-
     public UIListener(UIScreen screen)
     {
         this.uiScreen = screen;
@@ -24,12 +23,15 @@ public class UIListener
      */
     public void handleInput()
     {
-        uiScreen.handleMouseMovement(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
-
         if(Mouse.isButtonPressed(Mouse.Button.LEFT))
         {
             uiScreen.handleMouseClick(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
         }
+        else
+        {
+            uiScreen.handleMouseMovement(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
+        }
+
     }
 
 

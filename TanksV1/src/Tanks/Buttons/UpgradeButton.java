@@ -5,19 +5,16 @@ import Tanks.Window.Window;
 
 public class UpgradeButton extends Button
 {
-    private Window window;
-
-    public UpgradeButton(Window window, float x, float y, float width, float height, String activeTexture)
+    public UpgradeButton(Window window, float x, float y, float width, float height, String activeTexture) //Will need to pass in the tank and upgrade type here
     {
         super(window, x, y, width, height, activeTexture);
         this.window = window;
     }
 
-
-    protected void performOperation()
+    @Override
+    public void setPressed()
     {
-        System.out.println("Upgrading...");
+        super.setPressed();
+        System.out.println("Upgrade!");
     }
-
-    public void update() { draw(this.window); }
 }

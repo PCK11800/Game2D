@@ -8,61 +8,61 @@ import Tanks.Window.Window;
 
 
 /**
+ * This class handles all UI events, UIScreen loading, etc.
  * There are 5 things a button can do. Only 4 of which this class really needs to handle: loading a new UIScreen, loading the next level or loading a new game (mode).
  */
 public class UIScreenManager
 {
     private UIScreen currentScreen;
-
     private Window window;
 
     private boolean onUIScreen = true; //default true - as you start off on the main menu - used in GameMode
     private boolean hideUI = false; //This is set when then you are on a UI screen but want to move on.
     private boolean loadLevel = false; //if this is false and onUIScreen is true, then you load the gameMode
 
-    private LeaderboardScreen leaderboard;
-    private TutorialScreen tutorial;
-    private  MainMenu mainMenu;
-    private ShopScreen shop;
-
-
+    /**
+     * Constructor
+     * @param window the window that all UIScreens are to be drawn into
+     */
     public UIScreenManager(Window window) // Will need to pass in the player tank here
     {
         this.window = window;
-        initScreens();
+        initMainMenu();
     }
 
     /**
-     * This method is used to initialize all of the UIScreens that the game / game mode uses
-     * If new screens are to be added they are to be added here
+     * This method is used to initialize all of the screens related the main menu
      */
-    private void initScreens()
+    private void initMainMenu()
     {
-        this.shop = new ShopScreen(this.window);
+        LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
+        TutorialScreen tutorial = new TutorialScreen(this.window);
 
-        this.leaderboard = new LeaderboardScreen(this.window);
-        this.tutorial = new TutorialScreen(this.window);
+        MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial);
 
-       this.mainMenu = new MainMenu(this.window, this.leaderboard, this.tutorial);
+        leaderboard.initBackButton(mainMenu);
+        tutorial.initBackButton(mainMenu);
 
-       this.leaderboard.initBackButton(this.mainMenu);
-       this.tutorial.initBackButton(this.mainMenu);
-
-        this.currentScreen = this.mainMenu;
+        this.currentScreen = mainMenu;
     }
 
-
+    /**
+     * This method is used to display the shop - it is called in gameMode after x number of rounds
+     */
     public void displayShop()
     {
-        this.currentScreen = this.shop;
+        this.currentScreen = new ShopScreen(this.window);
     }
 
-
+    /**
+     * This method changes the state of the UI manager - i.e. from showing UI to not showing UI
+     */
     public void changeState()
     {
         if(this.onUIScreen)
         {
             this.onUIScreen = false;
+            this.currentScreen = null;
         }
         else
         {
@@ -70,27 +70,38 @@ public class UIScreenManager
         }
     }
 
+    /**
+     * This method is used to rest the flags that are used in gameMode to determine whether or not UI is to be shown
+     */
     public void resetFlags()
     {
         this.hideUI = false;
         this.loadLevel = false;
     }
 
-
+    /**
+     * Returns the onUIScreen flag
+     * @return true if it is, false if not
+     */
     public boolean isOnUIScreen() { return this.onUIScreen; }
 
+    /**
+     * Returns the hideUI flag
+     * @return true if it is, false if not
+     */
     public boolean hideUI() { return this.hideUI; }
 
-    public boolean loadLevel() { return this.loadLevel; }
 
-
+    /**
+     * This method is used to update the currentUI screen.
+     * This method handles all of the loading of UI screens
+     */
     public void update()
     {
         if (this.onUIScreen) //Only update if you are on a UIScreen - additional prevention
         {
             if (this.currentScreen.loadLinkedScreen())
             {
-                System.out.println("WHY AM I HERE?");
                 this.currentScreen.resetState();
                 this.currentScreen = this.currentScreen.getLinkedScreen();
                 this.currentScreen.resetState();
@@ -98,7 +109,6 @@ public class UIScreenManager
 
             else if (this.currentScreen.loadGameMode())
             {
-                System.out.println("GOT TRYING TO SET STUFF");
                 this.currentScreen.resetState();
                 this.hideUI = true;
                 this.loadLevel = false;
@@ -113,10 +123,12 @@ public class UIScreenManager
 
             this.currentScreen.update();
         }
+
+        //To help improve ram usage - removes references so that they can be garbage collected+
+        else if (currentScreen != null)
+        {
+            this.currentScreen = null;
+        }
     }
-
-
-
-
 
 }

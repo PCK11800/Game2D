@@ -37,6 +37,7 @@ public class GameMode
 
     /**
      *This method is used to create all of the levels for the single player gameMode
+     * IT WOULD BE BETTER TO MAKE A FUNCTION THAT GENERATES LEVELS ON THE FLY RATHER THAN CREATING THEM ALL AT RUNTIME
      */
     public void setLevels()
     {
@@ -46,6 +47,7 @@ public class GameMode
         levels.add(new LevelContainer(this.window, 3, 2, 2, this.seed));
         levels.add(new LevelContainer(this.window, (rand.nextInt(1) + 3), 3, (rand.nextInt(1) + 2), this.seed));
 
+    /*
         //Round 2
         levels.add(new LevelContainer(this.window,  (rand.nextInt(1) + 3),  (rand.nextInt(1) + 2), (rand.nextInt(1) + 3), this.seed));
         levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 3), (rand.nextInt(2) + 2), (rand.nextInt(1) + 4), this.seed));
@@ -55,7 +57,7 @@ public class GameMode
         levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 5),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
         levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 6), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
         levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 7), (rand.nextInt(3) + 5), (rand.nextInt(2) + 8), this.seed));
-
+        */
         currentLevel = levels.get(0);
     }
 
@@ -73,6 +75,7 @@ public class GameMode
      */
     public void update()
     {
+        //Tests to see if you are on a UISCreen - if so update that screen
         if (uiManager.isOnUIScreen())
         {
             uiManager.update();
@@ -84,22 +87,27 @@ public class GameMode
             }
         }
 
+        //In an arena
         else
         {
             if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
             {
-                currentIndex++;
-
-                //PROBLEM HERE! - IT WILL ONLY EVER LOAD THE FIRST SHOP -
-                if ((currentIndex+1) % 3 == 0)
+                //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
+                if ((currentIndex % 3) == 0)
                 {
                     uiManager.changeState();
                     uiManager.displayShop();
                 }
 
-                currentLevel = levels.get(currentIndex);
-                currentLevel.createLevel();
+                currentIndex++;
 
+                currentLevel = levels.get(currentIndex);
+
+                //This improves ram usage - removes the last maps references, so it is garbage collected
+                levels.remove(currentIndex -1);
+                currentIndex--;
+
+                currentLevel.createLevel();
             }
         }
     }
