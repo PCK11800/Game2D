@@ -168,7 +168,7 @@ public class EnemySpawner
      */
     private void initEnemy(float xPos, float yPos)
     {
-        Opponent enemy = new Opponent(playerList.get(0));
+        ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0), mapGenerator.getMap());
         enemy.setHullTexture(Textures.TANKHULL_GREEN);
         enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
         enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
@@ -183,7 +183,7 @@ public class EnemySpawner
         enemy.setShellSpeed(10);
         enemy.setShellRicochetNumber(2);
         enemy.setFireDelay(500);
-
+        enemy.setNoticeDistance(3);
         enemyList.add(enemy);
     }
 

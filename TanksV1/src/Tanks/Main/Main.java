@@ -37,7 +37,7 @@ public class Main
 	private void iniGame() 
 	{
 		//createWindow(1000, 1000, "Tanks", 60);
-		createFullScreenWindow(120);
+		createFullScreenWindow(60);
 
 		this.gameMode = new GameMode(this.window, System.nanoTime());
 	}

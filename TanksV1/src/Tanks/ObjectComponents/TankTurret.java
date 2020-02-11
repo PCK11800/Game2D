@@ -64,7 +64,13 @@ public class TankTurret extends RotatingObject {
 		copy.setWindow(window);
 		return copy;
 	}
-	
+
+	public void setNewPosition(float x, float y)
+	{
+		setCenterLocation(x, y);
+	}
+
+
 	public void setConnectedTankHull(TankHull connectedTankHull) 
 	{
 		this.connectedTankHull = connectedTankHull;

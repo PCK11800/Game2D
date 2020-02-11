@@ -154,6 +154,7 @@ public class MapGenerator
 	{
 		Direction[] dirs = Direction.values();
 		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+		Collections.shuffle(Arrays.asList(dirs)); //Done twice so that it is less likely to produce the same map 
 
 		for (Direction dir : dirs)
 		{
@@ -320,6 +321,13 @@ public class MapGenerator
 			e.printStackTrace();
 		}
 	}
+
+
+	public int[][] getMap() { return level; }
+
+	public float getMaxXPos() { return maxXPos; }
+
+	public float getMaxYPos() { return maxYPos; }
 
 
 	public int getXSize() { return this.x; }

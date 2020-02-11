@@ -87,7 +87,6 @@ public class LevelContainer
     }
 
 
-
     /**
      * This is the update method that is called once per frame
      * It updates the enemies the players and the map
