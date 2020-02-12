@@ -192,6 +192,7 @@ public class EnemySpawner
         enemy.setNoticeDistance(3);
         enemy.setDamagePerShell(20);
         enemy.setID(id);
+        enemy.enableEnemyCollision();
         enemyList.add(enemy);
     }
 

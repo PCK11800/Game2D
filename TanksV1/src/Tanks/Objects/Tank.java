@@ -62,6 +62,8 @@ public class Tank
 	private long lastShellFired = System.nanoTime();
 	private int tankID;
 
+	private boolean enemyCollision = false;
+
 	public Tank() 
 	{
 		this.hull = new TankHull();
@@ -176,6 +178,11 @@ public class Tank
 	{
 		listener = new PlayerListener(this);
 		isPlayerControlled = true;
+	}
+
+	public void enableEnemyCollision()
+	{
+		enemyCollision = true;
 	}
 
 	/**
@@ -344,42 +351,42 @@ public class Tank
 		}
 		else
 		{
-			for(int i = 0; i < levelContainer.getEnemyList().size(); i++)
-			{
-				float x1, y1, x2, y2, x3, y3, x4, y4;
-				Opponent thisEnemy = levelContainer.getEnemyList().get(i);
+			if(enemyCollision) {
+				for (int i = 0; i < levelContainer.getEnemyList().size(); i++) {
+					float x1, y1, x2, y2, x3, y3, x4, y4;
+					Opponent thisEnemy = levelContainer.getEnemyList().get(i);
 
-				if(thisEnemy.getID() != tankID) {
+					if (thisEnemy.getID() != tankID) {
 
-					Line2D enemyLines[] = thisEnemy.getTankBounds();
-					//Lines of tank hull
-					Line2D enemy_top = enemyLines[0];
-					Line2D enemy_bottom = enemyLines[1];
-					Line2D enemy_left = enemyLines[2];
-					Line2D enemy_right = enemyLines[3];
+						Line2D enemyLines[] = thisEnemy.getTankBounds();
+						//Lines of tank hull
+						Line2D enemy_top = enemyLines[0];
+						Line2D enemy_bottom = enemyLines[1];
+						Line2D enemy_left = enemyLines[2];
+						Line2D enemy_right = enemyLines[3];
 
-					if (top.intersectsLine(enemy_top) || right.intersectsLine(enemy_top) || left.intersectsLine(enemy_top) || bottom.intersectsLine(enemy_top) ||
-							top.intersectsLine(enemy_right) || right.intersectsLine(enemy_right) || left.intersectsLine(enemy_right) || bottom.intersectsLine(enemy_right) ||
-							top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
-							top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom)) {
-						checkPreviousMove();
+						if (top.intersectsLine(enemy_top) || right.intersectsLine(enemy_top) || left.intersectsLine(enemy_top) || bottom.intersectsLine(enemy_top) ||
+								top.intersectsLine(enemy_right) || right.intersectsLine(enemy_right) || left.intersectsLine(enemy_right) || bottom.intersectsLine(enemy_right) ||
+								top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
+								top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom)) {
+							checkPreviousMove();
+						}
 					}
 				}
-			}
-			for (int i = 0; i < levelContainer.getPlayerList().size(); i++)
-			{
-				Line2D playerLines[] = levelContainer.getPlayerList().get(i).getTankBounds();
+				for (int i = 0; i < levelContainer.getPlayerList().size(); i++) {
+					Line2D playerLines[] = levelContainer.getPlayerList().get(i).getTankBounds();
 
-				Line2D player_top = playerLines[0];
-				Line2D player_bottom = playerLines[1];
-				Line2D player_left = playerLines[2];
-				Line2D player_right = playerLines[3];
+					Line2D player_top = playerLines[0];
+					Line2D player_bottom = playerLines[1];
+					Line2D player_left = playerLines[2];
+					Line2D player_right = playerLines[3];
 
-				if (top.intersectsLine(player_top) || right.intersectsLine(player_top) || left.intersectsLine(player_top) || bottom.intersectsLine(player_top) ||
-						top.intersectsLine(player_right) || right.intersectsLine(player_right) || left.intersectsLine(player_right) || bottom.intersectsLine(player_right) ||
-						top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
-						top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom)) {
-					checkPreviousMove();
+					if (top.intersectsLine(player_top) || right.intersectsLine(player_top) || left.intersectsLine(player_top) || bottom.intersectsLine(player_top) ||
+							top.intersectsLine(player_right) || right.intersectsLine(player_right) || left.intersectsLine(player_right) || bottom.intersectsLine(player_right) ||
+							top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
+							top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom)) {
+						checkPreviousMove();
+					}
 				}
 			}
 		}
