@@ -40,6 +40,25 @@ public class TankConfigs {
         //tank.enableEnemyCollision();
     }
 
+    public void player_future(Tank tank)
+    {
+        tank.setHullTexture(Textures.TANKHULL_FUTURE);
+        tank.setTurretTexture(Textures.TANKTURRET_FUTURE);
+        tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
+        tank.setSize((float) 1, (float) 1);
+        tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
+        tank.setHullTurningDistance(3);
+        tank.setTurretTurningDistance(3);
+        tank.setMovementSpeed(5);
+        tank.setInitialDirection(180);
+        tank.setShellSpeed(10);
+        tank.setShellRicochetNumber(2);
+        tank.setRammingDamage(5);
+        tank.setFireDelay(500);
+        tank.enablePlayerControl();
+        tank.setDamagePerShell(20);
+    }
+
     public void fastshot_upgrade(Tank tank)
     {
         tank.setShellTexture(Textures.TANKSHELL_FAST);

@@ -70,11 +70,11 @@ public class LevelContainer
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
         Tank player = new Tank();
-        player.config("player_default");
+        player.config("player_future");
         player.setLevelContainer(this);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
-        //player.config("fastshot_upgrade");
+        player.config("fastshot_upgrade");
 
         playerList.add(player);
     }
