@@ -22,6 +22,7 @@ public class TankShell extends RotatingObject{
 	private Map map;
 	private Clock movementClock = new Clock();
 	private Clock ricochetClock = new Clock();
+	private Clock shotClock;
 	private boolean active = true;
 	
 	public TankShell(TankTurret connectedTankTurret, String texturePath, Window window, float shellSpeed, LevelContainer levelContainer, int maxRicochetNum, int damage)
@@ -36,6 +37,7 @@ public class TankShell extends RotatingObject{
 		setObjectTexture(texturePath);
 		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
+		shotClock = new Clock();
 	}
 
 
@@ -194,8 +196,8 @@ public class TankShell extends RotatingObject{
 						top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
 						top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom))
 				{
-					enemyList.get(i).tankIsHit(damage);
-					active = false;
+				    enemyList.get(i).tankIsHit(damage);
+				    active = false;
 				}
 			}
 
@@ -204,8 +206,8 @@ public class TankShell extends RotatingObject{
 					top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
 					top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom))
 			{
-				playerList.get(0).tankIsHit(damage);
-				active = false;
+			    playerList.get(0).tankIsHit(damage);
+			    active = false;
 			}
 		}
 	}
@@ -227,7 +229,7 @@ public class TankShell extends RotatingObject{
 	{
 		draw(window);
 		ricochetHandling();
-		hitPlayer();
+		if(shotClock.getElapsedTime().asMilliseconds() > Tank.timePerFrame * 2) { hitPlayer(); }
 		collisionHandling();
 		checkOutOfBounds();
 		launchedForward();

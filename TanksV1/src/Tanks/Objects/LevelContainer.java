@@ -74,7 +74,7 @@ public class LevelContainer
         player.setLevelContainer(this);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
-        player.config("fastshot_upgrade");
+        //player.config("fastshot_upgrade");
 
         playerList.add(player);
     }
