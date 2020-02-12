@@ -77,7 +77,7 @@ public class LevelContainer
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
         player.config("player_default");
-        player.config("machinegun_upgrade");
+        player.config("fastshot_upgrade");
 
         playerList.add(player);
     }

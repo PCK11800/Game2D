@@ -229,6 +229,7 @@ public class TankShell extends RotatingObject{
 		ricochetHandling();
 		hitPlayer();
 		collisionHandling();
+		checkOutOfBounds();
 		launchedForward();
 	}
 
