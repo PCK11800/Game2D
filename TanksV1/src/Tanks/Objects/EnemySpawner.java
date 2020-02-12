@@ -175,13 +175,11 @@ public class EnemySpawner
     private void initEnemy(float xPos, float yPos, int id)
     {
         ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0), mapGenerator.getMap());
-        enemy.setHullTexture(Textures.TANKHULL_GREEN);
-        enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
-        enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
+        enemy.config("enemy_default");
+        enemy.setID(id);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
-        enemy.config("enemy_default");
         enemyList.add(enemy);
     }
 

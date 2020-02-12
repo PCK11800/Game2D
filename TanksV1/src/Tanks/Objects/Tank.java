@@ -370,7 +370,6 @@ public class Tank
 		{
 			if(enemyCollision) {
 				for (int i = 0; i < levelContainer.getEnemyList().size(); i++) {
-					float x1, y1, x2, y2, x3, y3, x4, y4;
 					Opponent thisEnemy = levelContainer.getEnemyList().get(i);
 
 					if (thisEnemy.getID() != tankID) {

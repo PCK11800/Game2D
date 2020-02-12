@@ -6,6 +6,9 @@ public class TankConfigs {
 
     public void player_default(Tank tank)
     {
+        tank.setHullTexture(Textures.TANKHULL_GREEN);
+        tank.setTurretTexture(Textures.TANKTURRET_GREEN);
+        tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
@@ -21,6 +24,9 @@ public class TankConfigs {
 
     public void enemy_default(Tank tank)
     {
+        tank.setHullTexture(Textures.TANKHULL_RED);
+        tank.setTurretTexture(Textures.TANKTURRET_RED);
+        tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
@@ -31,7 +37,7 @@ public class TankConfigs {
         tank.setRammingDamage(5);
         tank.setFireDelay(500);
         tank.setDamagePerShell(20);
-        tank.enableEnemyCollision();
+        //tank.enableEnemyCollision();
     }
 
     public void fastshot_upgrade(Tank tank)
