@@ -390,21 +390,21 @@ public class Tank
 						}
 					}
 				}
-				for (int i = 0; i < levelContainer.getPlayerList().size(); i++) {
-					Line2D playerLines[] = levelContainer.getPlayerList().get(i).getTankBounds();
+			}
+			for (int i = 0; i < levelContainer.getPlayerList().size(); i++) {
+				Line2D playerLines[] = levelContainer.getPlayerList().get(i).getTankBounds();
 
-					Line2D player_top = playerLines[0];
-					Line2D player_bottom = playerLines[1];
-					Line2D player_left = playerLines[2];
-					Line2D player_right = playerLines[3];
+				Line2D player_top = playerLines[0];
+				Line2D player_bottom = playerLines[1];
+				Line2D player_left = playerLines[2];
+				Line2D player_right = playerLines[3];
 
-					if (top.intersectsLine(player_top) || right.intersectsLine(player_top) || left.intersectsLine(player_top) || bottom.intersectsLine(player_top) ||
-							top.intersectsLine(player_right) || right.intersectsLine(player_right) || left.intersectsLine(player_right) || bottom.intersectsLine(player_right) ||
-							top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
-							top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom)) {
-						checkPreviousMove();
-						tankIsRammed(levelContainer.getPlayerList().get(i).getRammingDamage());
-					}
+				if (top.intersectsLine(player_top) || right.intersectsLine(player_top) || left.intersectsLine(player_top) || bottom.intersectsLine(player_top) ||
+						top.intersectsLine(player_right) || right.intersectsLine(player_right) || left.intersectsLine(player_right) || bottom.intersectsLine(player_right) ||
+						top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
+						top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom)) {
+					checkPreviousMove();
+					tankIsRammed(levelContainer.getPlayerList().get(i).getRammingDamage());
 				}
 			}
 		}
