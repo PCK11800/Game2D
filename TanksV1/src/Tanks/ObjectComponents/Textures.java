@@ -14,6 +14,7 @@ public class Textures {
 
 	public static String TANKHULL_DEAD = "TanksV1/Resources/Images/DeadTankHull.png";
 	public static String TANKTURRET_DEAD = "TanksV1/Resources/Images/DeadTankTurret.png";
+	public static String EXPLOSION = "TanksV1/Resources/Images/explosion.png";
 
 	public static String EXIT_LOCKED = "TanksV1/Resources/Images/ExitLocked.png";
 	public static String EXIT_UNLOCKED = "TanksV1/Resources/Images/ExitUnlocked.png";
