@@ -180,19 +180,8 @@ public class EnemySpawner
         enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
-        enemy.setSize((float) 1, (float) 1);
         enemy.setTankLocation(xPos, yPos);
-        enemy.setHullTurningDistance(3);
-        enemy.setTurretTurningDistance(3);
-        enemy.setMovementSpeed(5);
-        enemy.setInitialDirection(0);
-        enemy.setShellSpeed(10);
-        enemy.setShellRicochetNumber(2);
-        enemy.setFireDelay(500);
-        enemy.setNoticeDistance(3);
-        enemy.setDamagePerShell(20);
-        enemy.setID(id);
-        enemy.enableEnemyCollision();
+        enemy.config("enemy_default");
         enemyList.add(enemy);
     }
 

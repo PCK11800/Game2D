@@ -1,8 +1,9 @@
 package Tanks.Objects;
 
 import java.awt.geom.Line2D;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import org.jsfml.system.Clock;
 
@@ -42,6 +43,7 @@ public class Tank
 	private boolean isPlayerControlled = false;
 	private int health = 100;
 	private int damagePerShell;
+	private int rammingDamage;
 	
 	private String shellTexturePath;
 	protected float shellSpeed;
@@ -63,6 +65,7 @@ public class Tank
 	private int tankID;
 
 	private boolean enemyCollision = false;
+	private TankConfigs tankConfigs = new TankConfigs();
 
 	public Tank() 
 	{
@@ -183,6 +186,16 @@ public class Tank
 	public void enableEnemyCollision()
 	{
 		enemyCollision = true;
+	}
+
+	public void disableEnemyCollision()
+	{
+		enemyCollision = false;
+	}
+
+	public void setRammingDamage(int rammingDamage)
+	{
+		this.rammingDamage = rammingDamage;
 	}
 
 	/**
@@ -346,6 +359,7 @@ public class Tank
 						top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
 						top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom)) {
 					checkPreviousMove();
+					tankIsRammed(levelContainer.getEnemyList().get(i).getRammingDamage());
 				}
 			}
 		}
@@ -370,6 +384,7 @@ public class Tank
 								top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
 								top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom)) {
 							checkPreviousMove();
+							tankIsRammed(levelContainer.getEnemyList().get(i).getRammingDamage());
 						}
 					}
 				}
@@ -386,6 +401,7 @@ public class Tank
 							top.intersectsLine(player_left) || right.intersectsLine(player_left) || left.intersectsLine(player_left) || bottom.intersectsLine(player_left) ||
 							top.intersectsLine(player_bottom) || right.intersectsLine(player_bottom) || left.intersectsLine(player_bottom) || bottom.intersectsLine(player_bottom)) {
 						checkPreviousMove();
+						tankIsRammed(levelContainer.getPlayerList().get(i).getRammingDamage());
 					}
 				}
 			}
@@ -508,7 +524,31 @@ public class Tank
 		return loadNextLevel;
 	}
 
+	public void config(String config_name)
+	{
+		try{
+			Method m = TankConfigs.class.getDeclaredMethod(config_name, new Class[]{Tank.class});
+			try{
+				m.invoke(tankConfigs, new Object[]{this});
+			}catch(IllegalAccessException ie)
+				{
+				System.out.println("Upgrade method invoke access denied");
+			}
+			catch(InvocationTargetException ite)
+			{
+				System.out.println("Upgrade method invoke target exception");
+			}
+		}catch(NoSuchMethodException ne) {
+			System.out.println("No such method exists!");
+		}
+	}
+
 	public void tankIsHit(int damage)
+	{
+		health = health - damage;
+	}
+
+	public void tankIsRammed(int damage)
 	{
 		health = health - damage;
 	}
@@ -562,4 +602,6 @@ public class Tank
 	public int getDamagePerShell() { return damagePerShell; }
 
 	public int getHealth() { return health; }
+
+	public int getRammingDamage() { return rammingDamage; }
 }

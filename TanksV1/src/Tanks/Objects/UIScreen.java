@@ -95,7 +95,7 @@ public abstract class UIScreen
     }
 
     /**
-     * Adds a button to the screen that is used to upgrade the tank in the shop
+     * Adds a button to the screen that is used to config the tank in the shop
      * @param x the x position of the button in pixels (the center of the button)
      * @param y the y position of the button in pixels (the center of the button)
      * @param width the width of the button in pixels

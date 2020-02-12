@@ -1,7 +1,6 @@
 package Tanks.Objects;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
@@ -69,22 +68,14 @@ public class LevelContainer
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
         Tank player = new Tank();
-        player.setHullTexture(hullTexture);
-        player.setTurretTexture(turretTexture);
-        player.setShellTexture(shellTexture);
+        player.setHullTexture(Textures.TANKHULL_GREEN);
+        player.setTurretTexture(Textures.TANKTURRET_GREEN);
+        player.setShellTexture(Textures.TANKSHELL_DEFAULT);
         player.setLevelContainer(this);
         player.setWindow(window);
-        player.setSize((float) 1, (float) 1);
         player.setTankLocation(xPos, yPos);
-        player.setHullTurningDistance(3);
-        player.setTurretTurningDistance(3);
-        player.setMovementSpeed(5);
-        player.setInitialDirection(0);
-        player.setShellSpeed(10);
-        player.setShellRicochetNumber(2);
-        player.setFireDelay(500);
-        player.enablePlayerControl();
-        player.setDamagePerShell(20);
+        player.config("player_default");
+        player.config("machinegun_upgrade");
 
         playerList.add(player);
     }

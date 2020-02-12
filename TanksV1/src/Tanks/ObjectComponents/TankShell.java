@@ -225,11 +225,11 @@ public class TankShell extends RotatingObject{
 	
 	public void update()
 	{
+		draw(window);
 		ricochetHandling();
 		hitPlayer();
 		collisionHandling();
 		launchedForward();
-		draw(window);
 	}
 
 	public boolean isActive() { return active; }
