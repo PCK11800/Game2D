@@ -16,7 +16,7 @@ public class DeadTank{
         dead_hull.setLocation(deathData[0], deathData[1]);
         dead_turret.setLocation(deathData[2], deathData[3]);
         dead_hull.setSize(deathData[4] * 53, deathData[5] * 75); //dead hull
-        dead_turret.setSize(deathData[4] * 53, deathData[5] * 53);
+        dead_turret.setSize(deathData[4] * 53, deathData[5] * 75);
         dead_hull.rotateObject(deathData[6]);
         dead_turret.rotateObject(deathData[7]);
     }
