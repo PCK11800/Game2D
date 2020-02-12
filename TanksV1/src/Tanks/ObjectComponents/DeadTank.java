@@ -22,8 +22,6 @@ public class DeadTank{
         explosion.setObjectTexture(Textures.EXPLOSION);
         explosion.setTextureRect(new IntRect(0, 0, 64, 64));
         explosion.setLocation(deathData[0] - (53 * deathData[4]), deathData[1] - (75 * deathData[5]));
-        System.out.println(deathData[0] + ", " + deathData[1]);
-        System.out.println(explosion.xPos + ", " + explosion.yPos);
         explosion.setSize(800, 500);
 
         //Dead tank
