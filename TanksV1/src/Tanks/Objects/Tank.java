@@ -38,14 +38,15 @@ public class Tank
 	
 	protected TankHull hull;
 	protected TankTurret turret;
-	
+
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
 	private int health = 100;
 	private int damagePerShell;
 	private int rammingDamage;
-	
+
 	private String shellTexturePath;
+	private float sizeMult_w, sizeMult_h;
 	protected float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 	protected int shellRicochetNumber;
@@ -142,6 +143,8 @@ public class Tank
 	{
 		hull.setSize(width * 53, height * 75);
 		turret.setSize(width * 53, height * 75);
+		sizeMult_w = width;
+		sizeMult_h = height;
 	}
 
 	public void setID(int ID)
@@ -575,6 +578,21 @@ public class Tank
 		return delayBetweenShell;
 	}
 
+	public float[] getDeathData()
+	{
+		float[] data = new float[8];
+		data[0] = hull.getxPos();
+		data[1] = hull.getyPos();
+		data[2] = turret.getxPos();
+		data[3] = turret.getyPos();
+		data[4] = getSizeMult_w();
+		data[5] = getSizeMult_h();
+		data[6] = hull.getObjectDirection();
+		data[7] = turret.getDirection();
+
+		return data;
+	}
+
 	public float getXPos() { return turret.getxPos(); }
 
 	public float getYPos() { return turret.getyPos(); }
@@ -604,4 +622,8 @@ public class Tank
 	public int getHealth() { return health; }
 
 	public int getRammingDamage() { return rammingDamage; }
+
+	public float getSizeMult_w() { return sizeMult_w; }
+
+	public float getSizeMult_h() { return sizeMult_h; }
 }

@@ -2,6 +2,7 @@ package Tanks.Objects;
 
 import java.util.ArrayList;
 
+import Tanks.ObjectComponents.DeadTank;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
 import Tanks.Window.Window;
@@ -21,6 +22,7 @@ public class LevelContainer
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>(); //This should be changed once enemies are properly implemented
     private ArrayList<TankShell> shellList = new ArrayList<>();
+    private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
 
 
@@ -92,6 +94,7 @@ public class LevelContainer
         updateShells();
         updateEnemies();
         updateMap();
+        updateDeadTanks();
 
         //If need to load the next level
         if (updatePlayers())
@@ -121,6 +124,7 @@ public class LevelContainer
                 load = true;
             }
             else if(!player.isAlive()){
+                deadTankList.add(new DeadTank(window, player.getDeathData()));
                 playerList.remove(i);
             }
         }
@@ -137,6 +141,8 @@ public class LevelContainer
         {
             Tank enemy = enemyList.get(i);
             if(!enemy.isAlive()) {
+                //Add dead tank
+                deadTankList.add(new DeadTank(window, enemy.getDeathData()));
                 enemyList.remove(i);
             }
 
@@ -158,6 +164,14 @@ public class LevelContainer
             {
                 shell.update();
             }
+        }
+    }
+
+    private void updateDeadTanks()
+    {
+        for(int i = 0; i < deadTankList.size(); i++)
+        {
+            deadTankList.get(i).update();
         }
     }
 
