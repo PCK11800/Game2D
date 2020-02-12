@@ -21,7 +21,7 @@ public class RotatingObject extends Sprite {
 	public void setObjectTexture(String texturePath) 
 	{
 		texture = texturePath;
-		Path imagePath = FileSystems.getDefault().getPath("..", texturePath);
+		Path imagePath = FileSystems.getDefault().getPath(texturePath);
 		objectTexture = new Texture();
 		try
 		{

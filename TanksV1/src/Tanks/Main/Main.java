@@ -55,6 +55,8 @@ public class Main
 	
 	public static void main(String[] args) 
 	{
+		//Fix XinitThreads() Bug on Linux - remove it if you dont need it
+		//System.load("/home/pck11800/Desktop/workspace/game2d/TanksV1/src/Tanks/Main/libfixXInitThreads.so");
 		Main main = new Main();
 		main.iniGame();
 		main.loop();
