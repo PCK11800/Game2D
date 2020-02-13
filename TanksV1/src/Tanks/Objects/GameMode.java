@@ -1,16 +1,18 @@
 package Tanks.Objects;
 
+import Tanks.UIScreens.ShopScreen;
 import Tanks.Window.Window;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
 
 public class GameMode
 {
-    private LinkedList<LevelContainer> levels = new LinkedList<LevelContainer>();
+    private ArrayList<LevelContainer> levels = new ArrayList<LevelContainer>();
     private Window window;
+    private UIScreenManager uiManager;
     private LevelContainer currentLevel;
+
     private int currentIndex = 0;
 
     private Random random;
@@ -18,12 +20,14 @@ public class GameMode
 
     /**
      * The constructor
-     * @param w the window for everything to be drawn into
+     * @param window the window for everything to be drawn into
      */
-    public GameMode(Window w, long seed)
+    public GameMode(Window window, long seed)
     {
-        this.window = w;
+        this.window = window;
+        this.uiManager = new UIScreenManager(window);
         this.seed = seed;
+
         setLevels();
         initGameMode();
 
@@ -32,8 +36,8 @@ public class GameMode
 
 
     /**
-     *This method is used to create all of the levels in a given game mode.
-     * This could be changed in children of this class
+     *This method is used to create all of the levels for the single player gameMode
+     * IT WOULD BE BETTER TO MAKE A FUNCTION THAT GENERATES LEVELS ON THE FLY RATHER THAN CREATING THEM ALL AT RUNTIME
      */
     public void setLevels()
     {
@@ -43,16 +47,17 @@ public class GameMode
         levels.add(new LevelContainer(this.window, 3, 2, 2, this.seed));
         levels.add(new LevelContainer(this.window, (rand.nextInt(1) + 3), 3, (rand.nextInt(1) + 2), this.seed));
 
+    /*
         //Round 2
         levels.add(new LevelContainer(this.window,  (rand.nextInt(1) + 3),  (rand.nextInt(1) + 2), (rand.nextInt(1) + 3), this.seed));
         levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 3), (rand.nextInt(2) + 2), (rand.nextInt(1) + 4), this.seed));
         levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 4), (rand.nextInt(3) + 3), (rand.nextInt(1) + 5), this.seed));
 
         //Round 3
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(1) + 4),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 4), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 4), (rand.nextInt(2) + 4), (rand.nextInt(2) + 8), this.seed));
-
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 5),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 6), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
+        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 7), (rand.nextInt(3) + 5), (rand.nextInt(2) + 8), this.seed));
+        */
         currentLevel = levels.get(0);
     }
 
@@ -70,17 +75,40 @@ public class GameMode
      */
     public void update()
     {
-        if (currentLevel.update())
+        //Tests to see if you are on a UISCreen - if so update that screen
+        if (uiManager.isOnUIScreen())
         {
-            currentIndex++;
-            //If you have fished / begun a new round
-            if (currentIndex % 3 == 0)
+            uiManager.update();
+
+            if(uiManager.hideUI())
             {
-                //Load story panel and then load shop, and finally boss level
-                System.out.println("LOAD SHOP HERE");
+                uiManager.changeState();
+                uiManager.resetFlags();
             }
-            currentLevel = levels.get(currentIndex);
-            currentLevel.createLevel();
+        }
+
+        //In an arena
+        else
+        {
+            if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
+            {
+                //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
+                if ((currentIndex % 3) == 0)
+                {
+                    uiManager.changeState();
+                    uiManager.displayShop();
+                }
+
+                currentIndex++;
+
+                currentLevel = levels.get(currentIndex);
+
+                //This improves ram usage - removes the last maps references, so it is garbage collected
+                levels.remove(currentIndex -1);
+                currentIndex--;
+
+                currentLevel.createLevel();
+            }
         }
     }
 }

@@ -363,27 +363,7 @@ public class Opponent extends Tank {
         {
             return true;
         }
-        System.out.println(x + "|" + tileCenterX + "---- " + y + "|" + tileCenterY + "---- " + diffX + ", " + diffY);
-        System.out.println(edgeX + "," + edgeY);
         return false;
-        /*
-        float newX, newY, xResult, yResult;
-        int temp;
-
-        newX = (float) Math.floor(x);
-        newX = newX / (map.getWidth() / mapGrid.length);
-        temp = (int) Math.floor(newX);
-        xResult = newX - temp;
-        newY =  (float) Math.floor(y);
-        newY = newY / (map.getHeight() / mapGrid[0].length);
-        temp = (int) Math.floor(newY);
-        yResult = newY - temp;
-
-        if (xResult < xMax + 0.02 && xResult > xMax - 0.02 && yResult < yMax + 0.1 && yResult >= yMax)
-        {
-            return true;
-        }
-        return false;*/
     }
 
     /**

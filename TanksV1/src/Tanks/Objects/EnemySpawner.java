@@ -15,6 +15,7 @@ public class EnemySpawner
     private ArrayList<Opponent> enemyList;
     private ArrayList<Tank> playerList;
     private Map map;
+    private LevelContainer levelContainer;
     private MapGenerator mapGenerator;
     private int numEnemies;
 
@@ -31,14 +32,15 @@ public class EnemySpawner
      * @param mapGenerator the mapGenerator contained within the levelContainer class - used to get the map's size, scale, etc.
      * @param numEnemies the number of enemies to be spawned into a level
      */
-    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies)
+    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer)
     {
         this.window = window;
         this.enemyList = enemyList;
         this.playerList = playerList;
-        this.map = map;
         this.mapGenerator = mapGenerator;
         this.numEnemies = numEnemies;
+        this.levelContainer = levelContainer;
+        this.map = levelContainer.getMap();
 
         getAvailableTiles();
 
@@ -127,6 +129,8 @@ public class EnemySpawner
         Collections.shuffle(availableTiles); //this shuffles the tiles randomly - this is what causes the enemies to be placed randomly
         Collections.shuffle(availableTiles);
 
+        int numOfEnemies = 1;
+
         //Placing enemies
         if (this.availableTiles.size() >= this.numEnemies)
         {
@@ -140,7 +144,8 @@ public class EnemySpawner
                 float enemyYPos = tileCenterY + ((tileCenterY * 2) * (currentTile.yPos));
                 enemyYPos += this.mapGenerator.getOffsetTopY();
 
-                initEnemy(enemyXPos, enemyYPos);
+                initEnemy(enemyXPos, enemyYPos, numOfEnemies);
+                numOfEnemies++;
             }
         }
 
@@ -155,7 +160,8 @@ public class EnemySpawner
                 float enemyYPos = tileCenterY + ((tileCenterY * 2) * (currentTile.yPos));
                 enemyYPos += this.mapGenerator.getOffsetTopY();
 
-                initEnemy(enemyXPos, enemyYPos);
+                initEnemy(enemyXPos, enemyYPos, numOfEnemies);
+                numOfEnemies++;
             }
         }
     }
@@ -166,24 +172,15 @@ public class EnemySpawner
      * @param xPos the initial x position of the tank
      * @param yPos the initial y position of the tank
      */
-    private void initEnemy(float xPos, float yPos)
+    private void initEnemy(float xPos, float yPos, int id)
     {
-        ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0), mapGenerator);
-        enemy.setHullTexture(Textures.TANKHULL_GREEN);
-        enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
-        enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        enemy.setMap(this.map);
+
+        ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0),mapGenerator);
+        enemy.config("enemy_default");
+        enemy.setID(id);
+        enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
-        enemy.setSize((float) 1, (float) 1);
         enemy.setTankLocation(xPos, yPos);
-        enemy.setHullTurningDistance(3);
-        enemy.setTurretTurningDistance(3);
-        enemy.setMovementSpeed(5);
-        enemy.setInitialDirection(0);
-        enemy.setShellSpeed(10);
-        enemy.setShellRicochetNumber(2);
-        enemy.setFireDelay(500);
-        enemy.setNoticeDistance(3);
         enemyList.add(enemy);
     }
 
