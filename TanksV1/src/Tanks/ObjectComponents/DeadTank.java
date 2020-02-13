@@ -1,5 +1,7 @@
 package Tanks.ObjectComponents;
 
+import Tanks.Sounds.GameSound;
+import Tanks.Sounds.SoundsPath;
 import Tanks.Window.Window;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.system.Clock;
@@ -13,6 +15,7 @@ public class DeadTank{
     private RotatingObject dead_turret = new RotatingObject();
     private RotatingObject explosion = new RotatingObject();
     private RotatingObject fire = new RotatingObject();
+    private GameSound explosion_sound = new GameSound(SoundsPath.EXPLOSION);
 
     public DeadTank(Window window, float[] deathData)
     {
@@ -38,6 +41,8 @@ public class DeadTank{
         dead_turret.setSize(deathData[4] * 53, deathData[5] * 75);
         dead_hull.rotateObject(deathData[6]);
         dead_turret.rotateObject(deathData[7]);
+
+        explosion_sound.play();
     }
 
     public void update()
@@ -47,6 +52,7 @@ public class DeadTank{
         fire_animation();
 
         if(!explodedOnce){
+            explosion_sound.setVolume(10);
             explosion_animation();
         }
     }

@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import Tanks.Sounds.GameSound;
+import Tanks.Sounds.SoundsPath;
 import org.jsfml.system.Clock;
 
 import Tanks.Listeners.PlayerListener;
@@ -55,10 +57,7 @@ public class Tank
 	private int rammingDamage;
 
 	private float sizeMult_w, sizeMult_h;
-
-
 	private ArrayList<TankShell> shellList = new ArrayList<>();
-
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
@@ -76,6 +75,8 @@ public class Tank
 
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
+
+	GameSound tankFiring;
 
 	public Tank() 
 	{
@@ -156,6 +157,11 @@ public class Tank
 		sizeMult_h = height;
 	}
 
+	public void setFiringSound(String firingSound)
+	{
+		tankFiring = new GameSound(SoundsPath.TANKFIRING);
+	}
+
 	public void setID(int ID)
 	{
 		this.tankID = ID;
@@ -219,6 +225,9 @@ public class Tank
 		{
 			levelContainer.getShellList().add(createShell());
 			fireDelayClock.restart();
+
+			tankFiring.play();
+			tankFiring.setVolume(10);
 		}
 	}
 
