@@ -10,7 +10,7 @@ public class TankConfigs {
         tank.setHullTexture(Textures.TANKHULL_GREEN);
         tank.setTurretTexture(Textures.TANKTURRET_GREEN);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        tank.setFiringSound(SoundsPath.TANKFIRING);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 100);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
@@ -29,7 +29,7 @@ public class TankConfigs {
         tank.setHullTexture(Textures.TANKHULL_RED);
         tank.setTurretTexture(Textures.TANKTURRET_RED);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        tank.setFiringSound(SoundsPath.TANKFIRING);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 100);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
@@ -48,7 +48,7 @@ public class TankConfigs {
         tank.setHullTexture(Textures.TANKHULL_FUTURE);
         tank.setTurretTexture(Textures.TANKTURRET_FUTURE);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        tank.setFiringSound(SoundsPath.TANKFIRING);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 100);
         tank.setSize((float) 1, (float) 1);
         tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
         tank.setHullTurningDistance(3);
@@ -78,6 +78,7 @@ public class TankConfigs {
         tank.setFireDelay(100);
         tank.setDamagePerShell(10);
         tank.setShellRicochetNumber(2);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 20);
     }
 
     public void sonicmode_upgrade(Tank tank)

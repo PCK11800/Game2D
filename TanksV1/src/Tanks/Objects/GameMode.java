@@ -1,8 +1,12 @@
 package Tanks.Objects;
 
 import Tanks.Listeners.PauseListener;
+import Tanks.Sounds.GameMusic;
+import Tanks.Sounds.GameMusicHandler;
+import Tanks.Sounds.SoundsPath;
 import Tanks.UIScreens.ShopScreen;
 import Tanks.Window.Window;
+import org.jsfml.audio.SoundSource;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,6 +18,7 @@ public class GameMode
     private UIScreenManager uiManager;
     private PauseListener pauseListener;
     private LevelContainer currentLevel;
+    private GameMusicHandler gameMusicHandler = new GameMusicHandler();
 
     private int currentIndex = 0;
 
@@ -82,6 +87,7 @@ public class GameMode
     {
         //Pause
         pauseListener.handlePause();
+
         if(!paused){
             //Tests to see if you are on a UISCreen - if so update that screen
             if (uiManager.isOnUIScreen())
@@ -119,6 +125,7 @@ public class GameMode
                 }
             }
         }
+        gameMusicHandler.musicHandler();
     }
 
     public void pause(){

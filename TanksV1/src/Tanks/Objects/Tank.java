@@ -157,9 +157,10 @@ public class Tank
 		sizeMult_h = height;
 	}
 
-	public void setFiringSound(String firingSound)
+	public void setFiringSound(String firingSound, float volume)
 	{
 		tankFiring = new GameSound(SoundsPath.TANKFIRING);
+		tankFiring.setVolume(volume);
 	}
 
 	public void setID(int ID)

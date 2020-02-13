@@ -19,7 +19,8 @@ public class GameSound extends Sound{
     public void setSoundPath(String soundPath)
     {
         Path path = FileSystems.getDefault().getPath(soundPath);
-        try{
+        try
+        {
             buffer.loadFromFile(path);
             setBuffer(buffer);
         }
