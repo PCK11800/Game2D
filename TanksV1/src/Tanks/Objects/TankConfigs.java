@@ -62,7 +62,7 @@ public class TankConfigs {
     public void fastshot_upgrade(Tank tank)
     {
         tank.setShellTexture(Textures.TANKSHELL_FAST);
-        tank.setShellSpeed(20);
+        tank.setShellSpeed(15);
         tank.setFireDelay(1000);
         tank.setDamagePerShell(50);
         tank.setShellRicochetNumber(1);
