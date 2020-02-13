@@ -32,16 +32,19 @@ public class Opponent extends Tank {
     protected Integer[] targetTile = new Integer[2];
     protected boolean tileReached = false;
     private int noticeDistance = 1;
+    private MapGenerator mapGenerator;
 
 
     /**
      * Constructor. Creates new instance of Opponent.
      * @param player the Tank this opponent will be targeting
-     * @param grid the map grid of the level this opponent exists on
+     * @param mapGen the map generator
      */
-    public Opponent(Tank player, int[][] grid)
+    public Opponent(Tank player, MapGenerator mapGen)
     {
         super();
+        this.mapGenerator = mapGen;
+        int grid[][] = mapGen.getMap();
         this.player = player;
         mapGrid = new String[grid.length][grid[0].length];
         int j;
@@ -343,6 +346,27 @@ public class Opponent extends Tank {
      */
     private boolean middleOfSpace(float x, float y)
     {
+        float tileCenterX = (this.mapGenerator.getTileSize() * this.mapGenerator.getXScale()) / 2;
+        float tileCenterY = (this.mapGenerator.getTileSize() * this.mapGenerator.getYScale()) / 2;
+
+        x -= (tileCenterX + (this.mapGenerator.getWallShort() * this.mapGenerator.getXScale()));
+        y -= (tileCenterY + this.mapGenerator.getOffsetTopY());
+
+        float diffX = x % tileCenterX;
+        float diffY = y % tileCenterY;
+
+        //check not between tiles
+        int edgeX = Math.round(x / tileCenterX);
+        int edgeY = Math.round(y / tileCenterY);
+
+        if ((diffX < 2.5 || diffX > tileCenterX - 2.5) && (diffY < 2.5 || diffY > tileCenterY - 2.5) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
+        {
+            return true;
+        }
+        System.out.println(x + "|" + tileCenterX + "---- " + y + "|" + tileCenterY + "---- " + diffX + ", " + diffY);
+        System.out.println(edgeX + "," + edgeY);
+        return false;
+        /*
         float newX, newY, xResult, yResult;
         int temp;
 
@@ -359,7 +383,7 @@ public class Opponent extends Tank {
         {
             return true;
         }
-        return false;
+        return false;*/
     }
 
     /**

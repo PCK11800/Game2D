@@ -9,9 +9,9 @@ public class PatrollingOpponent extends Opponent
     private HashMap<Integer, Integer[]> corners = new HashMap<Integer, Integer[]>();
     private int target;
 
-    public PatrollingOpponent(Tank player, int[][] grid)
+    public PatrollingOpponent(Tank player, MapGenerator mapGen)
     {
-        super(player, grid);
+        super(player, mapGen);
         corners.put(0, new Integer[]{mapGrid.length - 1, mapGrid[0].length - 1});
         corners.put(1, new Integer[]{mapGrid.length - 1, 0});
         corners.put(2, new Integer[]{0, mapGrid[0].length - 1});

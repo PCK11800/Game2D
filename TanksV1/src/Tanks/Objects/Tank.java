@@ -37,15 +37,18 @@ public class Tank
 	
 	protected TankHull hull;
 	protected TankTurret turret;
-	
+
+	protected int health = 100;
+
+	protected float shellSpeed;
+	protected int shellRicochetNumber;
+
 	private PlayerListener listener;
 	private boolean isPlayerControlled = false;
-	private int health = 100;
 	
 	private String shellTexturePath;
-	protected float shellSpeed;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
-	protected int shellRicochetNumber;
+
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();

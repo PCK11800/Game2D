@@ -7,9 +7,9 @@ public class ConfusedOpponent extends Opponent
 {
     private Random r = new Random();
 
-    public ConfusedOpponent(Tank player, int[][] grid)
+    public ConfusedOpponent(Tank player, MapGenerator mapGen)
     {
-        super(player, grid);
+        super(player, mapGen);
         targetingPlayer = false;
         targetTile = new Integer[]{r.nextInt(mapGrid.length), r.nextInt(mapGrid[0].length)};
     }

@@ -2,9 +2,9 @@ package Tanks.Objects;
 
 public class ChasingOpponent extends Opponent
 {
-    public ChasingOpponent(Tank player, int[][] grid)
+    public ChasingOpponent(Tank player, MapGenerator mapGen)
     {
-        super(player, grid);
+        super(player, mapGen);
         targetingPlayer = true;
     }
 
