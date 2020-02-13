@@ -1,4 +1,8 @@
-package Tanks.Objects;
+package Tanks.Objects.VariousOpponents;
+
+import Tanks.Objects.MapGenerator;
+import Tanks.Objects.Opponent;
+import Tanks.Objects.Tank;
 
 import java.util.HashMap;
 import java.util.Random;

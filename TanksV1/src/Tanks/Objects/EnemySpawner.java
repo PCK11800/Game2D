@@ -1,6 +1,6 @@
 package Tanks.Objects;
 
-import Tanks.ObjectComponents.Textures;
+import Tanks.Objects.VariousOpponents.HenryOpponent;
 import Tanks.Window.Window;
 import java.util.ArrayList;
 import java.util.Collections;

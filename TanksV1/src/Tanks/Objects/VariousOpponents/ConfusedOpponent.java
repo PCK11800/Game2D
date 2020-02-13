@@ -1,6 +1,9 @@
-package Tanks.Objects;
+package Tanks.Objects.VariousOpponents;
 
-import java.util.HashMap;
+import Tanks.Objects.MapGenerator;
+import Tanks.Objects.Opponent;
+import Tanks.Objects.Tank;
+
 import java.util.Random;
 
 public class ConfusedOpponent extends Opponent

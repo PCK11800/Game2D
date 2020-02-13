@@ -88,10 +88,10 @@ public class LevelContainer
     public boolean update()
     {
         //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
+        updateDeadTanks();
         updateShells();
         updateEnemies();
         updateMap();
-        updateDeadTanks();
 
         //If need to load the next level
         if (updatePlayers())
