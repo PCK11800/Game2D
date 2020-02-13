@@ -176,7 +176,6 @@ public class EnemySpawner
     {
 
         ConfusedOpponent enemy = new ConfusedOpponent(playerList.get(0),mapGenerator);
-        enemy.config("enemy_default");
         enemy.setID(id);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);

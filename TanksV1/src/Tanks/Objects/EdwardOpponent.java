@@ -1,23 +1,26 @@
 package Tanks.Objects;
 
+import Tanks.ObjectComponents.Textures;
+
 public class EdwardOpponent extends PatrollingOpponent
 {
 
     public EdwardOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
-        setNoticeDistance(3);
+        setHullTexture(Textures.TANKHULL_EDWARD);
+        setTurretTexture(Textures.TANKTURRET_EDWARD);
         if (levelNum == 1) //first difficulty
         {
-            setShellRicochetNumber(4);
-            setFireDelay(10);
-            setHealth(100);
+            setNoticeDistance(2);
+            setHealth(200);
         }
         else //second difficulty
         {
-            setShellRicochetNumber(4);
-            setFireDelay(5);
-            setHealth(120);
+            setNoticeDistance(4);
+            setHealth(300);
+            setFireDelay(450);
+            setDamagePerShell(25);
         }
     }
 }

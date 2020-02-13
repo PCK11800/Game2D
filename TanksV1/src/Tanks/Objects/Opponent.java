@@ -43,6 +43,7 @@ public class Opponent extends Tank {
     public Opponent(Tank player, MapGenerator mapGen)
     {
         super();
+        config("enemy_default");
         this.mapGenerator = mapGen;
         int grid[][] = mapGen.getMap();
         this.player = player;
