@@ -11,6 +11,7 @@ public class ChasingOpponent extends Opponent
     public boolean update()
     {
         super.update();
+        targetingPlayer = true;
         return false;
     }
 }
