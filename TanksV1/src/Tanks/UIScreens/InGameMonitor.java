@@ -10,13 +10,16 @@ import org.jsfml.graphics.Text;
 public class InGameMonitor {
 
     private int[] currentData;
-    private Text healthText, enemyText;
+    private Text enemyText;
     private Window window;
 
     //Health Bar
     private RotatingObject healthBar_container = new RotatingObject();
     private RotatingObject healthBar_bar = new RotatingObject();
     private RotatingObject skull = new RotatingObject();
+
+    //Enemy tanks left
+    private RotatingObject enemytankicon = new RotatingObject();
 
     public InGameMonitor(Window window)
     {
@@ -27,9 +30,12 @@ public class InGameMonitor {
 
     private void iniComponents()
     {
-        healthText = new Text();
-        enemyText = new Text();
+        iniHealthBar();
+        iniEnemyLeft();
+    }
 
+    private void iniHealthBar()
+    {
         healthBar_container.setObjectTexture(Textures.HEALTHBAR_CONTAINER);
         healthBar_bar.setObjectTexture(Textures.HEALTHBAR_BAR);
         skull.setObjectTexture(Textures.SKULL);
@@ -40,23 +46,7 @@ public class InGameMonitor {
         healthBar_bar.setSize(240, 60);
         skull.setLocation(0, 0);
         skull.setSize(240, 60);
-    }
 
-    private void printHealth(int health)
-    {
-        healthText.setString("Health: " + health);
-        healthText.setFont(new GameFont(FontPath.MONTSERRAT));
-
-        if(health >= 66) { healthText.setColor(Color.GREEN); }
-        if(health >= 33 && health < 66) { healthText.setColor(Color.YELLOW); }
-        else if(health < 33) { healthText.setColor(Color.RED); }
-
-        if(health < 0) { healthText.setString("Health: " + 0); }
-        
-        healthText.setCharacterSize(30);
-        healthText.setPosition(0, 5);
-
-        window.draw(healthText);
     }
 
     private void printHealthBar(int health)
@@ -71,21 +61,28 @@ public class InGameMonitor {
         }
     }
 
-    private void printAmountOfEnemiesLeft(int amount)
+    private void iniEnemyLeft()
     {
-        enemyText.setString("Enemies Left: " + amount);
-        enemyText.setFont(new GameFont(FontPath.MONTSERRAT));
+        enemytankicon.setObjectTexture(Textures.ENEMYTANKICON);
+        enemytankicon.setLocation(240, 0);
+        enemytankicon.setSize(240, 60);
+        enemyText = new Text();
+        enemyText.setPosition(290, 20);
+        enemyText.setFont(new GameFont(FontPath.PIXEL));
+        enemyText.setCharacterSize(15);
         enemyText.setColor(Color.WHITE);
-        enemyText.setCharacterSize(30);
-        enemyText.setPosition(200, 5);
-
+    }
+    private void printEnemyLeft(int enemyLeft)
+    {
+        enemyText.setString("X" + enemyLeft);
+        enemytankicon.draw(window);
         window.draw(enemyText);
     }
 
     public void updateMonitor()
     {
         printHealthBar(currentData[0]);
-        //printAmountOfEnemiesLeft(currentData[1]);
+        printEnemyLeft(currentData[1]);
     }
 
     public void setCurrentData(int i, int data) { currentData[i] = data; }

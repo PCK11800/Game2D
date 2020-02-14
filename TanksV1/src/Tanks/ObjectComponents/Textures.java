@@ -42,4 +42,5 @@ public class Textures {
 	public static String HEALTHBAR_CONTAINER = "TanksV1/Resources/Images/HealthBarContainer.png";
 	public static String HEALTHBAR_BAR = "TanksV1/Resources/Images/HealthBar.png";
 	public static String SKULL = "TanksV1/Resources/Images/Skull.png";
+	public static String ENEMYTANKICON = "TanksV1/Resources/Images/EnemyTankIcon.png";
 }
