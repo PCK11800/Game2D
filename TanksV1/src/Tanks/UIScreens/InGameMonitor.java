@@ -10,7 +10,7 @@ import org.jsfml.graphics.Text;
 public class InGameMonitor {
 
     private int[] currentData;
-    private Text enemyText;
+    private Text healthText, enemyText;
     private Window window;
 
     //Health Bar
@@ -46,7 +46,12 @@ public class InGameMonitor {
         healthBar_bar.setSize(240, 60);
         skull.setLocation(0, 0);
         skull.setSize(240, 60);
-
+        healthText = new Text();
+        healthText.setPosition(45, 20);
+        healthText.setFont(new GameFont(FontPath.PIXEL));
+        healthText.setCharacterSize(15);
+        healthText.setColor(Color.WHITE);
+        healthText.setString("You are dead!");
     }
 
     private void printHealthBar(int health)
@@ -54,6 +59,7 @@ public class InGameMonitor {
         healthBar_bar.setTextureRect(new IntRect(0, 0, 20 + (130 * health/100), 50));
         if(health <= 0){
             skull.draw(window);
+            window.draw(healthText);
         }
         else{
             healthBar_container.draw(window);
