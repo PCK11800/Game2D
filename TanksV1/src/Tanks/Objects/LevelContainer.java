@@ -181,15 +181,13 @@ public class LevelContainer
 
     private void updateInGameMonitor()
     {
+        //Health
         if(playerList.size() > 0){
             Tank player = playerList.get(0);
-            inGameMonitor.updateMonitor(player.getCurrentData());
+            inGameMonitor.setCurrentData(0, player.getHealth());
         }
-        else
-        {
-            int[] deathData = {0};
-            inGameMonitor.updateMonitor(deathData);
-        }
+        inGameMonitor.setCurrentData(1, enemyList.size());
+        inGameMonitor.updateMonitor();
     }
 
     /**
@@ -205,14 +203,11 @@ public class LevelContainer
         }
     }
 
-
     //Testing function
     public void unlockExits()
     {
         this.map.unlockExits();
     }
-
-
 
     /**
      * Updates all of the map objects within a map
