@@ -85,10 +85,11 @@ public class GameMode
      */
     public void update()
     {
-        //Pause
         pauseListener.handlePause();
-
-        if(!paused){
+        gameMusicHandler.musicHandler();
+        if(paused) { gameMusicHandler.pause(); }
+        else{
+            gameMusicHandler.resume();
             //Tests to see if you are on a UISCreen - if so update that screen
             if (uiManager.isOnUIScreen())
             {
@@ -125,7 +126,6 @@ public class GameMode
                 }
             }
         }
-        gameMusicHandler.musicHandler();
     }
 
     public void pause(){
