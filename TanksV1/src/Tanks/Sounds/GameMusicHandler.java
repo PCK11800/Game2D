@@ -34,4 +34,20 @@ public class GameMusicHandler {
             isBackgroundMusicDonePlaying = true;
         }
     }
+
+    public void pause()
+    {
+        if(currentSong.getStatus() == SoundSource.Status.PLAYING)
+        {
+            currentSong.pause();
+        }
+    }
+
+    public void resume()
+    {
+        if(currentSong.getStatus() == SoundSource.Status.PAUSED)
+        {
+            currentSong.play();
+        }
+    }
 }

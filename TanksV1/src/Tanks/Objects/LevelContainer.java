@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Tanks.ObjectComponents.DeadTank;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
+import Tanks.UIScreens.InGameMonitor;
 import Tanks.Window.Window;
 
 /**
@@ -25,6 +26,8 @@ public class LevelContainer
     private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
 
+    private InGameMonitor inGameMonitor;
+
 
     /**
      * The constructor
@@ -39,6 +42,7 @@ public class LevelContainer
         this.map = new Map(window);
         this.mapGenerator = new MapGenerator(window, map, mapXSize, mapYSize, seed);
         this.numEnemies = numEnemies;
+        this.inGameMonitor = new InGameMonitor(this.window);
     }
 
 
@@ -92,6 +96,7 @@ public class LevelContainer
         updateShells();
         updateEnemies();
         updateMap();
+        updateInGameMonitor();
 
         //If need to load the next level
         if (updatePlayers())
@@ -171,6 +176,19 @@ public class LevelContainer
         for(int i = 0; i < deadTankList.size(); i++)
         {
             deadTankList.get(i).update();
+        }
+    }
+
+    private void updateInGameMonitor()
+    {
+        if(playerList.size() > 0){
+            Tank player = playerList.get(0);
+            inGameMonitor.updateMonitor(player.getCurrentData());
+        }
+        else
+        {
+            int[] deathData = {0};
+            inGameMonitor.updateMonitor(deathData);
         }
     }
 

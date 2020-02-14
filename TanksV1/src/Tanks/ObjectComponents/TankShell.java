@@ -79,22 +79,14 @@ public class TankShell extends RotatingObject{
 			Line2D bottom = shellBounds[1];
 			Line2D left = shellBounds[2];
 			Line2D right = shellBounds[3];
-			
-			float i1, j1, i2, j2, i3, j3, i4, j4;
-			i1 = map.getObjectsInMap().get(i).getCornerCoordinates("topleft", "x");
-			j1 = map.getObjectsInMap().get(i).getCornerCoordinates("topleft", "y") * -1;
-			i2 = map.getObjectsInMap().get(i).getCornerCoordinates("topright", "x");
-			j2 = map.getObjectsInMap().get(i).getCornerCoordinates("topright", "y") * -1;
-			i3 = map.getObjectsInMap().get(i).getCornerCoordinates("bottomleft", "x");
-			j3 = map.getObjectsInMap().get(i).getCornerCoordinates("bottomleft", "y") * -1;
-			i4 = map.getObjectsInMap().get(i).getCornerCoordinates("bottomright", "x");
-			j4 = map.getObjectsInMap().get(i).getCornerCoordinates("bottomright", "y") * -1;
-			
-			Line2D map_top = new Line2D.Float(i1, j1, i2, j2);
-			Line2D map_bottom = new Line2D.Float(i3, j3, i4, j4);
-			Line2D map_left = new Line2D.Float(i1, j1, i3, j3);
-			Line2D map_right = new Line2D.Float(i2, j2, i4, j4);
-			
+
+			Line2D objectBounds[] = map.getObjectsInMap().get(i).getObjectBounds();
+
+			Line2D map_top = objectBounds[0];
+			Line2D map_bottom = objectBounds[1];
+			Line2D map_left = objectBounds[2];
+			Line2D map_right = objectBounds[3];
+
 			int collisionState = 0; //0 = no collision, 1 = top, 10 = bottom, 33 = left, 71 = right
 			
 			if(ricochetClock.getElapsedTime().asMilliseconds() >= Tank.timePerFrame) {
@@ -230,31 +222,7 @@ public class TankShell extends RotatingObject{
 
 	public Line2D[] getShellBounds()
 	{
-		//If you want to have multiple player tanks, just add a for loop for the playerList
-		float x1, y1, x2, y2, x3, y3, x4, y4;
-
-		x1 = this.getCornerCoordinates("topleft", "x");
-		y1 = this.getCornerCoordinates("topleft", "y") * -1;
-		x2 = this.getCornerCoordinates("topright", "x");
-		y2 = this.getCornerCoordinates("topright", "y") * -1;
-		x3 = this.getCornerCoordinates("bottomleft", "x");
-		y3 = this.getCornerCoordinates("bottomleft", "y") * -1;
-		x4 = this.getCornerCoordinates("bottomright", "x");
-		y4 = this.getCornerCoordinates("bottomright", "y") * -1;
-
-		//Lines of tank hull
-		Line2D top = new Line2D.Float(x1, y1, x2, y2);
-		Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
-		Line2D left = new Line2D.Float(x1, y1, x3, y3);
-		Line2D right = new Line2D.Float(x2, y2, x4, y4);
-
-		Line2D linesArray[] = new Line2D[4];
-		linesArray[0] = top;
-		linesArray[1] = bottom;
-		linesArray[2] = left;
-		linesArray[3] = right;
-
-		return linesArray;
+		return getObjectBounds();
 	}
 
 	private void ricochetHandling()
@@ -264,8 +232,7 @@ public class TankShell extends RotatingObject{
 			active = false;
 		}
 	}
-
-
+	
 	public int getRicochetNum() {
 		return ricochetNum;
 	}
