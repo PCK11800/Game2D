@@ -38,4 +38,7 @@ public class Textures {
 
 	public static String EXIT_LOCKED = "TanksV1/Resources/Images/ExitLocked.png";
 	public static String EXIT_UNLOCKED = "TanksV1/Resources/Images/ExitUnlocked.png";
+
+	public static String HEALTHBAR_CONTAINER = "TanksV1/Resources/Images/HealthBarContainer.png";
+	public static String HEALTHBAR_BAR = "TanksV1/Resources/Images/HealthBar.png";
 }

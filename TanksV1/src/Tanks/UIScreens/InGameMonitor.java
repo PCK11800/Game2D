@@ -1,7 +1,10 @@
 package Tanks.UIScreens;
 
+import Tanks.ObjectComponents.RotatingObject;
+import Tanks.ObjectComponents.Textures;
 import Tanks.Window.Window;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.Text;
 
 public class InGameMonitor {
@@ -10,17 +13,29 @@ public class InGameMonitor {
     private Text healthText, enemyText;
     private Window window;
 
+    //Health Bar
+    private RotatingObject healthBar_container = new RotatingObject();
+    private RotatingObject healthBar_bar = new RotatingObject();
+
     public InGameMonitor(Window window)
     {
         this.window = window;
-        iniTexts();
+        iniComponents();
         currentData = new int[2];
     }
 
-    private void iniTexts()
+    private void iniComponents()
     {
         healthText = new Text();
         enemyText = new Text();
+
+        healthBar_container.setObjectTexture(Textures.HEALTHBAR_CONTAINER);
+        healthBar_bar.setObjectTexture(Textures.HEALTHBAR_BAR);
+        healthBar_container.setLocation(0, 0);
+        healthBar_container.setSize(240, 60);
+        healthBar_bar.setTextureRect(new IntRect(0, 0, 150, 50));
+        healthBar_bar.setLocation(0, 0);
+        healthBar_bar.setSize(240, 60);
     }
 
     private void printHealth(int health)
@@ -40,6 +55,13 @@ public class InGameMonitor {
         window.draw(healthText);
     }
 
+    private void printHealthBar(int health)
+    {
+        healthBar_bar.setTextureRect(new IntRect(0, 0, 150 * health/100, 50));
+        healthBar_container.draw(window);
+        healthBar_bar.draw(window);
+    }
+
     private void printAmountOfEnemiesLeft(int amount)
     {
         enemyText.setString("Enemies Left: " + amount);
@@ -53,8 +75,8 @@ public class InGameMonitor {
 
     public void updateMonitor()
     {
-        printHealth(currentData[0]);
-        printAmountOfEnemiesLeft(currentData[1]);
+        printHealthBar(currentData[0]);
+        //printAmountOfEnemiesLeft(currentData[1]);
     }
 
     public void setCurrentData(int i, int data) { currentData[i] = data; }

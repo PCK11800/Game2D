@@ -1,5 +1,6 @@
 package Tanks.Sounds;
 
+import Tanks.ObjectComponents.RotatingObject;
 import org.jsfml.audio.SoundSource;
 
 import java.util.ArrayList;
