@@ -32,6 +32,8 @@ public class InGameMonitor {
         if(health >= 33 && health < 66) { healthText.setColor(Color.YELLOW); }
         else if(health < 33) { healthText.setColor(Color.RED); }
 
+        if(health < 0) { healthText.setString("Health: " + 0); }
+        
         healthText.setCharacterSize(30);
         healthText.setPosition(0, 5);
 
