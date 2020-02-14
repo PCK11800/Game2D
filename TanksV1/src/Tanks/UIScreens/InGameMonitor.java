@@ -61,7 +61,7 @@ public class InGameMonitor {
 
     private void printHealthBar(int health)
     {
-        healthBar_bar.setTextureRect(new IntRect(0, 0, 25 + (125 * health/100), 50));
+        healthBar_bar.setTextureRect(new IntRect(0, 0, 20 + (130 * health/100), 50));
         if(health <= 0){
             skull.draw(window);
         }
