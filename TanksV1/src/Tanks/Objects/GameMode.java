@@ -141,4 +141,6 @@ public class GameMode
     public boolean getStatus(){
         return paused;
     }
+
+    public Window getWindow() { return window; }
 }
