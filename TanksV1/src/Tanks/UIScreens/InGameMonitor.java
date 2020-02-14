@@ -28,7 +28,7 @@ public class InGameMonitor {
         else if(health < 33) { healthText.setColor(Color.RED); }
 
         healthText.setCharacterSize(30);
-        healthText.setPosition(100, 0);
+        healthText.setPosition(0, 5);
     }
 
     public void updateMonitor(int[] data)
