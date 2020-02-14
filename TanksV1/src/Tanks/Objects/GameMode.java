@@ -4,6 +4,7 @@ import Tanks.Listeners.PauseListener;
 import Tanks.Sounds.GameMusic;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Sounds.SoundsPath;
+import Tanks.UIScreens.InGameMonitor;
 import Tanks.UIScreens.ShopScreen;
 import Tanks.Window.Window;
 import org.jsfml.audio.SoundSource;
@@ -19,6 +20,7 @@ public class GameMode
     private PauseListener pauseListener;
     private LevelContainer currentLevel;
     private GameMusicHandler gameMusicHandler = new GameMusicHandler();
+
 
     private int currentIndex = 0;
 

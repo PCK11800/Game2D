@@ -576,6 +576,14 @@ public class Tank
 		return data;
 	}
 
+	public int[] getCurrentData()
+	{
+		int[] data = new int[8];
+		data[0] = health;
+
+		return data;
+	}
+
 	public float getXPos() { return turret.getxPos(); }
 
 	public float getYPos() { return turret.getyPos(); }
