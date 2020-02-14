@@ -315,37 +315,9 @@ public class Tank
 		}
 	}
 
-	/**
-	 * Returns an array holding the four lines of a tank.
-	 * @return Line2D[top, bottom, left, right]
-	 */
 	public Line2D[] getTankBounds()
 	{
-		//If you want to have multiple player tanks, just add a for loop for the playerList
-		float x1, y1, x2, y2, x3, y3, x4, y4;
-
-		x1 = hull.getCornerCoordinates("topleft", "x");
-		y1 = hull.getCornerCoordinates("topleft", "y") * -1;
-		x2 = hull.getCornerCoordinates("topright", "x");
-		y2 = hull.getCornerCoordinates("topright", "y") * -1;
-		x3 = hull.getCornerCoordinates("bottomleft", "x");
-		y3 = hull.getCornerCoordinates("bottomleft", "y") * -1;
-		x4 = hull.getCornerCoordinates("bottomright", "x");
-		y4 = hull.getCornerCoordinates("bottomright", "y") * -1;
-
-		//Lines of tank hull
-		Line2D top = new Line2D.Float(x1, y1, x2, y2);
-		Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
-		Line2D left = new Line2D.Float(x1, y1, x3, y3);
-		Line2D right = new Line2D.Float(x2, y2, x4, y4);
-
-		Line2D linesArray[] = new Line2D[4];
-		linesArray[0] = top;
-		linesArray[1] = bottom;
-		linesArray[2] = left;
-		linesArray[3] = right;
-
-		return linesArray;
+		return hull.getObjectBounds();
 	}
 
 	/**
@@ -439,21 +411,12 @@ public class Tank
 
 		for(int i = 0; i < map.getObjectsInMap().size(); i++)
 		{
-			float[] cCoords = getObjectCornerCoordinates(i);
+			Line2D objectBounds[] = map.getObjectsInMap().get(i).getObjectBounds();
 
-			i1 = cCoords[0];
-			j1 = cCoords[1];
-			i2 = cCoords[2];
-			j2 = cCoords[3];
-			i3 = cCoords[4];
-			j3 = cCoords[5];
-			i4 = cCoords[6];
-			j4 = cCoords[7];
-
-			Line2D map_top = new Line2D.Float(i1, j1, i2, j2);
-			Line2D map_bottom = new Line2D.Float(i3, j3, i4, j4);
-			Line2D map_left = new Line2D.Float(i1, j1, i3, j3);
-			Line2D map_right = new Line2D.Float(i2, j2, i4, j4);
+			Line2D map_top = objectBounds[0];
+			Line2D map_bottom = objectBounds[1];
+			Line2D map_left = objectBounds[2];
+			Line2D map_right = objectBounds[3];
 
 
 			if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top) || bottom.intersectsLine(map_top) ||
@@ -475,29 +438,6 @@ public class Tank
 			}
 		}
 	}
-
-
-	/**
-	 * This method returns all of the corner coordinates of a given map object
-	 * @param i the index of the map object in the mapObject ArrayList
-	 * @return an array of corner coordinates
-	 */
-	private float[] getObjectCornerCoordinates(int i)
-	{
-		float[] cCoords = new float[8];
-
-		cCoords[0] = map.getObjectsInMap().get(i).getCornerCoordinates("topleft", "x");
-		cCoords[1] = map.getObjectsInMap().get(i).getCornerCoordinates("topleft", "y") * -1;
-		cCoords[2] = map.getObjectsInMap().get(i).getCornerCoordinates("topright", "x");
-		cCoords[3] = map.getObjectsInMap().get(i).getCornerCoordinates("topright", "y") * -1;
-		cCoords[4] = map.getObjectsInMap().get(i).getCornerCoordinates("bottomleft", "x");
-		cCoords[5] = map.getObjectsInMap().get(i).getCornerCoordinates("bottomleft", "y") * -1;
-		cCoords[6] = map.getObjectsInMap().get(i).getCornerCoordinates("bottomright", "x");
-		cCoords[7] = map.getObjectsInMap().get(i).getCornerCoordinates("bottomright", "y") * -1;
-
-		return cCoords;
-	}
-
 
 	private void checkPreviousMove()
 	{
