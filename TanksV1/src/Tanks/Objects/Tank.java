@@ -4,7 +4,10 @@ import java.awt.geom.Line2D;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.UUID;
 
+import Tanks.Sounds.GameSound;
+import Tanks.Sounds.SoundsPath;
 import org.jsfml.system.Clock;
 
 import Tanks.Listeners.PlayerListener;
@@ -55,15 +58,13 @@ public class Tank
 	private int rammingDamage;
 
 	private float sizeMult_w, sizeMult_h;
-
-
 	private ArrayList<TankShell> shellList = new ArrayList<>();
-
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
 	private Clock movementDelayClock = new Clock();
 	private Clock rotationDelayClock = new Clock();
+	private Clock tankMovingSoundHandlerClock = new Clock();
 	public static float timePerFrame = 8; //Approx 120 fps
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
@@ -72,16 +73,20 @@ public class Tank
 	private boolean loadNextLevel = false;
 
 	private long lastShellFired = System.nanoTime();
-	private int tankID;
+	private String tankID;
 
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
+
+	GameSound tankFiring;
+	GameSound tankMoving;
 
 	public Tank() 
 	{
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
 		turret.setConnectedTankHull(hull);
+		tankID = UUID.randomUUID().toString();
 	}
 
 	public void setHullTexture(String texturePath)
@@ -156,9 +161,16 @@ public class Tank
 		sizeMult_h = height;
 	}
 
-	public void setID(int ID)
+	public void setFiringSound(String firingSound, float volume)
 	{
-		this.tankID = ID;
+		tankFiring = new GameSound(firingSound);
+		tankFiring.setVolume(volume);
+	}
+
+	public void setMovingSound(String moveSound, float volume)
+	{
+		tankMoving = new GameSound(moveSound);
+		tankMoving.setVolume(volume);
 	}
 
 	public void setShellSpeed(float shellSpeed)
@@ -219,6 +231,8 @@ public class Tank
 		{
 			levelContainer.getShellList().add(createShell());
 			fireDelayClock.restart();
+
+			tankFiring.play();
 		}
 	}
 
@@ -233,6 +247,7 @@ public class Tank
 			turret.setTurretLocation();
 			movementDelayClock.restart();
 			previousMove = 1;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -248,6 +263,7 @@ public class Tank
 			turret.setTurretLocation();
 			movementDelayClock.restart();
 			previousMove = 2;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -263,6 +279,7 @@ public class Tank
 			turret.setTurretLocation();
 			rotationDelayClock.restart();
 			previousTurn = 1;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -279,6 +296,7 @@ public class Tank
 			turret.setTurretLocation();
 			rotationDelayClock.restart();
 			previousTurn = 2;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -305,6 +323,15 @@ public class Tank
 		{
 			turret.rotateLeft();
 			turretDelayClock.restart();
+		}
+	}
+
+	private void tankMovingSoundHandler()
+	{
+		if(tankMovingSoundHandlerClock.getElapsedTime().asMilliseconds() > 180)
+		{
+			tankMovingSoundHandlerClock.restart();
+			tankMoving.play();
 		}
 	}
 
@@ -381,7 +408,7 @@ public class Tank
 				for (int i = 0; i < levelContainer.getEnemyList().size(); i++) {
 					Opponent thisEnemy = levelContainer.getEnemyList().get(i);
 
-					if (thisEnemy.getID() != tankID) {
+					if (!thisEnemy.getID().equals(tankID)) {
 
 						Line2D enemyLines[] = thisEnemy.getTankBounds();
 						//Lines of tank hull
@@ -498,20 +525,24 @@ public class Tank
 		if(previousMove == 1 && previousTurn >= 0)
 		{
 			moveBackward();
+			moveBackward();
 		}
 		//Only backward
 		else if(previousMove == 2 && previousTurn >= 0)
 		{
+			moveForward();
 			moveForward();
 		}
 		//Only turnLeft
 		else if(previousMove == 0 && previousTurn == 1)
 		{
 			turnRight();
+			turnRight();
 		}
 		//Only turnRight
 		else if (previousMove == 0 && previousTurn == 2)
 		{
+			turnLeft();
 			turnLeft();
 		}
 	}
@@ -623,7 +654,7 @@ public class Tank
 
 	public boolean isPlayer() { return isPlayerControlled; }
 
-	public int getID() { return tankID; }
+	public String getID() { return tankID; }
 
 	public int getDamagePerShell() { return damagePerShell; }
 

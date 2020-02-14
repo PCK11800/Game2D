@@ -1,7 +1,12 @@
 package Tanks.Objects;
 
+import Tanks.Listeners.PauseListener;
+import Tanks.Sounds.GameMusic;
+import Tanks.Sounds.GameMusicHandler;
+import Tanks.Sounds.SoundsPath;
 import Tanks.UIScreens.ShopScreen;
 import Tanks.Window.Window;
+import org.jsfml.audio.SoundSource;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,12 +16,16 @@ public class GameMode
     private ArrayList<LevelContainer> levels = new ArrayList<LevelContainer>();
     private Window window;
     private UIScreenManager uiManager;
+    private PauseListener pauseListener;
     private LevelContainer currentLevel;
+    private GameMusicHandler gameMusicHandler = new GameMusicHandler();
 
     private int currentIndex = 0;
 
     private Random random;
     private long seed;
+
+    private boolean paused = false;
 
     /**
      * The constructor
@@ -26,6 +35,7 @@ public class GameMode
     {
         this.window = window;
         this.uiManager = new UIScreenManager(window);
+        this.pauseListener = new PauseListener(this);
         this.seed = seed;
 
         setLevels();
@@ -75,40 +85,58 @@ public class GameMode
      */
     public void update()
     {
-        //Tests to see if you are on a UISCreen - if so update that screen
-        if (uiManager.isOnUIScreen())
-        {
-            uiManager.update();
+        //Pause
+        pauseListener.handlePause();
 
-            if(uiManager.hideUI())
+        if(!paused){
+            //Tests to see if you are on a UISCreen - if so update that screen
+            if (uiManager.isOnUIScreen())
             {
-                uiManager.changeState();
-                uiManager.resetFlags();
-            }
-        }
+                uiManager.update();
 
-        //In an arena
-        else
-        {
-            if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
-            {
-                //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
-                if ((currentIndex % 3) == 0)
+                if(uiManager.hideUI())
                 {
                     uiManager.changeState();
-                    uiManager.displayShop();
+                    uiManager.resetFlags();
                 }
+            }
 
-                currentIndex++;
+            //In an arena
+            else
+            {
+                if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
+                {
+                    //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
+                    if ((currentIndex % 3) == 0)
+                    {
+                        uiManager.changeState();
+                        uiManager.displayShop();
+                    }
 
-                currentLevel = levels.get(currentIndex);
+                    currentIndex++;
 
-                //This improves ram usage - removes the last maps references, so it is garbage collected
-                levels.remove(currentIndex -1);
-                currentIndex--;
+                    currentLevel = levels.get(currentIndex);
 
-                currentLevel.createLevel();
+                    //This improves ram usage - removes the last maps references, so it is garbage collected
+                    levels.remove(currentIndex -1);
+                    currentIndex--;
+
+                    currentLevel.createLevel();
+                }
             }
         }
+        gameMusicHandler.musicHandler();
+    }
+
+    public void pause(){
+        paused = true;
+    }
+
+    public void unpause(){
+        paused = false;
+    }
+
+    public boolean getStatus(){
+        return paused;
     }
 }

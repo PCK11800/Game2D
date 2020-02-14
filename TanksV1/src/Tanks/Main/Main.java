@@ -31,7 +31,7 @@ public class Main
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		window = new Window((int)screenSize.getWidth(), (int)screenSize.getHeight(), "Tanks", frameRate);
-		window.setBackgroundColor(Color.WHITE);
+		window.setBackgroundColor(Color.BLACK);
 	}
 	
 	private void iniGame() 

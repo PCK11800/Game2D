@@ -1,6 +1,6 @@
 package Tanks.Objects;
 
-import Tanks.ObjectComponents.Textures;
+import Tanks.Objects.VariousOpponents.HenryOpponent;
 import Tanks.Window.Window;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,8 +129,6 @@ public class EnemySpawner
         Collections.shuffle(availableTiles); //this shuffles the tiles randomly - this is what causes the enemies to be placed randomly
         Collections.shuffle(availableTiles);
 
-        int numOfEnemies = 1;
-
         //Placing enemies
         if (this.availableTiles.size() >= this.numEnemies)
         {
@@ -144,8 +142,7 @@ public class EnemySpawner
                 float enemyYPos = tileCenterY + ((tileCenterY * 2) * (currentTile.yPos));
                 enemyYPos += this.mapGenerator.getOffsetTopY();
 
-                initEnemy(enemyXPos, enemyYPos, numOfEnemies);
-                numOfEnemies++;
+                initEnemy(enemyXPos, enemyYPos);
             }
         }
 
@@ -160,8 +157,7 @@ public class EnemySpawner
                 float enemyYPos = tileCenterY + ((tileCenterY * 2) * (currentTile.yPos));
                 enemyYPos += this.mapGenerator.getOffsetTopY();
 
-                initEnemy(enemyXPos, enemyYPos, numOfEnemies);
-                numOfEnemies++;
+                initEnemy(enemyXPos, enemyYPos);
             }
         }
     }
@@ -172,11 +168,9 @@ public class EnemySpawner
      * @param xPos the initial x position of the tank
      * @param yPos the initial y position of the tank
      */
-    private void initEnemy(float xPos, float yPos, int id)
+    private void initEnemy(float xPos, float yPos)
     {
-
-        TobyOpponent enemy = new TobyOpponent(playerList.get(0),mapGenerator, 1);
-        enemy.setID(id);
+        HenryOpponent enemy = new HenryOpponent(playerList.get(0),mapGenerator, 1);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
