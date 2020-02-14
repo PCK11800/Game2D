@@ -16,6 +16,7 @@ public class InGameMonitor {
     //Health Bar
     private RotatingObject healthBar_container = new RotatingObject();
     private RotatingObject healthBar_bar = new RotatingObject();
+    private RotatingObject skull = new RotatingObject();
 
     public InGameMonitor(Window window)
     {
@@ -31,11 +32,14 @@ public class InGameMonitor {
 
         healthBar_container.setObjectTexture(Textures.HEALTHBAR_CONTAINER);
         healthBar_bar.setObjectTexture(Textures.HEALTHBAR_BAR);
+        skull.setObjectTexture(Textures.SKULL);
         healthBar_container.setLocation(0, 0);
         healthBar_container.setSize(240, 60);
         healthBar_bar.setTextureRect(new IntRect(0, 0, 150, 50));
         healthBar_bar.setLocation(0, 0);
         healthBar_bar.setSize(240, 60);
+        skull.setLocation(0, 0);
+        skull.setSize(240, 60);
     }
 
     private void printHealth(int health)
@@ -57,9 +61,14 @@ public class InGameMonitor {
 
     private void printHealthBar(int health)
     {
-        healthBar_bar.setTextureRect(new IntRect(0, 0, 150 * health/100, 50));
-        healthBar_container.draw(window);
-        healthBar_bar.draw(window);
+        healthBar_bar.setTextureRect(new IntRect(0, 0, 25 + (125 * health/100), 50));
+        if(health <= 0){
+            skull.draw(window);
+        }
+        else{
+            healthBar_container.draw(window);
+            healthBar_bar.draw(window);
+        }
     }
 
     private void printAmountOfEnemiesLeft(int amount)
