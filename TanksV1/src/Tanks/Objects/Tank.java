@@ -491,7 +491,6 @@ public class Tank
 		}
 	}
 
-
 	//Call this in game loop
 	public boolean update()
 	{
