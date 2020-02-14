@@ -74,7 +74,7 @@ public class LevelContainer
         player.setLevelContainer(this);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
-        player.config("fastshot_upgrade");
+        player.config("machinegun_upgrade");
 
         playerList.add(player);
     }
@@ -123,6 +123,7 @@ public class LevelContainer
             else if(!player.isAlive()){
                 deadTankList.add(new DeadTank(window, player.getDeathData()));
                 playerList.remove(i);
+                playerList.trimToSize();
             }
         }
         return load;
@@ -141,6 +142,7 @@ public class LevelContainer
                 //Add dead tank
                 deadTankList.add(new DeadTank(window, enemy.getDeathData()));
                 enemyList.remove(i);
+                enemyList.trimToSize();
             }
 
             enemy.update();

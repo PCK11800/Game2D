@@ -4,6 +4,7 @@ import java.awt.geom.Line2D;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import Tanks.Sounds.GameSound;
 import Tanks.Sounds.SoundsPath;
@@ -71,7 +72,7 @@ public class Tank
 	private boolean loadNextLevel = false;
 
 	private long lastShellFired = System.nanoTime();
-	private int tankID;
+	private String tankID;
 
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
@@ -83,6 +84,7 @@ public class Tank
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
 		turret.setConnectedTankHull(hull);
+		tankID = UUID.randomUUID().toString();
 	}
 
 	public void setHullTexture(String texturePath)
@@ -161,11 +163,6 @@ public class Tank
 	{
 		tankFiring = new GameSound(SoundsPath.TANKFIRING);
 		tankFiring.setVolume(volume);
-	}
-
-	public void setID(int ID)
-	{
-		this.tankID = ID;
 	}
 
 	public void setShellSpeed(float shellSpeed)
@@ -391,7 +388,7 @@ public class Tank
 				for (int i = 0; i < levelContainer.getEnemyList().size(); i++) {
 					Opponent thisEnemy = levelContainer.getEnemyList().get(i);
 
-					if (thisEnemy.getID() != tankID) {
+					if (!thisEnemy.getID().equals(tankID)) {
 
 						Line2D enemyLines[] = thisEnemy.getTankBounds();
 						//Lines of tank hull
@@ -637,7 +634,7 @@ public class Tank
 
 	public boolean isPlayer() { return isPlayerControlled; }
 
-	public int getID() { return tankID; }
+	public String getID() { return tankID; }
 
 	public int getDamagePerShell() { return damagePerShell; }
 

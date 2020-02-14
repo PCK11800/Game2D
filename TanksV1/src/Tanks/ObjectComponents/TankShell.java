@@ -2,6 +2,8 @@ package Tanks.ObjectComponents;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.UUID;
 
 import Tanks.Objects.LevelContainer;
 import Tanks.Objects.Opponent;
@@ -24,6 +26,7 @@ public class TankShell extends RotatingObject{
 	private Clock ricochetClock = new Clock();
 	private Clock shotClock;
 	private boolean active = true;
+	private String id;
 	
 	public TankShell(TankTurret connectedTankTurret, String texturePath, Window window, float shellSpeed, LevelContainer levelContainer, int maxRicochetNum, int damage)
 	{
@@ -38,6 +41,7 @@ public class TankShell extends RotatingObject{
 		setCenterLocation(connectedTankTurret.getxPos() + (float)(connectedTankTurret.getWidth() * Math.sin(Math.toRadians(connectedTankTurret.objectDirection))), connectedTankTurret.getyPos() - (float)(connectedTankTurret.getWidth() * Math.cos(Math.toRadians(connectedTankTurret.objectDirection))));
 		rotateObject(connectedTankTurret.objectDirection);
 		shotClock = new Clock();
+		id = UUID.randomUUID().toString();
 	}
 
 
@@ -70,21 +74,11 @@ public class TankShell extends RotatingObject{
 	{
 		for(int i = 0; i < map.getObjectsInMap().size(); i++) 
 		{
-			
-			float x1, y1, x2, y2, x3, y3, x4, y4;
-			x1 = this.getCornerCoordinates("topleft", "x");
-			y1 = this.getCornerCoordinates("topleft", "y") * -1;
-			x2 = this.getCornerCoordinates("topright", "x");
-			y2 = this.getCornerCoordinates("topright", "y") * -1;
-			x3 = this.getCornerCoordinates("bottomleft", "x");
-			y3 = this.getCornerCoordinates("bottomleft", "y") * -1;
-			x4 = this.getCornerCoordinates("bottomright", "x");
-			y4 = this.getCornerCoordinates("bottomright", "y") * -1;
-			
-			Line2D top = new Line2D.Float(x1, y1, x2, y2); 
-			Line2D left = new Line2D.Float(x1, y1, x3, y3);
-			Line2D right = new Line2D.Float(x2, y2, x4, y4);			
-			Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
+			Line2D shellBounds[] = getShellBounds();
+			Line2D top = shellBounds[0];
+			Line2D bottom = shellBounds[1];
+			Line2D left = shellBounds[2];
+			Line2D right = shellBounds[3];
 			
 			float i1, j1, i2, j2, i3, j3, i4, j4;
 			i1 = map.getObjectsInMap().get(i).getCornerCoordinates("topleft", "x");
@@ -168,20 +162,11 @@ public class TankShell extends RotatingObject{
 			Line2D player_left = playerBounds[2];
 			Line2D player_right = playerBounds[3];
 
-			float x1, y1, x2, y2, x3, y3, x4, y4;
-			x1 = this.getCornerCoordinates("topleft", "x");
-			y1 = this.getCornerCoordinates("topleft", "y") * -1;
-			x2 = this.getCornerCoordinates("topright", "x");
-			y2 = this.getCornerCoordinates("topright", "y") * -1;
-			x3 = this.getCornerCoordinates("bottomleft", "x");
-			y3 = this.getCornerCoordinates("bottomleft", "y") * -1;
-			x4 = this.getCornerCoordinates("bottomright", "x");
-			y4 = this.getCornerCoordinates("bottomright", "y") * -1;
-
-			Line2D top = new Line2D.Float(x1, y1, x2, y2);
-			Line2D left = new Line2D.Float(x1, y1, x3, y3);
-			Line2D right = new Line2D.Float(x2, y2, x4, y4);
-			Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
+			Line2D shellBounds[] = getShellBounds();
+			Line2D top = shellBounds[0];
+			Line2D bottom = shellBounds[1];
+			Line2D left = shellBounds[2];
+			Line2D right = shellBounds[3];
 
 			for(int i = 0; i < enemyList.size(); i++)
 			{
@@ -212,6 +197,66 @@ public class TankShell extends RotatingObject{
 		}
 	}
 
+	private void shellToShellCollisionHandling()
+	{
+		for(int i = 0; i < levelContainer.getShellList().size(); i++)
+		{
+			TankShell incomingShell = levelContainer.getShellList().get(i);
+			if(!incomingShell.getID().equals(getID()))
+			{
+				Line2D shellBounds[] = getShellBounds();
+				Line2D top = shellBounds[0];
+				Line2D bottom = shellBounds[1];
+				Line2D left = shellBounds[2];
+				Line2D right = shellBounds[3];
+
+				Line2D incomingShellBounds[] = incomingShell.getShellBounds();
+				Line2D enemy_top = incomingShellBounds[0];
+				Line2D enemy_bottom = incomingShellBounds[1];
+				Line2D enemy_left = incomingShellBounds[2];
+				Line2D enemy_right = incomingShellBounds[3];
+
+				if (top.intersectsLine(enemy_top) || right.intersectsLine(enemy_top) || left.intersectsLine(enemy_top) || bottom.intersectsLine(enemy_top) ||
+						top.intersectsLine(enemy_right) || right.intersectsLine(enemy_right) || left.intersectsLine(enemy_right) || bottom.intersectsLine(enemy_right) ||
+						top.intersectsLine(enemy_left) || right.intersectsLine(enemy_left) || left.intersectsLine(enemy_left) || bottom.intersectsLine(enemy_left) ||
+						top.intersectsLine(enemy_bottom) || right.intersectsLine(enemy_bottom) || left.intersectsLine(enemy_bottom) || bottom.intersectsLine(enemy_bottom))
+				{
+					active = false;
+					incomingShell.active = false;
+				}
+			}
+		}
+	}
+
+	public Line2D[] getShellBounds()
+	{
+		//If you want to have multiple player tanks, just add a for loop for the playerList
+		float x1, y1, x2, y2, x3, y3, x4, y4;
+
+		x1 = this.getCornerCoordinates("topleft", "x");
+		y1 = this.getCornerCoordinates("topleft", "y") * -1;
+		x2 = this.getCornerCoordinates("topright", "x");
+		y2 = this.getCornerCoordinates("topright", "y") * -1;
+		x3 = this.getCornerCoordinates("bottomleft", "x");
+		y3 = this.getCornerCoordinates("bottomleft", "y") * -1;
+		x4 = this.getCornerCoordinates("bottomright", "x");
+		y4 = this.getCornerCoordinates("bottomright", "y") * -1;
+
+		//Lines of tank hull
+		Line2D top = new Line2D.Float(x1, y1, x2, y2);
+		Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
+		Line2D left = new Line2D.Float(x1, y1, x3, y3);
+		Line2D right = new Line2D.Float(x2, y2, x4, y4);
+
+		Line2D linesArray[] = new Line2D[4];
+		linesArray[0] = top;
+		linesArray[1] = bottom;
+		linesArray[2] = left;
+		linesArray[3] = right;
+
+		return linesArray;
+	}
+
 	private void ricochetHandling()
 	{
 		if(ricochetNum >= maxRicochetNum)
@@ -228,6 +273,7 @@ public class TankShell extends RotatingObject{
 	public void update()
 	{
 		draw(window);
+		shellToShellCollisionHandling();
 		ricochetHandling();
 		if(shotClock.getElapsedTime().asMilliseconds() > Tank.timePerFrame * 2) { hitPlayer(); }
 		collisionHandling();
@@ -236,4 +282,6 @@ public class TankShell extends RotatingObject{
 	}
 
 	public boolean isActive() { return active; }
+
+	public String getID() { return id; }
 }
