@@ -64,6 +64,7 @@ public class Tank
 	private Clock fireDelayClock = new Clock();
 	private Clock movementDelayClock = new Clock();
 	private Clock rotationDelayClock = new Clock();
+	private Clock tankMovingSoundHandlerClock = new Clock();
 	public static float timePerFrame = 8; //Approx 120 fps
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
@@ -78,6 +79,7 @@ public class Tank
 	private TankConfigs tankConfigs = new TankConfigs();
 
 	GameSound tankFiring;
+	GameSound tankMoving;
 
 	public Tank() 
 	{
@@ -161,8 +163,14 @@ public class Tank
 
 	public void setFiringSound(String firingSound, float volume)
 	{
-		tankFiring = new GameSound(SoundsPath.TANKFIRING);
+		tankFiring = new GameSound(firingSound);
 		tankFiring.setVolume(volume);
+	}
+
+	public void setMovingSound(String moveSound, float volume)
+	{
+		tankMoving = new GameSound(moveSound);
+		tankMoving.setVolume(volume);
 	}
 
 	public void setShellSpeed(float shellSpeed)
@@ -225,7 +233,6 @@ public class Tank
 			fireDelayClock.restart();
 
 			tankFiring.play();
-			tankFiring.setVolume(10);
 		}
 	}
 
@@ -240,6 +247,7 @@ public class Tank
 			turret.setTurretLocation();
 			movementDelayClock.restart();
 			previousMove = 1;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -255,6 +263,7 @@ public class Tank
 			turret.setTurretLocation();
 			movementDelayClock.restart();
 			previousMove = 2;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -270,6 +279,7 @@ public class Tank
 			turret.setTurretLocation();
 			rotationDelayClock.restart();
 			previousTurn = 1;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -286,6 +296,7 @@ public class Tank
 			turret.setTurretLocation();
 			rotationDelayClock.restart();
 			previousTurn = 2;
+			tankMovingSoundHandler();
 		}
 	}
 
@@ -315,6 +326,19 @@ public class Tank
 		}
 	}
 
+	private void tankMovingSoundHandler()
+	{
+		if(tankMovingSoundHandlerClock.getElapsedTime().asMilliseconds() > 180)
+		{
+			tankMovingSoundHandlerClock.restart();
+			tankMoving.play();
+		}
+	}
+
+	/**
+	 * Returns an array holding the four lines of a tank.
+	 * @return Line2D[top, bottom, left, right]
+	 */
 	public Line2D[] getTankBounds()
 	{
 		return hull.getObjectBounds();
