@@ -32,6 +32,7 @@ public class Opponent extends Tank {
     protected boolean tileReached = false;
     private int noticeDistance = 1;
     private MapGenerator mapGenerator;
+    private boolean doesMove = true;
 
 
     /**
@@ -68,14 +69,6 @@ public class Opponent extends Tank {
                 }
             }
             mapGrid[j - 1][i] += "R";
-        }
-
-        for (int i = 0; i < mapGrid[0].length; i++)
-        {
-            for (j = 0; j < mapGrid.length; j++)
-            {
-                System.out.println(mapGrid[j][i]);
-            }
         }
     }
 
@@ -117,7 +110,7 @@ public class Opponent extends Tank {
             timer.restart();
         }
 
-        move();
+        if (doesMove) move();
         clone.update();
         if (movementCount == 0) movementCount++;
         playerXPos = player.getXPos();
@@ -125,11 +118,12 @@ public class Opponent extends Tank {
 
         if (player.isAlive()) action();
 
+
+
         //is player in notice range? if yes, target
         Integer[] playerPos = generateGridPos(player.getXPos(), player.getYPos());
         Integer[] pos = generateGridPos(getXPos(), getYPos());
         int moveCount = 0;
-
         Stack<Integer[]> pathToPlayer = findPath(pos[0], pos[1], playerPos[0], playerPos[1]);
         while (!pathToPlayer.isEmpty())
         {
@@ -344,7 +338,7 @@ public class Opponent extends Tank {
         int edgeX = Math.round(x / tileCenterX);
         int edgeY = Math.round(y / tileCenterY);
 
-        if ((diffX < 2.5 || diffX > tileCenterX - 2.5) && (diffY < 2.5 || diffY > tileCenterY - 2.5) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
+        if ((diffX < 5 || diffX > tileCenterX - 5) && (diffY < 5 || diffY > tileCenterY - 5) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
         {
             return true;
         }
@@ -390,7 +384,6 @@ public class Opponent extends Tank {
         while (x != destX || y != destY)
         {
             String current = mapGrid[x][y];
-            System.out.println(current);
             boolean action = false;
             if (!current.contains("T")) {
                 temp = Integer.toString(x) + "," + Integer.toString(y-1);
@@ -442,7 +435,6 @@ public class Opponent extends Tank {
             if (!action)
             {
                 temp = Integer.toString(x) + "," + Integer.toString(y);
-                System.out.println(temp);
                 Integer[] t = prev.peek();
                 prev.pop();
                 try
@@ -680,7 +672,6 @@ public class Opponent extends Tank {
             }
             else if (x2 >= x1 && y2 <= y1) //can hit left side or bottom of object
             {
-                //System.out.println("here3");
                 for (MapObject obj : objects) {
                     if(((((x1 == obj.getLeftBounds() || x1 == obj.getRightBounds())) && (y1 < obj.getBottomBounds() && y1 > obj.getTopBounds())) || (y1 == obj.getTopBounds() || y1 == obj.getBottomBounds()) && (x1 < obj.getRightBounds() && x1 > obj.getLeftBounds())) || ((x2 > x1) && (x2 > obj.getRightBounds())) || ((x2 < x1) && (x2 < obj.getLeftBounds())) || ((y2 > y1) && (y2 > obj.getBottomBounds())) || ((y2 < y1) && (y2 < obj.getTopBounds())))
                     {
@@ -794,4 +785,6 @@ public class Opponent extends Tank {
     public void setNoticeDistance(int dist) { this.noticeDistance = dist; }
 
     public void setPathCalcDelay(int delay) { this.pathCalcDelay = delay; }
+
+    public void disableMovement() { this.doesMove = false; }
 }

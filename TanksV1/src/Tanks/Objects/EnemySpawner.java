@@ -1,6 +1,6 @@
 package Tanks.Objects;
 
-import Tanks.Objects.VariousOpponents.HenryOpponent;
+import Tanks.Objects.VariousOpponents.*;
 import Tanks.Window.Window;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +170,7 @@ public class EnemySpawner
      */
     private void initEnemy(float xPos, float yPos)
     {
-        HenryOpponent enemy = new HenryOpponent(playerList.get(0),mapGenerator, 1);
+        HouseTankSniper enemy = new HouseTankSniper(playerList.get(0),mapGenerator);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
