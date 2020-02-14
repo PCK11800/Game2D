@@ -15,6 +15,14 @@ public class Textures {
 	public static String TANKTURRET_EDWARD = "TanksV1/Resources/Images/TankTurretIconEdward.png";
 	public static String TANKHULL_HENRY =  "TanksV1/Resources/Images/TankHullIconHenry.png";
 	public static String TANKTURRET_HENRY = "TanksV1/Resources/Images/TankTurretIconHenry.png";
+	public static String TANKHULL_JAMES =  "TanksV1/Resources/Images/TankHullIconJames.png";
+	public static String TANKTURRET_JAMES = "TanksV1/Resources/Images/TankTurretIconJames.png";
+	public static String TANKHULL_GORDON =  "TanksV1/Resources/Images/TankHullIconGordon.png";
+	public static String TANKTURRET_GORDON = "TanksV1/Resources/Images/TankTurretIconGordon.png";
+	public static String TANKHULL_PERCY =  "TanksV1/Resources/Images/TankHullIconPercy.png";
+	public static String TANKTURRET_PERCY = "TanksV1/Resources/Images/TankTurretIconPercy.png";
+	public static String TANKHULL_TOBY =  "TanksV1/Resources/Images/TankHullIconToby.png";
+	public static String TANKTURRET_TOBY = "TanksV1/Resources/Images/TankTurretIconToby.png";
 
 
 	public static String TANKSHELL_DEFAULT = "TanksV1/Resources/Images/TankShellIcon.png";

@@ -175,7 +175,7 @@ public class EnemySpawner
     private void initEnemy(float xPos, float yPos, int id)
     {
 
-        HenryOpponent enemy = new HenryOpponent(playerList.get(0),mapGenerator, 1);
+        TobyOpponent enemy = new TobyOpponent(playerList.get(0),mapGenerator, 1);
         enemy.setID(id);
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);

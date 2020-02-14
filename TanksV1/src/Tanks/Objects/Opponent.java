@@ -25,9 +25,8 @@ public class Opponent extends Tank {
     private Stack<Integer[]> movementPath;
     private Integer[] currSpace = new Integer[2];
     protected Clock timer = new Clock();
-    protected int pathCalcDelay = 4;
+    protected int pathCalcDelay = 2;
     private int moveDir = 1;
-    private float xMax, yMax;
     protected boolean targetingPlayer = true;
     protected Integer[] targetTile = new Integer[2];
     protected boolean tileReached = false;
@@ -108,21 +107,6 @@ public class Opponent extends Tank {
             }
             clone = turret.stationaryCopy();
 
-            //finding current positioning of Opponent relative to center of current tile space
-            float newX, newY, xResult, yResult;
-            int temp;
-
-            newX = (float) Math.floor(hull.getxPos());
-            newX = newX / (map.getWidth() / mapGrid.length);
-            temp = (int) Math.floor(newX);
-            xResult = newX - temp;
-            newY =  (float) Math.floor(hull.getyPos());
-            newY = newY / (map.getHeight() / mapGrid[0].length);
-            temp = (int) Math.floor(newY);
-            yResult = newY - temp;
-
-            xMax = xResult;
-            yMax = yResult;
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
@@ -809,4 +793,5 @@ public class Opponent extends Tank {
 
     public void setNoticeDistance(int dist) { this.noticeDistance = dist; }
 
+    public void setPathCalcDelay(int delay) { this.pathCalcDelay = delay; }
 }
