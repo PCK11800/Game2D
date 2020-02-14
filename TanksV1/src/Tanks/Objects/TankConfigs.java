@@ -31,7 +31,7 @@ public class TankConfigs {
         tank.setTurretTexture(Textures.TANKTURRET_RED);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
-        tank.setMovingSound(SoundsPath.TANKMOVING, 10);
+        tank.setMovingSound(SoundsPath.TANKMOVING, 5);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
