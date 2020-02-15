@@ -50,7 +50,7 @@ public class TankConfigs {
         tank.setHullTexture(Textures.TANKHULL_FUTURE);
         tank.setTurretTexture(Textures.TANKTURRET_FUTURE_DEFAULT);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        tank.setFiringSound(SoundsPath.TANKFIRING, 20);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 80);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
         tank.setSize((float) 1, (float) 1);
         tank.setHullTurningDistance(3);
@@ -80,11 +80,13 @@ public class TankConfigs {
 
     public void machinegun_upgrade(Tank tank)
     {
+        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_MACHINEGUN);
+        tank.setShellTexture(Textures.TANKSHELL_MACHINEGUN);
+        tank.setFiringSound(SoundsPath.MACHINEGUN, 5);
         tank.setShellSpeed(10);
-        tank.setFireDelay(100);
+        tank.setFireDelay(250);
         tank.setDamagePerShell(10);
         tank.setShellRicochetNumber(2);
-        tank.setFiringSound(SoundsPath.TANKFIRING, 20);
     }
 
     public void sonicmode_upgrade(Tank tank)

@@ -7,4 +7,5 @@ public class SoundsPath {
     public static String TANKMOVING = "TanksV1/Resources/Sounds/TankMoving2.wav";
     public static String MEGALOVANIA = "TanksV1/Resources/Sounds/Megalovania.wav";
     public static String RAILGUN = "TanksV1/Resources/Sounds/Railgun.ogg";
+    public static String MACHINEGUN = "TanksV1/Resources/Sounds/Machinegun.wav";
 }

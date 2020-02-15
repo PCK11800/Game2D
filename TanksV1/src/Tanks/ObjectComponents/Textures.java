@@ -12,6 +12,7 @@ public class Textures {
 	public static String TANKHULL_FUTURE = "TanksV1/Resources/Images/TankHullIconFuture.png";
 	public static String TANKTURRET_FUTURE_DEFAULT = "TanksV1/Resources/Images/TankTurretIconFutureDefault.png";
 	public static String TANKTURRET_FUTURE_RAILGUN = "TanksV1/Resources/Images/TankTurretIconFutureRailgun.png";
+	public static String TANKTURRET_FUTURE_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconFutureMachinegun.png";
 	public static String TANKHULL_EDWARD =  "TanksV1/Resources/Images/TankHullIconEdward.png";
 	public static String TANKTURRET_EDWARD = "TanksV1/Resources/Images/TankTurretIconEdward.png";
 	public static String TANKHULL_HENRY =  "TanksV1/Resources/Images/TankHullIconHenry.png";
@@ -25,9 +26,9 @@ public class Textures {
 	public static String TANKHULL_TOBY =  "TanksV1/Resources/Images/TankHullIconToby.png";
 	public static String TANKTURRET_TOBY = "TanksV1/Resources/Images/TankTurretIconToby.png";
 
-
 	public static String TANKSHELL_DEFAULT = "TanksV1/Resources/Images/TankShellIcon.png";
 	public static String TANKSHELL_FAST = "TanksV1/Resources/Images/TankShellIconFast.png";
+	public static String TANKSHELL_MACHINEGUN = "TanksV1/Resources/Images/TankShellIconMachinegun.png";
 
 	public static String TANKHULL_BLUE = "TanksV1/Resources/Images/TankHullIconBlue.png";
 	public static String TANKTURRET_BLUE = "TanksV1/Resources/Images/TankTurretIconBlue.png";
