@@ -27,6 +27,7 @@ public class GameMusicHandler {
         if (isBackgroundMusicDonePlaying) {
             int randomSelection = rand.nextInt(musicList.size());
             currentSong = musicList.get(randomSelection);
+            currentSong.setVolume(100);
             currentSong.play();
             isBackgroundMusicDonePlaying = false;
         }

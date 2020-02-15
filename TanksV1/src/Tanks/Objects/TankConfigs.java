@@ -66,9 +66,10 @@ public class TankConfigs {
         tank.setDamagePerShell(20);
     }
 
-    public void fastshot_upgrade(Tank tank)
+    public void railgun_upgrade(Tank tank)
     {
         tank.setShellTexture(Textures.TANKSHELL_FAST);
+        tank.setFiringSound(SoundsPath.RAILGUN, 80);
         tank.setShellSpeed(15);
         tank.setFireDelay(1000);
         tank.setDamagePerShell(50);

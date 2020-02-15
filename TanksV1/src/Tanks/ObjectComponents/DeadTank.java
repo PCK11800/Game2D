@@ -52,7 +52,7 @@ public class DeadTank{
         fire_animation();
 
         if(!explodedOnce){
-            explosion_sound.setVolume(10);
+            explosion_sound.setVolume(50);
             explosion_animation();
         }
     }

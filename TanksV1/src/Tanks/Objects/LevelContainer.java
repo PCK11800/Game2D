@@ -78,7 +78,7 @@ public class LevelContainer
         player.setLevelContainer(this);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
-        player.config("machinegun_upgrade");
+        player.config("railgun_upgrade");
 
         playerList.add(player);
     }
