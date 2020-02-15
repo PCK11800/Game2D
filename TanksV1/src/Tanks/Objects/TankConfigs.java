@@ -67,7 +67,7 @@ public class TankConfigs {
 
     public void railgun_upgrade(Tank tank)
     {
-        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_RAILGUN);
+        tank.setTurretTexture(Textures.TANKTURRET_GREEN_RAILGUN);
         tank.setSize((float) 1, (float) 1);
         tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
         tank.setShellTexture(Textures.TANKSHELL_FAST);
@@ -80,7 +80,7 @@ public class TankConfigs {
 
     public void machinegun_upgrade(Tank tank)
     {
-        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_MACHINEGUN);
+        tank.setTurretTexture(Textures.TANKTURRET_GREEN_MACHINEGUN);
         tank.setShellTexture(Textures.TANKSHELL_MACHINEGUN);
         tank.setFiringSound(SoundsPath.MACHINEGUN, 5);
         tank.setShellSpeed(10);

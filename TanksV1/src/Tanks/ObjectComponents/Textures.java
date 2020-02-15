@@ -7,6 +7,8 @@ public class Textures {
 
 	public static String TANKHULL_GREEN = "TanksV1/Resources/Images/TankHullIcon.png";
 	public static String TANKTURRET_GREEN = "TanksV1/Resources/Images/TankTurretIcon.png";
+	public static String TANKTURRET_GREEN_RAILGUN = "TanksV1/Resources/Images/TankTurretIconDefaultRailgun.png";
+	public static String TANKTURRET_GREEN_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconDefaultMachinegun.png";
 	public static String TANKHULL_RED = "TanksV1/Resources/Images/TankHullIconRed.png";
 	public static String TANKTURRET_RED = "TanksV1/Resources/Images/TankTurretIconRed.png";
 	public static String TANKHULL_FUTURE = "TanksV1/Resources/Images/TankHullIconFuture.png";

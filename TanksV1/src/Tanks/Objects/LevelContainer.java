@@ -74,12 +74,11 @@ public class LevelContainer
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
         Tank player = new Tank();
-        player.config("player_future");
+        player.config("player_default");
         player.setLevelContainer(this);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
         player.config("railgun_upgrade");
-        player.config("machinegun_upgrade");
 
         playerList.add(player);
     }
