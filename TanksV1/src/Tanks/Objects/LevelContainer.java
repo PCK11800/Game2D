@@ -127,6 +127,7 @@ public class LevelContainer
             }
             else if(!player.isAlive()){
                 deadTankList.add(new DeadTank(window, player.getDeathData()));
+                inGameMonitor.setCurrentData(0, 0);
                 playerList.remove(i);
                 playerList.trimToSize();
             }
