@@ -512,8 +512,11 @@ public class Tank
 	public void config(String config_name)
 	{
 		try{
+			Method fix = TankConfigs.class.getDeclaredMethod("halfTextureFix", Tank.class);
+			fix.setAccessible(true);
 			Method m = TankConfigs.class.getDeclaredMethod(config_name, new Class[]{Tank.class});
 			try{
+				fix.invoke(tankConfigs, this);
 				m.invoke(tankConfigs, new Object[]{this});
 			}catch(IllegalAccessException ie)
 				{

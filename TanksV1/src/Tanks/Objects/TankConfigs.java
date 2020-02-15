@@ -48,12 +48,11 @@ public class TankConfigs {
     public void player_future(Tank tank)
     {
         tank.setHullTexture(Textures.TANKHULL_FUTURE);
-        tank.setTurretTexture(Textures.TANKTURRET_FUTURE);
+        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_DEFAULT);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
         tank.setSize((float) 1, (float) 1);
-        tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
         tank.setMovementSpeed(5);
@@ -68,6 +67,9 @@ public class TankConfigs {
 
     public void railgun_upgrade(Tank tank)
     {
+        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_RAILGUN);
+        tank.setSize((float) 1, (float) 1);
+        tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
         tank.setShellTexture(Textures.TANKSHELL_FAST);
         tank.setFiringSound(SoundsPath.RAILGUN, 80);
         tank.setShellSpeed(15);
@@ -89,5 +91,10 @@ public class TankConfigs {
     {
         tank.setMovementSpeed(10);
         tank.setHullTurningDistance(6);
+    }
+
+    private void halfTextureFix(Tank tank){
+        //Put all the textures that somehow get split in half here
+        tank.setTurretTexture(Textures.TANKTURRET_FUTURE_RAILGUN);
     }
 }

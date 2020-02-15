@@ -10,7 +10,8 @@ public class Textures {
 	public static String TANKHULL_RED = "TanksV1/Resources/Images/TankHullIconRed.png";
 	public static String TANKTURRET_RED = "TanksV1/Resources/Images/TankTurretIconRed.png";
 	public static String TANKHULL_FUTURE = "TanksV1/Resources/Images/TankHullIconFuture.png";
-	public static String TANKTURRET_FUTURE = "TanksV1/Resources/Images/TankTurretIconFuture.png";
+	public static String TANKTURRET_FUTURE_DEFAULT = "TanksV1/Resources/Images/TankTurretIconFutureDefault.png";
+	public static String TANKTURRET_FUTURE_RAILGUN = "TanksV1/Resources/Images/TankTurretIconFutureRailgun.png";
 	public static String TANKHULL_EDWARD =  "TanksV1/Resources/Images/TankHullIconEdward.png";
 	public static String TANKTURRET_EDWARD = "TanksV1/Resources/Images/TankTurretIconEdward.png";
 	public static String TANKHULL_HENRY =  "TanksV1/Resources/Images/TankHullIconHenry.png";
