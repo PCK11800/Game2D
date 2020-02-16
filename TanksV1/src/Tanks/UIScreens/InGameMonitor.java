@@ -57,7 +57,6 @@ public class InGameMonitor {
 
     private void iniMoney()
     {
-
         moneyText = new Text();
         moneyText.setPosition(350, 20);
         moneyText.setFont(new GameFont(FontPath.PIXEL));
@@ -65,7 +64,6 @@ public class InGameMonitor {
         moneyText.setColor(Color.GREEN);
         moneyText.setString("£0");
     }
-
 
     private void printHealthBar(int health)
     {
