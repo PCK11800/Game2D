@@ -14,12 +14,12 @@ public class MainMenu extends UIScreen
         float centerY = window.getHeight() / 2;
 
         //Play
-        addGameModeButton(centerX, (centerY - 200), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addGameModeButton(centerX, (centerY - 200), 400, 125, Textures.NEWGAME, Textures.NEWGAME_HOVER, Textures.NEWGAME_CLICKED);
         //Leaderboard
-        addLoadUIScreenButton(centerX, centerY, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, leaderboard);
+        addLoadUIScreenButton(centerX, centerY, 400, 125, Textures.LEADERBOARD, Textures.LEADERBOARD_HOVER, Textures.LEADERBOARD_CLICKED, leaderboard);
         //Tutorial
-        addLoadUIScreenButton(centerX, (centerY + 200), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, tutorial);
+        addLoadUIScreenButton(centerX, (centerY + 200), 400, 125, Textures.TUTORIAL, Textures.TUTORIAL_HOVER, Textures.TUTORIAL_CLICKED, tutorial);
         //Quit
-        addQuitButton(centerX, (centerY + 400), 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addQuitButton(centerX, (centerY + 400), 400, 125, Textures.EXITGAME, Textures.EXITGAME_HOVER, Textures.EXITGAME_CLICKED);
     }
 }

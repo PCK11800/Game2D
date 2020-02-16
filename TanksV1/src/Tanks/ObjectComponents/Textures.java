@@ -47,4 +47,20 @@ public class Textures {
 	public static String HEALTHBAR_BAR = "TanksV1/Resources/Images/HealthBar.png";
 	public static String SKULL = "TanksV1/Resources/Images/Skull.png";
 	public static String ENEMYTANKICON = "TanksV1/Resources/Images/EnemyTankIcon.png";
+
+	public static String NEWGAME = "TanksV1/Resources/Images/NewGame.png";
+	public static String NEWGAME_HOVER = "TanksV1/Resources/Images/NewGameHover.png";
+	public static String NEWGAME_CLICKED = "TanksV1/Resources/Images/NewGameClicked.png";
+
+	public static String LEADERBOARD = "TanksV1/Resources/Images/Leaderboard.png";
+	public static String LEADERBOARD_HOVER = "TanksV1/Resources/Images/LeaderboardHover.png";
+	public static String LEADERBOARD_CLICKED = "TanksV1/Resources/Images/LeaderboardClicked.png";
+
+	public static String TUTORIAL = "TanksV1/Resources/Images/Tutorial.png";
+	public static String TUTORIAL_HOVER = "TanksV1/Resources/Images/TutorialHover.png";
+	public static String TUTORIAL_CLICKED = "TanksV1/Resources/Images/TutorialClicked.png";
+
+	public static String EXITGAME = "TanksV1/Resources/Images/ExitGame.png";
+	public static String EXITGAME_HOVER = "TanksV1/Resources/Images/ExitGameHover.png";
+	public static String EXITGAME_CLICKED = "TanksV1/Resources/Images/ExitGameClicked.png";
 }
