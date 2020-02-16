@@ -1,12 +1,12 @@
 package Tanks.Objects;
 
-import java.util.ArrayList;
-
 import Tanks.ObjectComponents.DeadTank;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
 import Tanks.UIScreens.InGameMonitor;
 import Tanks.Window.Window;
+
+import java.util.ArrayList;
 
 /**
  * This class is used to store all of the data that is required in a level, i.e. a Map, Player(s), Enemies, etc.
@@ -73,17 +73,14 @@ public class LevelContainer
      */
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
-        Tank player = new Tank();
+        Tank player = new Tank(true);
         player.config("player_default");
         player.setLevelContainer(this);
-        Tank player = new Tank(true);
-        player.setHullTexture(hullTexture);
-        player.setTurretTexture(turretTexture);
-        player.setShellTexture(shellTexture);
-        player.setMap(this.map);
         player.setWindow(window);
         player.setTankLocation(xPos, yPos);
         player.config("railgun_upgrade");
+
+        playerList.add(player);
 
         playerList.add(player);
     }

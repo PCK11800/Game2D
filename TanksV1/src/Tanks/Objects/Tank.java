@@ -1,31 +1,21 @@
 package Tanks.Objects;
 
-import java.awt.geom.Line2D;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import Tanks.Sounds.GameSound;
-import Tanks.Sounds.SoundsPath;
-import org.jsfml.system.Clock;
-
 import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.TankHull;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
+import Tanks.Sounds.GameSound;
 import Tanks.Window.Window;
-
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
-import java.io.IOException;
-import java.nio.file.Paths;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class Tank
 {
@@ -47,6 +37,7 @@ public class Tank
 	 */
 
 	protected Map map;
+	private LevelContainer levelContainer;
 	protected Window window;
 	
 	protected TankHull hull;
@@ -65,10 +56,8 @@ public class Tank
 
 	private float sizeMult_w, sizeMult_h;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
-	private int shellRicochetNumber;
 
 	private Font montserrat = new Font();
-
 	private int money = 0;
 	private Text moneyText = new Text();
 
@@ -226,6 +215,22 @@ private String tankID;
 		listener = new PlayerListener(this);
 		isPlayerControlled = true;
 	}
+
+	public void enableEnemyCollision()
+	{
+		enemyCollision = true;
+	}
+
+	public void disableEnemyCollision()
+	{
+		enemyCollision = false;
+	}
+
+	public void setRammingDamage(int rammingDamage)
+	{
+		this.rammingDamage = rammingDamage;
+	}
+
 
 	/**
 	 * Shoot a shell
