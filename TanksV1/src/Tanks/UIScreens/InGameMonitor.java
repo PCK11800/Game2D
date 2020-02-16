@@ -59,7 +59,7 @@ public class InGameMonitor {
     {
 
         moneyText = new Text();
-        moneyText.setPosition(400, 20);
+        moneyText.setPosition(350, 20);
         moneyText.setFont(new GameFont(FontPath.PIXEL));
         moneyText.setCharacterSize(15);
         moneyText.setColor(Color.GREEN);

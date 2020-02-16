@@ -81,8 +81,6 @@ public class LevelContainer
         player.config("railgun_upgrade");
 
         playerList.add(player);
-
-        playerList.add(player);
     }
 
 
@@ -153,7 +151,6 @@ public class LevelContainer
                 enemyList.trimToSize();
                 playerList.get(0).increaseMoney(10);
             }
-
             enemy.update();
         }
     }

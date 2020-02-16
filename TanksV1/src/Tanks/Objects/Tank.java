@@ -40,7 +40,6 @@ public class Tank
 	
 	protected TankHull hull;
 	protected TankTurret turret;
-//protected int health = 100;
 
 	protected float shellSpeed;
 	protected int shellRicochetNumber;
@@ -57,12 +56,6 @@ public class Tank
 
 	private int money = 0;
 
-	private double currentHealth = 6;
-	private double maxHealth = 6;
-	private Text healthText = new Text();
-
-	private double damage;
-
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
 	private Clock movementDelayClock = new Clock();
@@ -76,7 +69,7 @@ public class Tank
 	private boolean loadNextLevel = false;
 
 	private long lastShellFired = System.nanoTime();
-private String tankID;
+	private String tankID;
 
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
@@ -97,12 +90,7 @@ private String tankID;
 		hull.setObjectTexture(texturePath);
 	}
 
-	public void setHealth(int health) {this.currentHealth = health; }
-
-	public void getHit() {
-		System.out.println("tank: " + currentHealth);
-		//this.currentHealth--;
-	}
+	public void setHealth(int health) {this.health = health; }
 
 	public void setTurretTexture(String texturePath)
 	{
@@ -580,17 +568,12 @@ private String tankID;
 
 	public void increaseHealth(int i)
 	{
-		this.currentHealth += i;
+		this.health += i;
 	}
 
 	public void increaseMaxHealth(int i)
 	{
-		this.maxHealth += i;
-	}
-
-	public void setDamage(double i)
-	{
-		damage = i;
+		this.health += i;
 	}
 
 	public int getFireDelay()
