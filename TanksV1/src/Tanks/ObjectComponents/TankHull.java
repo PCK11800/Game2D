@@ -85,4 +85,6 @@ public class TankHull extends RotatingObject implements Cloneable {
 	{
 		draw(window);
 	}
+
+	public float getObjectDirection() { return this.objectDirection; }
 }

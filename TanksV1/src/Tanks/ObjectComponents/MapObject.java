@@ -2,6 +2,8 @@ package Tanks.ObjectComponents;
 
 import Tanks.Window.Window;
 
+import java.awt.geom.Line2D;
+
 public class MapObject extends RotatingObject
 {
 	protected Window window;
@@ -38,6 +40,7 @@ public class MapObject extends RotatingObject
 		this.unlockedTexture = unlockedTexture;
 		this.isExit = true;
 	}
+
 
 	public boolean getLockedStatus() { return this.isLocked; }
 

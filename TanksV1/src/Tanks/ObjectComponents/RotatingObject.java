@@ -1,5 +1,6 @@
 package Tanks.ObjectComponents;
 
+import java.awt.geom.Line2D;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -21,7 +22,7 @@ public class RotatingObject extends Sprite {
 	public void setObjectTexture(String texturePath) 
 	{
 		texture = texturePath;
-		Path imagePath = FileSystems.getDefault().getPath("..", texturePath);
+		Path imagePath = FileSystems.getDefault().getPath(texturePath);
 		objectTexture = new Texture();
 		try
 		{
@@ -214,6 +215,39 @@ public class RotatingObject extends Sprite {
 		{
 			return 0;
 		}
+	}
+
+	/**
+	 * Returns an array holding the four lines of an object.
+	 * @return Line2D[top, bottom, left, right]
+	 */
+	public Line2D[] getObjectBounds()
+	{
+		//If you want to have multiple player tanks, just add a for loop for the playerList
+		float x1, y1, x2, y2, x3, y3, x4, y4;
+
+		x1 = this.getCornerCoordinates("topleft", "x");
+		y1 = this.getCornerCoordinates("topleft", "y") * -1;
+		x2 = this.getCornerCoordinates("topright", "x");
+		y2 = this.getCornerCoordinates("topright", "y") * -1;
+		x3 = this.getCornerCoordinates("bottomleft", "x");
+		y3 = this.getCornerCoordinates("bottomleft", "y") * -1;
+		x4 = this.getCornerCoordinates("bottomright", "x");
+		y4 = this.getCornerCoordinates("bottomright", "y") * -1;
+
+		//Lines of tank hull
+		Line2D top = new Line2D.Float(x1, y1, x2, y2);
+		Line2D bottom = new Line2D.Float(x3, y3, x4, y4);
+		Line2D left = new Line2D.Float(x1, y1, x3, y3);
+		Line2D right = new Line2D.Float(x2, y2, x4, y4);
+
+		Line2D linesArray[] = new Line2D[4];
+		linesArray[0] = top;
+		linesArray[1] = bottom;
+		linesArray[2] = left;
+		linesArray[3] = right;
+
+		return linesArray;
 	}
 
 	public String getTexturePath() { return texture; }

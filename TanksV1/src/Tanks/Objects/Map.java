@@ -47,4 +47,8 @@ public class Map
 
 	//This is called in the tank class to check if the tank is colliding with an object in the map
 	public ArrayList<MapObject> getObjectsInMap() { return objectList; }
+	public float getWidth() { return window.getWidth(); }
+
+	public float getHeight() { return window.getHeight(); }
+
 }

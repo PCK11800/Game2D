@@ -154,6 +154,7 @@ public class MapGenerator
 	{
 		Direction[] dirs = Direction.values();
 		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+		Collections.shuffle(Arrays.asList(dirs)); //Done twice so that it is less likely to produce the same map 
 
 		for (Direction dir : dirs)
 		{
@@ -203,19 +204,19 @@ public class MapGenerator
 
 				if ((level[j][i] & 1) == 0)
 				{
-					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
-					addObject(xPos + this.wallShort, yPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
+					addObject(xPos + this.wallShort, yPos, this.wallLong, this.wallShort, Textures.BLACKWALL);
 				}
 
 				else
 				{
-					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+					addObject(xPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 				}
 			}
 
 			//Creates part of the east edge of the map
 			System.out.println("+");
-			addObject(this.maxXPos, yPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+			addObject(this.maxXPos, yPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 
 			//Creates the west edge of the map
 			for (int j = 0; j < x; j++)
@@ -225,7 +226,7 @@ public class MapGenerator
 
 				if ((this.level[j][i] & 8) == 0)
 				{
-					addObject(xPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
+					addObject(xPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL);
 				}
 			}
 
@@ -234,7 +235,7 @@ public class MapGenerator
 			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
-				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL, Textures.EXIT_UNLOCKED);
 
 				exitAdded = true;
 			}
@@ -242,7 +243,7 @@ public class MapGenerator
 			else
 			{
 				System.out.println("|");
-				addObject(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BRICKBLOCK);
+				addObject(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL);
 			}
 		}
 
@@ -252,13 +253,13 @@ public class MapGenerator
 			float xPos = (j * this.tileSize);
 
 			System.out.print("+---");
-			addObject(xPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
-			addObject(xPos + this.wallShort, this.maxYPos, this.wallLong, this.wallShort, Textures.BRICKBLOCK);
+			addObject(xPos, this.maxYPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
+			addObject(xPos + this.wallShort, this.maxYPos, this.wallLong, this.wallShort, Textures.BLACKWALL);
 		}
 
 		//Creates the other part of the east edge of the map
 		System.out.println("+");
-		addObject(this.maxXPos, this.maxYPos, this.wallShort, this.wallShort, Textures.EXIT_LOCKED);
+		addObject(this.maxXPos, this.maxYPos, this.wallShort, this.wallShort, Textures.BLACKWALL);
 	}
 
 
@@ -320,6 +321,13 @@ public class MapGenerator
 			e.printStackTrace();
 		}
 	}
+
+
+	public int[][] getMap() { return level; }
+
+	public float getMaxXPos() { return maxXPos; }
+
+	public float getMaxYPos() { return maxYPos; }
 
 
 	public int getXSize() { return this.x; }

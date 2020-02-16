@@ -1,6 +1,6 @@
 package Tanks.Objects;
 
-import Tanks.ObjectComponents.Textures;
+import Tanks.Objects.VariousOpponents.*;
 import Tanks.Window.Window;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +15,7 @@ public class EnemySpawner
     private ArrayList<Opponent> enemyList;
     private ArrayList<Tank> playerList;
     private Map map;
+    private LevelContainer levelContainer;
     private MapGenerator mapGenerator;
     private int numEnemies;
 
@@ -31,14 +32,15 @@ public class EnemySpawner
      * @param mapGenerator the mapGenerator contained within the levelContainer class - used to get the map's size, scale, etc.
      * @param numEnemies the number of enemies to be spawned into a level
      */
-    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies)
+    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer)
     {
         this.window = window;
         this.enemyList = enemyList;
         this.playerList = playerList;
-        this.map = map;
         this.mapGenerator = mapGenerator;
         this.numEnemies = numEnemies;
+        this.levelContainer = levelContainer;
+        this.map = levelContainer.getMap();
 
         getAvailableTiles();
 
@@ -168,22 +170,10 @@ public class EnemySpawner
      */
     private void initEnemy(float xPos, float yPos)
     {
-        Opponent enemy = new Opponent(playerList.get(0));
-        enemy.setHullTexture(Textures.TANKHULL_GREEN);
-        enemy.setTurretTexture(Textures.TANKTURRET_GREEN);
-        enemy.setShellTexture(Textures.TANKSHELL_DEFAULT);
-        enemy.setMap(this.map);
+        HouseTankSniper enemy = new HouseTankSniper(playerList.get(0),mapGenerator);
+        enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
-        enemy.setSize((float) 1, (float) 1);
         enemy.setTankLocation(xPos, yPos);
-        enemy.setHullTurningDistance(3);
-        enemy.setTurretTurningDistance(3);
-        enemy.setMovementSpeed(5);
-        enemy.setInitialDirection(0);
-        enemy.setShellSpeed(10);
-        enemy.setShellRicochetNumber(2);
-        enemy.setFireDelay(500);
-
         enemyList.add(enemy);
     }
 

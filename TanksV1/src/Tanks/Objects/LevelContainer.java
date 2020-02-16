@@ -1,9 +1,11 @@
 package Tanks.Objects;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import Tanks.ObjectComponents.DeadTank;
+import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
+import Tanks.UIScreens.InGameMonitor;
 import Tanks.Window.Window;
 
 /**
@@ -20,7 +22,11 @@ public class LevelContainer
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>(); //This should be changed once enemies are properly implemented
+    private ArrayList<TankShell> shellList = new ArrayList<>();
+    private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
+
+    private InGameMonitor inGameMonitor;
 
 
     /**
@@ -36,6 +42,7 @@ public class LevelContainer
         this.map = new Map(window);
         this.mapGenerator = new MapGenerator(window, map, mapXSize, mapYSize, seed);
         this.numEnemies = numEnemies;
+        this.inGameMonitor = new InGameMonitor(this.window);
     }
 
 
@@ -51,7 +58,7 @@ public class LevelContainer
 
         initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT, playerX, playerY);
 
-        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.playerList, this.map, this.mapGenerator, this.numEnemies);
+        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
         //testing
         //enemyKilled(0);
         unlockExits();
@@ -66,26 +73,20 @@ public class LevelContainer
      */
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
+        Tank player = new Tank();
+        player.config("player_default");
+        player.setLevelContainer(this);
         Tank player = new Tank(true);
         player.setHullTexture(hullTexture);
         player.setTurretTexture(turretTexture);
         player.setShellTexture(shellTexture);
         player.setMap(this.map);
         player.setWindow(window);
-        player.setSize((float) 1, (float) 1);
         player.setTankLocation(xPos, yPos);
-        player.setHullTurningDistance(3);
-        player.setTurretTurningDistance(3);
-        player.setMovementSpeed(5);
-        player.setInitialDirection(0);
-        player.setShellSpeed(10);
-        player.setShellRicochetNumber(2);
-        player.setFireDelay(500);
-        player.enablePlayerControl();
+        player.config("railgun_upgrade");
 
         playerList.add(player);
     }
-
 
 
     /**
@@ -96,8 +97,11 @@ public class LevelContainer
     public boolean update()
     {
         //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
+        updateDeadTanks();
+        updateShells();
         updateEnemies();
         updateMap();
+        updateInGameMonitor();
 
         //If need to load the next level
         if (updatePlayers())
@@ -119,11 +123,18 @@ public class LevelContainer
     {
         boolean load = false;
 
-        for (Tank player : playerList)
+        for (int i = 0; i < playerList.size(); i++)
         {
+            Tank player = playerList.get(i);
             if (player.update())
             {
                 load = true;
+            }
+            else if(!player.isAlive()){
+                deadTankList.add(new DeadTank(window, player.getDeathData()));
+                inGameMonitor.setCurrentData(0, 0);
+                playerList.remove(i);
+                playerList.trimToSize();
             }
         }
         return load;
@@ -135,12 +146,55 @@ public class LevelContainer
      */
     private void updateEnemies()
     {
-        for (Tank enemy : enemyList)
+        for (int i = 0; i < enemyList.size(); i++)
         {
+            Tank enemy = enemyList.get(i);
+            if(!enemy.isAlive()) {
+                //Add dead tank
+                deadTankList.add(new DeadTank(window, enemy.getDeathData()));
+                enemyList.remove(i);
+                enemyList.trimToSize();
+            }
+
             enemy.update();
         }
     }
 
+    private void updateShells()
+    {
+        for(int i = 0; i < shellList.size(); i++)
+        {
+            TankShell shell = shellList.get(i);
+            if(!shell.isActive())
+            {
+                shellList.remove(shell);
+                shellList.trimToSize();
+            }
+            else
+            {
+                shell.update();
+            }
+        }
+    }
+
+    private void updateDeadTanks()
+    {
+        for(int i = 0; i < deadTankList.size(); i++)
+        {
+            deadTankList.get(i).update();
+        }
+    }
+
+    private void updateInGameMonitor()
+    {
+        //Health
+        if(playerList.size() > 0){
+            Tank player = playerList.get(0);
+            inGameMonitor.setCurrentData(0, player.getHealth());
+        }
+        inGameMonitor.setCurrentData(1, enemyList.size());
+        inGameMonitor.updateMonitor();
+    }
 
     /**
      * This method is to be called when an enemy is killed
@@ -155,17 +209,20 @@ public class LevelContainer
         }
     }
 
-
     //Testing function
     public void unlockExits()
     {
         this.map.unlockExits();
     }
 
-
-
     /**
      * Updates all of the map objects within a map
      */
     private void updateMap() { map.update(); }
+
+    public Map getMap() {return map;}
+
+    public ArrayList<Opponent> getEnemyList() {return enemyList;}
+    public ArrayList<Tank> getPlayerList() {return playerList;}
+    public ArrayList<TankShell> getShellList() {return shellList;}
 }

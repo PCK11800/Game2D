@@ -61,9 +61,13 @@ public class Window extends RenderWindow{
 	public void endOfFrame()
 	{
 		display();
-		for (Event event : pollEvents( )) {
-			if (event.type == Event.Type.CLOSED) {
-				close();
+		for (Event event : pollEvents( ))
+		{
+			switch(event.type)
+			{
+				case CLOSED:
+					close();
+					break;
 			}
 		}
 	}
