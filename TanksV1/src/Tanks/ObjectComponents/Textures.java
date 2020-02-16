@@ -63,4 +63,21 @@ public class Textures {
 	public static String EXITGAME = "TanksV1/Resources/Images/ExitGame.png";
 	public static String EXITGAME_HOVER = "TanksV1/Resources/Images/ExitGameHover.png";
 	public static String EXITGAME_CLICKED = "TanksV1/Resources/Images/ExitGameClicked.png";
+
+	public static String HEALTH = "TanksV1/Resources/Images/Health.png";
+	public static String HEALTH_HOVER = "TanksV1/Resources/Images/HealthHover.png";
+	public static String HEALTH_CLICKED = "TanksV1/Resources/Images/HealthClicked.png";
+
+	public static String MAXHEALTH = "TanksV1/Resources/Images/MaxHealth.png";
+	public static String MAXHEALTH_HOVER = "TanksV1/Resources/Images/MaxHealthHover.png";
+	public static String MAXHEALTH_CLICKED = "TanksV1/Resources/Images/MaxHealthClicked.png";
+
+	public static String MINIGUN = "TanksV1/Resources/Images/Minigun.png";
+	public static String MINIGUN_HOVER = "TanksV1/Resources/Images/MinigunHover.png";
+	public static String MINIGUN_CLICKED = "TanksV1/Resources/Images/MinigunClicked.png";
+
+	public static String CONTINUE = "TanksV1/Resources/Images/Continue.png";
+	public static String CONTINUE_HOVER = "TanksV1/Resources/Images/ContinueHover.png";
+	public static String CONTINUE_CLICKED = "TanksV1/Resources/Images/ContinueClicked.png";
+
 }

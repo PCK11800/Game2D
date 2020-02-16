@@ -28,20 +28,20 @@ public class ShopScreen extends UIScreen
         float continueButtonHeight = 125;
 
         //Upgrade buttons - Top Row
-        addUpgradeButton(upgradeButtonWidth, upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
-        addUpgradeButton((screenCenterX - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addUpgradeButton(upgradeButtonWidth, upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.HEALTH, Textures.HEALTH_HOVER, Textures.HEALTH_CLICKED);
+        addUpgradeButton((screenCenterX - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.MAXHEALTH, Textures.MAXHEALTH_HOVER, Textures.MAXHEALTH_CLICKED);
         addUpgradeButton((screenCenterX + upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
         addUpgradeButton((screenWidth - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
 
         //Upgrade buttons - Second
-        addUpgradeButton(upgradeButtonWidth, (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addUpgradeButton(upgradeButtonWidth, (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED);
         addUpgradeButton((screenCenterX - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
         addUpgradeButton((screenCenterX + upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
         addUpgradeButton((screenWidth - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
 
 
         //Continue Button
-        addLoadLevelButton(screenWidth - 250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED);
+        addLoadLevelButton(screenWidth - 250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
     }
 
 }
