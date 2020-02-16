@@ -73,7 +73,7 @@ public class LevelContainer
      */
     private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
     {
-        Tank player = new Tank(true);
+        Tank player = new Tank();
         player.config("player_default");
         player.setLevelContainer(this);
         player.setWindow(window);
@@ -151,6 +151,8 @@ public class LevelContainer
                 deadTankList.add(new DeadTank(window, enemy.getDeathData()));
                 enemyList.remove(i);
                 enemyList.trimToSize();
+                Tank player = playerList.get(0);
+                player.increaseMoney(10);
             }
 
             enemy.update();
