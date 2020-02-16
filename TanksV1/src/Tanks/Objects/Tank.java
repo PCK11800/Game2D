@@ -6,7 +6,6 @@ import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Sounds.GameSound;
 import Tanks.Window.Window;
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
@@ -123,8 +122,6 @@ private String tankID;
 		hull.setWindow(window);
 		turret.setWindow(window);
 		this.window = window;
-		this.drawHealth();
-		this.drawMoney();
 	}
 
 	public void setLevelContainer(LevelContainer levelContainer)
@@ -502,40 +499,11 @@ private String tankID;
 		}
 	}
 
-	public void drawMoney()
-	{
-		moneyText.setString("Money: £0");
-		moneyText.setFont(montserrat);
-		moneyText.setCharacterSize(60);
-		moneyText.setPosition(200, 0);
-		moneyText.setColor(Color.BLACK);
-		window.draw(moneyText);
-	}
-
-	public void drawHealth()
-	{
-		healthText.setString("Health: " +currentHealth +" / " +maxHealth);
-		healthText.setFont(montserrat);
-		healthText.setCharacterSize(60);
-		healthText.setPosition(1200, 0);
-		healthText.setColor(Color.BLACK);
-		window.draw(healthText);
-
-	}
-
 	public void updateMoney()
 	{
 		moneyText.setString("Money: £" +money);
 		window.draw(moneyText);
 	}
-
-	public void updateHealth()
-	{
-		healthText.setString("Health: " +currentHealth +" / " +maxHealth);
-		window.draw(healthText);
-	}
-
-
 
 	//Call this in game loop
 	public boolean update()
