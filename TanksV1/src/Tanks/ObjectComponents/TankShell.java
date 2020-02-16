@@ -242,7 +242,7 @@ public class TankShell extends RotatingObject{
 		draw(window);
 		shellToShellCollisionHandling();
 		ricochetHandling();
-		if(shotClock.getElapsedTime().asMilliseconds() > Tank.timePerFrame * 2.5) { hitPlayer(); }
+		if(shotClock.getElapsedTime().asMilliseconds() > Tank.timePerFrame * 3) { hitPlayer(); }
 		collisionHandling();
 		checkOutOfBounds();
 		launchedForward();
