@@ -10,7 +10,7 @@ import org.jsfml.graphics.Text;
 public class InGameMonitor {
 
     private int[] currentData;
-    private Text healthText, enemyText;
+    private Text healthText, enemyText, moneyText;
     private Window window;
 
     //Health Bar
@@ -25,13 +25,14 @@ public class InGameMonitor {
     {
         this.window = window;
         iniComponents();
-        currentData = new int[2];
+        currentData = new int[3];
     }
 
     private void iniComponents()
     {
         iniHealthBar();
         iniEnemyLeft();
+        iniMoney();
     }
 
     private void iniHealthBar()
@@ -53,6 +54,18 @@ public class InGameMonitor {
         healthText.setColor(Color.WHITE);
         healthText.setString("You are dead!");
     }
+
+    private void iniMoney()
+    {
+
+        moneyText = new Text();
+        moneyText.setPosition(400, 20);
+        moneyText.setFont(new GameFont(FontPath.PIXEL));
+        moneyText.setCharacterSize(15);
+        moneyText.setColor(Color.GREEN);
+        moneyText.setString("£0");
+    }
+
 
     private void printHealthBar(int health)
     {
@@ -85,10 +98,17 @@ public class InGameMonitor {
         window.draw(enemyText);
     }
 
+    private void printMoney(int money)
+    {
+        moneyText.setString("Money: £" + money);
+        window.draw(moneyText);
+    }
+
     public void updateMonitor()
     {
         printHealthBar(currentData[0]);
         printEnemyLeft(currentData[1]);
+        printMoney(currentData[2]);
     }
 
     public void setCurrentData(int i, int data) { currentData[i] = data; }

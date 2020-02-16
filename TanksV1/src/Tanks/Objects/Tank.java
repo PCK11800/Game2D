@@ -6,7 +6,6 @@ import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Sounds.GameSound;
 import Tanks.Window.Window;
-import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
@@ -56,9 +55,7 @@ public class Tank
 	private float sizeMult_w, sizeMult_h;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 
-	private Font montserrat = new Font();
 	private int money = 0;
-	private Text moneyText = new Text();
 
 	private double currentHealth = 6;
 	private double maxHealth = 6;
@@ -497,12 +494,6 @@ private String tankID;
 			turnLeft();
 			turnLeft();
 		}
-	}
-
-	public void updateMoney()
-	{
-		moneyText.setString("Money: £" +money);
-		window.draw(moneyText);
 	}
 
 	//Call this in game loop

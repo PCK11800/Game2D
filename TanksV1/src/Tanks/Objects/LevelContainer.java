@@ -188,6 +188,7 @@ public class LevelContainer
         if(playerList.size() > 0){
             Tank player = playerList.get(0);
             inGameMonitor.setCurrentData(0, player.getHealth());
+            inGameMonitor.setCurrentData(2, player.getMoney());
         }
         inGameMonitor.setCurrentData(1, enemyList.size());
         inGameMonitor.updateMonitor();
