@@ -2,10 +2,9 @@ package Tanks.Objects;
 
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.TankTurret;
-
-import java.awt.geom.Line2D;
 import org.jsfml.system.Clock;
 
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -42,7 +41,6 @@ public class Opponent extends Tank {
      */
     public Opponent(Tank player, MapGenerator mapGen)
     {
-        super(false);
         config("enemy_default");
         this.mapGenerator = mapGen;
         int grid[][] = mapGen.getMap();

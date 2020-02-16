@@ -84,7 +84,7 @@ private String tankID;
 	GameSound tankFiring;
 	GameSound tankMoving;
 
-	public Tank(Boolean player)
+	public Tank()
 	{
 		this.hull = new TankHull();
 		this.turret = new TankTurret();
