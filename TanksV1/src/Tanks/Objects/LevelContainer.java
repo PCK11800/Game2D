@@ -26,8 +26,7 @@ public class LevelContainer
     private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
 
-    private InGameMonitor inGameMonitor;
-
+     private InGameMonitor inGameMonitor;
 
     /**
      * The constructor

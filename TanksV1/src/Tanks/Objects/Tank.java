@@ -637,4 +637,8 @@ public class Tank
 	public float getSizeMult_w() { return sizeMult_w; }
 
 	public float getSizeMult_h() { return sizeMult_h; }
+
+	public TankHull getHull() { return hull; }
+
+	public TankTurret getTurret() { return turret; }
 }

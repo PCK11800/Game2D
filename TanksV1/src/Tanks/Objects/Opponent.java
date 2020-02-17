@@ -2,6 +2,7 @@ package Tanks.Objects;
 
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.TankTurret;
+import Tanks.UIScreens.HealthBar;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
