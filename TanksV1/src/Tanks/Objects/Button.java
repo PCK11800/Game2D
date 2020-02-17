@@ -4,6 +4,7 @@ package Tanks.Objects;
 import Tanks.ObjectComponents.RotatingObject;
 import Tanks.Window.Window;
 import org.jsfml.graphics.FloatRect;
+import org.jsfml.system.Clock;
 
 /**
  * This class represents a button that the user can interact with
@@ -19,7 +20,6 @@ public abstract class Button extends RotatingObject
     private String pressedTexture;
 
     private boolean isHovered = false;
-
 
 
     /**

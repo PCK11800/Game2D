@@ -73,7 +73,9 @@ public class LevelContainer
         player.setTankLocation(xPos, yPos);
     }
 
-    public void addPlayer(Tank player) { this.playerList.add(player); }
+    public void addPlayer(Tank player) {
+        this.playerList.add(player);
+    }
 
 
     /**
@@ -172,8 +174,12 @@ public class LevelContainer
         //Health
         if(playerList.size() > 0){
             Tank player = playerList.get(0);
+            inGameMonitor.setCurrentData(3, player.getStartingHealth());
             inGameMonitor.setCurrentData(0, player.getHealth());
             inGameMonitor.setCurrentData(2, player.getMoney());
+
+            System.out.println("Health: " + playerList.get(0).getHealth());
+            System.out.println("Max Health: " + playerList.get(0).getStartingHealth());
         }
         inGameMonitor.setCurrentData(1, enemyList.size());
         inGameMonitor.updateMonitor();

@@ -2,6 +2,7 @@ package Tanks.UIScreens;
 
 import Tanks.ObjectComponents.RotatingObject;
 import Tanks.ObjectComponents.Textures;
+import Tanks.Objects.Tank;
 import Tanks.Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
@@ -12,6 +13,7 @@ public class InGameMonitor {
     private int[] currentData;
     private Text healthText, enemyText, moneyText;
     private Window window;
+    private Tank tank;
 
     //Health Bar
     private RotatingObject healthBar_container = new RotatingObject();
@@ -25,7 +27,7 @@ public class InGameMonitor {
     {
         this.window = window;
         iniComponents();
-        currentData = new int[3];
+        currentData = new int[4];
     }
 
     private void iniComponents()
@@ -67,7 +69,7 @@ public class InGameMonitor {
 
     private void printHealthBar(int health)
     {
-        healthBar_bar.setTextureRect(new IntRect(0, 0, 20 + (130 * health/100), 50));
+        healthBar_bar.setTextureRect(new IntRect(0, 0, 20 + (130 * health/currentData[3]), 50));
         if(health <= 0){
             skull.draw(window);
             window.draw(healthText);

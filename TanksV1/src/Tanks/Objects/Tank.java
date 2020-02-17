@@ -48,6 +48,7 @@ public class Tank
 	private String shellTexturePath;
 
 	private int health = 100;
+	private int startingHealth = 100;
 	private int damagePerShell;
 	private int rammingDamage;
 
@@ -90,7 +91,10 @@ public class Tank
 		hull.setObjectTexture(texturePath);
 	}
 
-	public void setHealth(int health) {this.health = health; }
+	public void setHealth(int health) {
+		this.health = health;
+		this.startingHealth = health;
+	}
 
 	public void setTurretTexture(String texturePath)
 	{
@@ -513,11 +517,8 @@ public class Tank
 	public void config(String config_name)
 	{
 		try{
-			Method fix = TankConfigs.class.getDeclaredMethod("halfTextureFix", Tank.class);
-			fix.setAccessible(true);
 			Method m = TankConfigs.class.getDeclaredMethod(config_name, new Class[]{Tank.class});
 			try{
-				fix.invoke(tankConfigs, this);
 				m.invoke(tankConfigs, new Object[]{this});
 			}catch(IllegalAccessException ie)
 				{
@@ -579,12 +580,12 @@ public class Tank
 
 	public void increaseHealth(int i)
 	{
-		this.health += i;
+		this.health = this.health + i;
 	}
 
 	public void increaseMaxHealth(int i)
 	{
-		this.health += i;
+		this.startingHealth = this.startingHealth + i;
 	}
 
 	public int getFireDelay()
@@ -652,4 +653,6 @@ public class Tank
 	public TankHull getHull() { return hull; }
 
 	public TankTurret getTurret() { return turret; }
+
+	public int getStartingHealth() { return startingHealth; }
 }

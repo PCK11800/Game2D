@@ -3,6 +3,7 @@ package Tanks.Objects;
 import Tanks.Buttons.*;
 import Tanks.Listeners.UIListener;
 import Tanks.Window.Window;
+import org.jsfml.system.Clock;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ public abstract class UIScreen
     private ArrayList<LoadUIScreenButton> uiScreenButtons = new ArrayList<LoadUIScreenButton>();
     private ArrayList<LoadGameModeButton> gameModeButtons = new ArrayList<LoadGameModeButton>();
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
-
 
     private UIListener listener;
     private UIScreen linkedScreen; //This is set when a button is pressed
