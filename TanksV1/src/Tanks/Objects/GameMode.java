@@ -72,7 +72,6 @@ public class GameMode
     }
 
 
-
     /**
      * This method dynamically creates every level in the game when a new level is to be loaded
      */
@@ -87,21 +86,21 @@ public class GameMode
         {
             mapXSize = 2;
             mapYSize = 2;
-            numEnemies = 1;
+            //numEnemies = 1;
         }
 
         else if (this.levelNum == 1)
         {
             mapXSize = 3;
             mapYSize = 2;
-            numEnemies = 2;
+            //numEnemies = 2;
         }
 
         else if (this.levelNum == 2)
         {
             mapXSize = (this.random.nextInt(1) + 3);
             mapYSize = 3;
-            numEnemies = (this.random.nextInt(1) + 2);
+            //numEnemies = (this.random.nextInt(1) + 2);
         }
 
         //Round 2
@@ -201,7 +200,7 @@ public class GameMode
                     if (levelNum == 3 || levelNum == 6 || levelNum == 9)
                     {
                         uiManager.changeState();
-                        uiManager.displayShop();
+                        uiManager.displayShop(this.player);
                     }
 
                     else if (this.levelNum >= this.maxLevel)

@@ -64,7 +64,9 @@ public abstract class Button extends RotatingObject
     public boolean contains(float x, float y)
     {
         //float rect has a contains method
-        return collider.contains(x, y);
+        //return this.getLocalBounds().contains(x, y);
+        return this.getGlobalBounds().contains(x, y);
+        //return collider.contains(x, y);
     }
 
     /**

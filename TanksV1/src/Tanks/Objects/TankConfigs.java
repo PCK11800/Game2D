@@ -78,7 +78,7 @@ public class TankConfigs {
         tank.setShellRicochetNumber(1);
     }
 
-    public void machinegun_upgrade(Tank tank)
+    public void minigun_upgrade(Tank tank)
     {
         tank.setTurretTexture(Textures.TANKTURRET_GREEN_MACHINEGUN);
         tank.setShellTexture(Textures.TANKSHELL_MACHINEGUN);
@@ -95,7 +95,16 @@ public class TankConfigs {
         tank.setHullTurningDistance(6);
     }
 
-    private void halfTextureFix(Tank tank){
+    public void increase_health(Tank tank)
+    {
+        int health = tank.getHealth();
+
+        tank.setHealth(health += 10);
+    }
+
+
+    private void halfTextureFix(Tank tank)
+    {
         //Put all the textures that somehow get split in half here
         tank.setTurretTexture(Textures.TANKTURRET_FUTURE_RAILGUN);
     }

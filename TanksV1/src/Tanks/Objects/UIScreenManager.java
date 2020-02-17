@@ -46,9 +46,9 @@ public class UIScreenManager
     /**
      * This method is used to display the shop - it is called in gameMode after x number of rounds
      */
-    public void displayShop()
+    public void displayShop(Tank player)
     {
-        this.currentScreen = new ShopScreen(this.window);
+        this.currentScreen = new ShopScreen(this.window, player);
     }
 
     /**

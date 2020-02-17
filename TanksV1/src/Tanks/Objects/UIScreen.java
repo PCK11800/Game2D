@@ -104,9 +104,9 @@ public abstract class UIScreen
      * @param hoveredTexture the texture of the button when the mouse is hovering over it
      * @param pressedTexture the texture of the button when it has been pressed
      */
-    public void addUpgradeButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture)
+    public void addUpgradeButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, Tank player, String config)
     {
-        UpgradeButton b = new UpgradeButton(this.window, x, y, width, height, activeTexture);
+        UpgradeButton b = new UpgradeButton(this.window, x, y, width, height, activeTexture, player, config);
         b.setAltTextures(hoveredTexture, pressedTexture);
 
         upgradeButtons.add(b);
