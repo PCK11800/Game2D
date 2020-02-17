@@ -80,4 +80,9 @@ public class Textures {
 	public static String CONTINUE_HOVER = "TanksV1/Resources/Images/ContinueHover.png";
 	public static String CONTINUE_CLICKED = "TanksV1/Resources/Images/ContinueClicked.png";
 
+	public static String ENEMYHEALTH_FULL = "TanksV1/Resources/Images/EnemyHealthFull.png";
+	public static String ENEMYHEALTH_QUARTERDAMAGE = "TanksV1/Resources/Images/EnemyHealthQuarterDamage.png";
+	public static String ENEMYHEALTH_HALFDAMAGE = "TanksV1/Resources/Images/EnemyHealthHalfDamage.png";
+	public static String ENEMYHEALTH_NEARDEATH = "TanksV1/Resources/Images/EnemyHealthNearDeath.png";
+
 }

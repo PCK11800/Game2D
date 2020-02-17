@@ -32,6 +32,7 @@ public class Opponent extends Tank {
     private int noticeDistance = 1;
     private MapGenerator mapGenerator;
     private boolean doesMove = true;
+    private HealthBar healthBar;
 
 
     /**
@@ -97,7 +98,7 @@ public class Opponent extends Tank {
               generateMovementPathToTile();
             }
             clone = turret.stationaryCopy();
-
+            healthBar = new HealthBar(window, this);
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
@@ -110,6 +111,7 @@ public class Opponent extends Tank {
 
         if (doesMove) move();
         clone.update();
+        healthBar.update();
         if (movementCount == 0) movementCount++;
         playerXPos = player.getXPos();
         playerYPos = player.getYPos();
