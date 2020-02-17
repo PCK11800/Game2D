@@ -423,8 +423,6 @@ public class Tank
 	 */
 	private void objectCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
 	{
-		float i1, j1, i2, j2, i3, j3, i4, j4;
-
 		for(int i = 0; i < map.getObjectsInMap().size(); i++)
 		{
 			Line2D objectBounds[] = map.getObjectsInMap().get(i).getObjectBounds();
@@ -440,17 +438,27 @@ public class Tank
 					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
 					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
 			{
-				collisionLastMove = true;
-				checkPreviousMove();
 
 				if (map.getObjectsInMap().get(i).isExit()) //If it is an exit
 				{
-					if (map.getObjectsInMap().get(i).getLockedStatus() == false) //is unlocked
+					if (!map.getObjectsInMap().get(i).getLockedStatus()) //is unlocked
 					{
 						System.out.println("NEXT LEVEL!");
 						this.loadNextLevel = true;
 						this.increaseMoney(50);
 					}
+
+					else
+					{
+						collisionLastMove = true;
+						checkPreviousMove();
+					}
+				}
+
+				else
+				{
+					collisionLastMove = true;
+					checkPreviousMove();
 				}
 			}
 		}

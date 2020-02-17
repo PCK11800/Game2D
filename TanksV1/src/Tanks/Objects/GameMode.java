@@ -14,15 +14,15 @@ import java.util.Random;
 
 public class GameMode
 {
-    private ArrayList<LevelContainer> levels = new ArrayList<LevelContainer>();
     private Window window;
+    private LevelContainer currentLevel;
+
     private UIScreenManager uiManager;
     private PauseListener pauseListener;
-    private LevelContainer currentLevel;
     private GameMusicHandler gameMusicHandler = new GameMusicHandler();
-
-
-    private int currentIndex = 0;
+    
+    private int levelNum = 0;
+    private int maxLevel = 9; //LevelNum starts at 0, so it is no. of levels + 1
 
     private Random random;
     private long seed;
@@ -40,7 +40,7 @@ public class GameMode
         this.pauseListener = new PauseListener(this);
         this.seed = seed;
 
-        setLevels();
+        createLevel();
         initGameMode();
 
         this.random = new Random(this.seed);
@@ -48,35 +48,89 @@ public class GameMode
 
 
     /**
-     *This method is used to create all of the levels for the single player gameMode
-     * IT WOULD BE BETTER TO MAKE A FUNCTION THAT GENERATES LEVELS ON THE FLY RATHER THAN CREATING THEM ALL AT RUNTIME
+     * This method dynamically creates every level in the game when a new level is to be loaded
      */
-    public void setLevels()
+    private void createLevel()
     {
-        Random rand = new Random(this.seed);
-        //Round 1
-        levels.add(new LevelContainer(this.window, 2, 2, 1, this.seed));
-        levels.add(new LevelContainer(this.window, 3, 2, 2, this.seed));
-        levels.add(new LevelContainer(this.window, (rand.nextInt(1) + 3), 3, (rand.nextInt(1) + 2), this.seed));
+        //Map parameters - with default values
+        int mapXSize = 1;
+        int mapYSize = 1;
+        int numEnemies = 0;
 
-    /*
+        if (this.levelNum == 0)
+        {
+            mapXSize = 2;
+            mapYSize = 2;
+            numEnemies = 1;
+        }
+
+        else if (this.levelNum == 1)
+        {
+            mapXSize = 3;
+            mapYSize = 2;
+            //numEnemies = 2;
+        }
+
+        else if (this.levelNum == 2)
+        {
+            mapXSize = (this.random.nextInt(1) + 3);
+            mapYSize = 3;
+            numEnemies = (this.random.nextInt(1) + 2);
+        }
+
         //Round 2
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(1) + 3),  (rand.nextInt(1) + 2), (rand.nextInt(1) + 3), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 3), (rand.nextInt(2) + 2), (rand.nextInt(1) + 4), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 4), (rand.nextInt(3) + 3), (rand.nextInt(1) + 5), this.seed));
+        else if (this.levelNum == 3)
+        {
+            mapXSize = (this.random.nextInt(1) + 3);
+            mapYSize = (this.random.nextInt(1) + 2);
+            numEnemies = (this.random.nextInt(1) + 3);
+        }
+
+        else if (this.levelNum == 4)
+        {
+            mapXSize = (this.random.nextInt(2) + 3);
+            mapYSize = (this.random.nextInt(2) + 2);
+            numEnemies = (this.random.nextInt(1) + 4);
+        }
+
+        else if (this.levelNum == 5)
+        {
+            mapXSize = (this.random.nextInt(2) + 3);
+            mapYSize = (this.random.nextInt(1) + 3);
+           numEnemies = (this.random.nextInt(1) + 5);
+        }
 
         //Round 3
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(3) + 5),  (rand.nextInt(1) + 4), (rand.nextInt(2) + 6), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 6), (rand.nextInt(2) + 4), (rand.nextInt(2) + 7), this.seed));
-        levels.add(new LevelContainer(this.window,  (rand.nextInt(2) + 7), (rand.nextInt(3) + 5), (rand.nextInt(2) + 8), this.seed));
-        */
-        currentLevel = levels.get(0);
+        else if (this.levelNum == 6)
+        {
+            mapXSize = (this.random.nextInt(2) + 5);
+            mapYSize = (this.random.nextInt(1) + 4);
+            numEnemies = (this.random.nextInt(2) + 5);
+        }
+
+        else if (this.levelNum == 7)
+        {
+            mapXSize = (this.random.nextInt(3) + 5);
+            mapYSize = (this.random.nextInt(2) + 5);
+            //numEnemies = (this.random.nextInt(3) + 5);
+        }
+
+        else if (this.levelNum == 8)
+        {
+            mapXSize = (this.random.nextInt(3) + 6);
+            mapYSize = (this.random.nextInt(2) + 5);
+            numEnemies = (this.random.nextInt(3) + 7);
+        }
+
+        //Set the map
+        this.currentLevel = new LevelContainer(this.window, mapXSize, mapYSize, numEnemies, this.seed);
     }
+
 
     /**
      * This method loads the first level
      */
-    public void initGameMode()
+    private void initGameMode()
     {
         currentLevel.createLevel();
     }
@@ -89,10 +143,16 @@ public class GameMode
     {
         pauseListener.handlePause();
         gameMusicHandler.musicHandler();
-        if(paused) { gameMusicHandler.pause(); }
-        else{
+
+        if(paused)
+        {
+            gameMusicHandler.pause();
+        }
+        else
+        {
             gameMusicHandler.resume();
-            //Tests to see if you are on a UISCreen - if so update that screen
+
+            //Tests to see if you are on a UI SCreen - if so update that screen
             if (uiManager.isOnUIScreen())
             {
                 uiManager.update();
@@ -109,22 +169,30 @@ public class GameMode
             {
                 if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
                 {
+                    this.levelNum++;
+
                     //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
-                    if ((currentIndex % 3) == 0)
+                    if (levelNum == 3 || levelNum == 6)
                     {
                         uiManager.changeState();
                         uiManager.displayShop();
+                        return;
                     }
 
-                    currentIndex++;
 
-                    currentLevel = levels.get(currentIndex);
+                    if (this.levelNum >= this.maxLevel)
+                    {
+                        levelNum = 0;
+                        uiManager.changeState();
+                        uiManager.displayEndScreen();
+                    }
 
-                    //This improves ram usage - removes the last maps references, so it is garbage collected
-                    levels.remove(currentIndex -1);
-                    currentIndex--;
+                    else
+                    {
+                        createLevel();
+                        currentLevel.createLevel();
+                    }
 
-                    currentLevel.createLevel();
                 }
             }
         }

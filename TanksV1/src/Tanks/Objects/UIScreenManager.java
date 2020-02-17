@@ -1,9 +1,6 @@
 package Tanks.Objects;
 
-import Tanks.UIScreens.LeaderboardScreen;
-import Tanks.UIScreens.MainMenu;
-import Tanks.UIScreens.ShopScreen;
-import Tanks.UIScreens.TutorialScreen;
+import Tanks.UIScreens.*;
 import Tanks.Window.Window;
 
 
@@ -27,13 +24,13 @@ public class UIScreenManager
     public UIScreenManager(Window window) // Will need to pass in the player tank here
     {
         this.window = window;
-        initMainMenu();
+        this.currentScreen = initMainMenu();
     }
 
     /**
      * This method is used to initialize all of the screens related the main menu
      */
-    private void initMainMenu()
+    private MainMenu initMainMenu()
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
         TutorialScreen tutorial = new TutorialScreen(this.window);
@@ -43,7 +40,7 @@ public class UIScreenManager
         leaderboard.initBackButton(mainMenu);
         tutorial.initBackButton(mainMenu);
 
-        this.currentScreen = mainMenu;
+        return mainMenu;
     }
 
     /**
@@ -53,6 +50,17 @@ public class UIScreenManager
     {
         this.currentScreen = new ShopScreen(this.window);
     }
+
+    /**
+     * This method is used to display the end screen when the player either completes the game or dies
+     */
+    public void displayEndScreen()
+    {
+        EndScreen endScreen = new EndScreen(this.window);
+        endScreen.initButtonEnd(initMainMenu());
+        this.currentScreen = endScreen;
+    }
+
 
     /**
      * This method changes the state of the UI manager - i.e. from showing UI to not showing UI
