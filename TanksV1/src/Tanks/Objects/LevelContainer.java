@@ -177,9 +177,6 @@ public class LevelContainer
             inGameMonitor.setCurrentData(3, player.getStartingHealth());
             inGameMonitor.setCurrentData(0, player.getHealth());
             inGameMonitor.setCurrentData(2, player.getMoney());
-
-            System.out.println("Health: " + playerList.get(0).getHealth());
-            System.out.println("Max Health: " + playerList.get(0).getStartingHealth());
         }
         inGameMonitor.setCurrentData(1, enemyList.size());
         inGameMonitor.updateMonitor();
