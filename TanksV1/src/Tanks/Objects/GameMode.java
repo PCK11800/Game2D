@@ -20,6 +20,8 @@ public class GameMode
     private UIScreenManager uiManager;
     private PauseListener pauseListener;
     private GameMusicHandler gameMusicHandler = new GameMusicHandler();
+
+    private Tank player;
     
     private int levelNum = 0;
     private int maxLevel = 9; //LevelNum starts at 0, so it is no. of levels + 1
@@ -41,10 +43,34 @@ public class GameMode
         this.seed = seed;
 
         createLevel();
+        initPlayer();
         initGameMode();
 
         this.random = new Random(this.seed);
     }
+
+
+    /**
+     * This method is used to initialise the player - i.e. place them in the map, set their textures, etc.
+     */
+    private void initPlayer()
+    {
+        this.player = new Tank();
+        this.player.config("player_default");
+        this.player.setLevelContainer(this.currentLevel);
+        this.player.setWindow(window);
+
+        this.currentLevel.addPlayer(this.player);
+    }
+
+
+    private void spawnPlayer()
+    {
+        this.player.resetLoadFlag();
+        this.player.setLevelContainer(this.currentLevel);
+        this.currentLevel.addPlayer(this.player);
+    }
+
 
 
     /**
@@ -68,7 +94,7 @@ public class GameMode
         {
             mapXSize = 3;
             mapYSize = 2;
-            //numEnemies = 2;
+            numEnemies = 2;
         }
 
         else if (this.levelNum == 2)
@@ -112,7 +138,7 @@ public class GameMode
         {
             mapXSize = (this.random.nextInt(3) + 5);
             mapYSize = (this.random.nextInt(2) + 5);
-            //numEnemies = (this.random.nextInt(3) + 5);
+            numEnemies = (this.random.nextInt(3) + 5);
         }
 
         else if (this.levelNum == 8)
@@ -147,12 +173,13 @@ public class GameMode
         if(paused)
         {
             gameMusicHandler.pause();
+            //Go to the pause screen here
         }
         else
         {
             gameMusicHandler.resume();
 
-            //Tests to see if you are on a UI SCreen - if so update that screen
+            //Tests to see if you are on a UI Screen - if so update that screen
             if (uiManager.isOnUIScreen())
             {
                 uiManager.update();
@@ -171,16 +198,13 @@ public class GameMode
                 {
                     this.levelNum++;
 
-                    //WILL NEED TO CHANGE THIS SO THAT IT ACTUALLY LOADS AFTER EVERY 3 ROUNDS
-                    if (levelNum == 3 || levelNum == 6)
+                    if (levelNum == 3 || levelNum == 6 || levelNum == 9)
                     {
                         uiManager.changeState();
                         uiManager.displayShop();
-                        return;
                     }
 
-
-                    if (this.levelNum >= this.maxLevel)
+                    else if (this.levelNum >= this.maxLevel)
                     {
                         levelNum = 0;
                         uiManager.changeState();
@@ -190,7 +214,8 @@ public class GameMode
                     else
                     {
                         createLevel();
-                        currentLevel.createLevel();
+                        spawnPlayer();
+                        this.currentLevel.createLevel();
                     }
 
                 }

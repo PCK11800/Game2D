@@ -532,6 +532,9 @@ public class Tank
 		}
 	}
 
+
+	public void resetLoadFlag() { this.loadNextLevel = false; }
+
 	public void tankIsHit(int damage)
 	{
 		health = health - damage;

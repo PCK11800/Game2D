@@ -1,5 +1,6 @@
 package Tanks.Objects;
 
+import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.DeadTank;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
@@ -21,7 +22,7 @@ public class LevelContainer
     private MapGenerator mapGenerator;
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
-    private ArrayList<Opponent> enemyList = new ArrayList<Opponent>(); //This should be changed once enemies are properly implemented
+    private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
     private ArrayList<TankShell> shellList = new ArrayList<>();
     private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
@@ -55,7 +56,7 @@ public class LevelContainer
         float playerY = ((this.mapGenerator.getTileSize() + this.mapGenerator.getWallShort()) * this.mapGenerator.getYScale()) / 2;
         playerY += this.mapGenerator.getOffsetTopY();
 
-        initPlayer(Textures.TANKHULL_BLUE, Textures.TANKTURRET_BLUE, Textures.TANKSHELL_DEFAULT, playerX, playerY);
+        initPlayer(playerList.get(0), playerX, playerY);
 
         this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
         //testing
@@ -66,21 +67,13 @@ public class LevelContainer
 
     /**
      * This method is used to initialise the player - i.e. place them in the map, set their textures, etc.
-     * @param hullTexture the texture for the tanks hull
-     * @param turretTexture the texture for the tanks turret
-     * @param shellTexture the texture for the tanks shell / projectile
      */
-    private void initPlayer(String hullTexture, String turretTexture, String shellTexture, float xPos, float yPos)
+    private void initPlayer(Tank player, float xPos, float yPos)
     {
-        Tank player = new Tank();
-        player.config("player_default");
-        player.setLevelContainer(this);
-        player.setWindow(window);
         player.setTankLocation(xPos, yPos);
-        player.config("machinegun_upgrade");
-
-        playerList.add(player);
     }
+
+    public void addPlayer(Tank player) { this.playerList.add(player); }
 
 
     /**
@@ -98,14 +91,7 @@ public class LevelContainer
         updateInGameMonitor();
 
         //If need to load the next level
-        if (updatePlayers())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return updatePlayers();
     }
 
 
@@ -124,7 +110,9 @@ public class LevelContainer
             {
                 load = true;
             }
-            else if(!player.isAlive()){
+
+            else if(!player.isAlive())
+            {
                 deadTankList.add(new DeadTank(window, player.getDeathData()));
                 inGameMonitor.setCurrentData(0, 0);
                 playerList.remove(i);
