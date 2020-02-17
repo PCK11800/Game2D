@@ -108,15 +108,15 @@ public class Opponent extends Tank {
             }
             timer.restart();
         }
-
-        if (doesMove) move();
+        if (player.isAlive())
+        {
+            if (!action() && doesMove) move();
+        }
         clone.update();
         healthBar.update();
         if (movementCount == 0) movementCount++;
         playerXPos = player.getXPos();
         playerYPos = player.getYPos();
-
-        if (player.isAlive()) action();
 
 
 
@@ -145,7 +145,7 @@ public class Opponent extends Tank {
     /**
      * Method for detecting if player can be hit by the opponent at any rotation of the opponent's turret given the opponents' current position within the level.
      */
-    private void action()
+    private boolean action()
     {
         float x1, y1, x2, y2;
         float[] coords;
@@ -166,10 +166,12 @@ public class Opponent extends Tank {
             turret.update();
             shoot();
             clone = turret.stationaryCopy();
+            return true;
         }
         else
         {
             rotateTurretRight();
+            return false;
         }
     }
 
