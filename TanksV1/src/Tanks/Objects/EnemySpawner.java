@@ -2,8 +2,12 @@ package Tanks.Objects;
 
 import Tanks.Objects.VariousOpponents.*;
 import Tanks.Window.Window;
+
+import javax.naming.ldap.Control;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 
 /**
@@ -12,9 +16,9 @@ import java.util.Collections;
 public class EnemySpawner
 {
     private Window window;
-    private ArrayList<Opponent> enemyList;
+    private ArrayList<Opponent> enemyTypes;
+    private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
     private ArrayList<Tank> playerList;
-    private Map map;
     private LevelContainer levelContainer;
     private MapGenerator mapGenerator;
     private int numEnemies;
@@ -26,21 +30,21 @@ public class EnemySpawner
     /**
      * The constructor
      * @param window the window the enemies are to be drawn into
-     * @param enemyList the enemy list contained within the LevelContainer class
+     * @param enemyTypes the enemy list contained within the LevelContainer class
      * @param playerList the player list contained with the levelContainer class - required as opponents need a reference to the player
      * @param map the map the enemies are to placed into
      * @param mapGenerator the mapGenerator contained within the levelContainer class - used to get the map's size, scale, etc.
      * @param numEnemies the number of enemies to be spawned into a level
      */
-    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer)
+    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Opponent> enemyTypes, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer)
     {
         this.window = window;
         this.enemyList = enemyList;
+        this.enemyTypes = enemyTypes;
         this.playerList = playerList;
         this.mapGenerator = mapGenerator;
         this.numEnemies = numEnemies;
         this.levelContainer = levelContainer;
-        this.map = levelContainer.getMap();
 
         getAvailableTiles();
 
@@ -170,11 +174,45 @@ public class EnemySpawner
      */
     private void initEnemy(float xPos, float yPos)
     {
-        HouseTankSniper enemy = new HouseTankSniper(playerList.get(0),mapGenerator);
+        Random rand = new Random();
+        int randInt = rand.nextInt(enemyTypes.size());
+
+        //Opponent enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); //Opponent(this.enemyTypes.get(randInt));
+        //Opponent test = this.enemyTypes.get(randInt);
+
+        //Opponent enemy; // = new Opponent(test);
+        /*
+        if (this.enemyTypes.get(randInt) instanceof ChasingOpponent) { enemy = new ChasingOpponent(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof ConfusedOpponent) { enemy = new ConfusedOpponent(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof ControllerOpponent) { enemy = new ControllerOpponent(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof EdwardOpponent) { enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1); }
+
+        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+
+        else
+        {
+            enemy = new ConfusedOpponent(playerList.get(0), mapGenerator);
+        }
+        */
+
+        Opponent enemy;
+
+        if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+
+        else
+        {
+            enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1);
+        }
+
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
         enemyList.add(enemy);
+
+        //HouseTankSniper enemy = new HouseTankSniper(playerList.get(0), mapGenerator);
+        //enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1);
+
     }
 
 }

@@ -31,7 +31,7 @@ public class Opponent extends Tank {
     protected Integer[] targetTile = new Integer[2];
     protected boolean tileReached = false;
     private int noticeDistance = 1;
-    private MapGenerator mapGenerator;
+    protected MapGenerator mapGenerator;
     private boolean doesMove = true;
     private HealthBar healthBar;
 
@@ -71,6 +71,12 @@ public class Opponent extends Tank {
             mapGrid[j - 1][i] += "R";
         }
     }
+
+    public Opponent(Opponent clone)
+    {
+        this(clone.player, clone.mapGenerator);
+    }
+
 
 
     /**

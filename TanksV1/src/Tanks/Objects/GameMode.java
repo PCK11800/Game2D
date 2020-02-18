@@ -1,6 +1,7 @@
 package Tanks.Objects;
 
 import Tanks.Listeners.PauseListener;
+import Tanks.Objects.VariousOpponents.GordonOpponent;
 import Tanks.Sounds.GameMusic;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Sounds.SoundsPath;
@@ -86,69 +87,91 @@ public class GameMode
         {
             mapXSize = 2;
             mapYSize = 2;
-            //numEnemies = 1;
+            numEnemies = 1;
         }
 
         else if (this.levelNum == 1)
         {
             mapXSize = 3;
             mapYSize = 2;
-            //numEnemies = 2;
+            numEnemies = 2;
         }
 
         else if (this.levelNum == 2)
         {
             mapXSize = (this.random.nextInt(1) + 3);
             mapYSize = 3;
-            //numEnemies = (this.random.nextInt(1) + 2);
+            numEnemies = (this.random.nextInt(1) + 2);
+        }
+
+        else if (this.levelNum == 3)
+        {
+            mapXSize = (this.random.nextInt(1) + 2);
+            mapYSize = (this.random.nextInt(1) + 2);
+            numEnemies = 1;
+
         }
 
         //Round 2
-        else if (this.levelNum == 3)
+        else if (this.levelNum == 4)
         {
             mapXSize = (this.random.nextInt(1) + 3);
             mapYSize = (this.random.nextInt(1) + 2);
             numEnemies = (this.random.nextInt(1) + 3);
         }
 
-        else if (this.levelNum == 4)
+        else if (this.levelNum == 5)
         {
             mapXSize = (this.random.nextInt(2) + 3);
             mapYSize = (this.random.nextInt(2) + 2);
             numEnemies = (this.random.nextInt(1) + 4);
         }
 
-        else if (this.levelNum == 5)
+        else if (this.levelNum == 6)
         {
             mapXSize = (this.random.nextInt(2) + 3);
             mapYSize = (this.random.nextInt(1) + 3);
            numEnemies = (this.random.nextInt(1) + 5);
         }
 
+        else if (this.levelNum == 7)
+        {
+            mapXSize = (this.random.nextInt(1) + 2);
+            mapYSize = (this.random.nextInt(1) + 2);
+            numEnemies = 1;
+        }
+
         //Round 3
-        else if (this.levelNum == 6)
+        else if (this.levelNum == 8)
         {
             mapXSize = (this.random.nextInt(2) + 5);
             mapYSize = (this.random.nextInt(1) + 4);
             numEnemies = (this.random.nextInt(2) + 5);
         }
 
-        else if (this.levelNum == 7)
+        else if (this.levelNum == 9)
         {
             mapXSize = (this.random.nextInt(3) + 5);
             mapYSize = (this.random.nextInt(2) + 5);
             numEnemies = (this.random.nextInt(3) + 5);
         }
 
-        else if (this.levelNum == 8)
+        else if (this.levelNum == 10)
         {
             mapXSize = (this.random.nextInt(3) + 6);
             mapYSize = (this.random.nextInt(2) + 5);
             numEnemies = (this.random.nextInt(3) + 7);
         }
 
+        else if (this.levelNum == 11)
+        {
+            mapXSize = (this.random.nextInt(1) + 2);
+            mapYSize = (this.random.nextInt(1) + 2);
+            numEnemies = 1;
+        }
+
         //Set the map
-        this.currentLevel = new LevelContainer(this.window, mapXSize, mapYSize, numEnemies, this.seed);
+        this.currentLevel = new LevelContainer(this.window, mapXSize, mapYSize, numEnemies, this.seed, this.levelNum);
     }
 
 

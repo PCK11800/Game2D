@@ -4,6 +4,7 @@ import Tanks.Listeners.PlayerListener;
 import Tanks.ObjectComponents.DeadTank;
 import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.Textures;
+import Tanks.Objects.VariousOpponents.*;
 import Tanks.UIScreens.InGameMonitor;
 import Tanks.Window.Window;
 
@@ -20,9 +21,11 @@ public class LevelContainer
     private int numEnemies;
     private long seed;
     private MapGenerator mapGenerator;
+    private int index;
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
+    private ArrayList<Opponent> enemyTypes = new ArrayList<Opponent>();;
     private ArrayList<TankShell> shellList = new ArrayList<>();
     private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
@@ -36,12 +39,13 @@ public class LevelContainer
      * @param mapYSize the size of the map in the y axis
      * @param  seed the seed for the random generation
      */
-    public LevelContainer(Window w, int mapXSize, int mapYSize, int numEnemies, long seed) //Maybe should include a seed here? that is passed to the mapGen
+    public LevelContainer(Window w, int mapXSize, int mapYSize, int numEnemies, long seed, int index) //Maybe should include a seed here? that is passed to the mapGen
     {
         this.window = w;
         this.map = new Map(window);
         this.mapGenerator = new MapGenerator(window, map, mapXSize, mapYSize, seed);
         this.numEnemies = numEnemies;
+        this.index = index;
         this.inGameMonitor = new InGameMonitor(this.window);
     }
 
@@ -58,10 +62,68 @@ public class LevelContainer
 
         initPlayer(playerList.get(0), playerX, playerY);
 
-        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
+
         //testing
         //enemyKilled(0);
+        spawnEnemies();
         unlockExits();
+    }
+
+
+    private void spawnEnemies()
+    {
+        if (this.index == 0)
+        {
+            this.enemyTypes = new ArrayList<>();
+            //this.enemyTypes.add(new ChasingOpponent(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+        }
+
+        else if (this.index == 3)
+        {
+            this.enemyTypes = new ArrayList<>();
+            this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new GordonOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new EdwardOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new HenryOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new PercyOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new TobyOpponent(this.playerList.get(0), this.mapGenerator, 1));
+        }
+
+
+        else if (this.index == 7)
+        {
+            this.enemyTypes = new ArrayList<>();
+            this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 2));
+            this.enemyTypes.add(new GordonOpponent(this.playerList.get(0), this.mapGenerator, 2));
+            this.enemyTypes.add(new EdwardOpponent(this.playerList.get(0), this.mapGenerator, 2));
+            this.enemyTypes.add(new HenryOpponent(this.playerList.get(0), this.mapGenerator, 2));
+            this.enemyTypes.add(new PercyOpponent(this.playerList.get(0), this.mapGenerator, 2));
+            this.enemyTypes.add(new TobyOpponent(this.playerList.get(0), this.mapGenerator, 2));
+        }
+
+        else if (this.index == 11)
+        {
+            this.enemyTypes = new ArrayList<>();
+            this.enemyTypes.add(new ControllerOpponent(this.playerList.get(0), this.mapGenerator));
+        }
+
+        else
+        {
+            this.enemyTypes = new ArrayList<>();
+            this.enemyTypes.add(new ChasingOpponent(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new ConfusedOpponent(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new PatrollingOpponent(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new HouseTankSlow(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new HouseTankFast(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new HouseTankSniper(this.playerList.get(0), this.mapGenerator));
+            this.enemyTypes.add(new HouseTankTurret(this.playerList.get(0), this.mapGenerator));
+        }
+
+        //this.enemyTypes = new ArrayList<>();
+        this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+
+        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.enemyTypes, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
     }
 
 
