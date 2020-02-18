@@ -75,8 +75,7 @@ public class LevelContainer
         if (this.index == 0)
         {
             this.enemyTypes = new ArrayList<>();
-            //this.enemyTypes.add(new ChasingOpponent(this.playerList.get(0), this.mapGenerator));
-            this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+            this.enemyTypes.add(new HouseTankSlow(this.playerList.get(0), this.mapGenerator));
         }
 
         else if (this.index == 3)
@@ -111,9 +110,6 @@ public class LevelContainer
         else
         {
             this.enemyTypes = new ArrayList<>();
-            this.enemyTypes.add(new ChasingOpponent(this.playerList.get(0), this.mapGenerator));
-            this.enemyTypes.add(new ConfusedOpponent(this.playerList.get(0), this.mapGenerator));
-            this.enemyTypes.add(new PatrollingOpponent(this.playerList.get(0), this.mapGenerator));
             this.enemyTypes.add(new HouseTankSlow(this.playerList.get(0), this.mapGenerator));
             this.enemyTypes.add(new HouseTankFast(this.playerList.get(0), this.mapGenerator));
             this.enemyTypes.add(new HouseTankSniper(this.playerList.get(0), this.mapGenerator));
@@ -121,7 +117,7 @@ public class LevelContainer
         }
 
         //this.enemyTypes = new ArrayList<>();
-        this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+        //this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
 
         this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.enemyTypes, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
     }

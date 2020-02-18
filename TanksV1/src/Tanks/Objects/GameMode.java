@@ -131,7 +131,7 @@ public class GameMode
         {
             mapXSize = (this.random.nextInt(2) + 3);
             mapYSize = (this.random.nextInt(1) + 3);
-           numEnemies = (this.random.nextInt(1) + 5);
+            numEnemies = (this.random.nextInt(1) + 5);
         }
 
         else if (this.levelNum == 7)
@@ -171,6 +171,7 @@ public class GameMode
         }
 
         //Set the map
+        System.out.println("LEVEL:" + this.levelNum);
         this.currentLevel = new LevelContainer(this.window, mapXSize, mapYSize, numEnemies, this.seed, this.levelNum);
     }
 

@@ -3,6 +3,7 @@ package Tanks.Objects;
 import Tanks.Objects.VariousOpponents.*;
 import Tanks.Window.Window;
 
+import javax.naming.PartialResultException;
 import javax.naming.ldap.Control;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class EnemySpawner
     private LevelContainer levelContainer;
     private MapGenerator mapGenerator;
     private int numEnemies;
+
+    private Opponent enemy;
 
     private ArrayList<Tile> availableTiles = new ArrayList<Tile>();
 
@@ -177,34 +180,39 @@ public class EnemySpawner
         Random rand = new Random();
         int randInt = rand.nextInt(enemyTypes.size());
 
-        //Opponent enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); //Opponent(this.enemyTypes.get(randInt));
-        //Opponent test = this.enemyTypes.get(randInt);
 
-        //Opponent enemy; // = new Opponent(test);
-        /*
-        if (this.enemyTypes.get(randInt) instanceof ChasingOpponent) { enemy = new ChasingOpponent(playerList.get(0), mapGenerator); }
-        else if (this.enemyTypes.get(randInt) instanceof ConfusedOpponent) { enemy = new ConfusedOpponent(playerList.get(0), mapGenerator); }
-        else if (this.enemyTypes.get(randInt) instanceof ControllerOpponent) { enemy = new ControllerOpponent(playerList.get(0), mapGenerator); }
+        if (this.enemyTypes.get(randInt) instanceof HouseTankTurret) { enemy = new HouseTankTurret(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof HouseTankSniper) { enemy = new HouseTankSniper(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof HouseTankSlow) { enemy = new HouseTankSlow(playerList.get(0), mapGenerator); }
+        else if (this.enemyTypes.get(randInt) instanceof HouseTankFast) { enemy = new HouseTankFast(playerList.get(0), mapGenerator); }
+
         else if (this.enemyTypes.get(randInt) instanceof EdwardOpponent) { enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof GordonOpponent) { enemy = new GordonOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof HenryOpponent) { enemy = new HenryOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof PercyOpponent) { enemy = new PercyOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof TobyOpponent) { enemy = new TobyOpponent(playerList.get(0), mapGenerator, 1); }
 
-        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+
 
         else
         {
-            enemy = new ConfusedOpponent(playerList.get(0), mapGenerator);
+            enemy = new HouseTankSlow(playerList.get(0), mapGenerator);
         }
-        */
 
-        Opponent enemy;
+    /*
 
-        if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
+        if (this.enemyTypes.get(randInt) instanceof JamesOpponent)
+        {
+            enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1);
+        }
+
 
         else
         {
             enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1);
         }
-
+    */
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
