@@ -22,6 +22,7 @@ public abstract class UIScreen
     private ArrayList<LoadGameModeButton> gameModeButtons = new ArrayList<LoadGameModeButton>();
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
 
+    private Clock buttonClock = new Clock();
     private UIListener listener;
     private UIScreen linkedScreen; //This is set when a button is pressed
 
@@ -312,9 +313,13 @@ public abstract class UIScreen
             if (levelButton.contains(mouseXPos, mouseYPos))
             {
                 levelButton.setPressed();
-                resetState();
-                this.loadNextLevel = true;
 
+                if(buttonClock.getElapsedTime().asSeconds() > 1)
+                {
+                    resetState();
+                    this.loadNextLevel = true;
+                    buttonClock.restart();
+                }
                 return;
             }
         }
@@ -324,9 +329,13 @@ public abstract class UIScreen
             if (gmButton.contains(mouseXPos, mouseYPos))
             {
                 gmButton.setPressed();
-                resetState();
-                this.loadGameMode = true;
 
+                if(buttonClock.getElapsedTime().asSeconds() > 1)
+                {
+                    resetState();
+                    this.loadGameMode = true;
+                    buttonClock.restart();
+                }
                 return;
             }
         }
@@ -338,7 +347,6 @@ public abstract class UIScreen
                 upButton.setPressed();
                 resetState();
 
-                //APPLY UPGRADE HERE
                 return;
             }
         }
