@@ -178,6 +178,9 @@ public class Tank
 		this.delayBetweenShell = rateOfFire;
 	}
 
+	public void setMoney(int money) { this.money = money; }
+
+
 	private TankShell createShell()
 	{
 		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, levelContainer, shellRicochetNumber, damagePerShell);
@@ -475,10 +478,12 @@ public class Tank
 		{
 			moveBackward();
 			moveBackward();
+			moveBackward();
 		}
 		//Only backward
 		else if(previousMove == 2 && previousTurn >= 0)
 		{
+			moveForward();
 			moveForward();
 			moveForward();
 		}
@@ -487,10 +492,12 @@ public class Tank
 		{
 			turnRight();
 			turnRight();
+			turnRight();
 		}
 		//Only turnRight
 		else if (previousMove == 0 && previousTurn == 2)
 		{
+			turnLeft();
 			turnLeft();
 			turnLeft();
 		}

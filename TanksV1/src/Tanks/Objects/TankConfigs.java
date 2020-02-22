@@ -7,6 +7,7 @@ public class TankConfigs {
 
     public void player_default(Tank tank)
     {
+        textureFix(tank);
         tank.setHullTexture(Textures.TANKHULL_GREEN);
         tank.setTurretTexture(Textures.TANKTURRET_GREEN);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
@@ -23,7 +24,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(100000); //Testing
+        tank.setHealth(100);
     }
 
     public void enemy_default(Tank tank)
@@ -48,6 +49,7 @@ public class TankConfigs {
 
     public void railgun_upgrade(Tank tank)
     {
+        textureFix(tank);
         tank.setTurretTexture(Textures.TANKTURRET_GREEN_RAILGUN);
         tank.setSize((float) 1, (float) 1);
         tank.turret.setSize((float) 1 * 53, (float) 1 * 75);
@@ -61,6 +63,7 @@ public class TankConfigs {
 
     public void minigun_upgrade(Tank tank)
     {
+        textureFix(tank);
         tank.setTurretTexture(Textures.TANKTURRET_GREEN_MACHINEGUN);
         tank.setShellTexture(Textures.TANKSHELL_MACHINEGUN);
         tank.setFiringSound(SoundsPath.MACHINEGUN, 5);
@@ -78,8 +81,6 @@ public class TankConfigs {
 
     public void increase_health(Tank tank)
     {
-        int health = tank.getHealth();
-
         if(tank.getStartingHealth() - tank.getHealth() >= 10)
         {
             tank.increaseHealth(10);
@@ -89,11 +90,20 @@ public class TankConfigs {
             tank.increaseHealth(tank.getStartingHealth() - tank.getHealth());
         }
 
+        if(tank.getStartingHealth() - tank.getHealth() <= 0)
+        {
+            tank.increaseMoney(10);
+        }
     }
 
     public void increase_maxhealth(Tank tank)
     {
         tank.increaseMaxHealth(10);
+    }
+
+    public void textureFix(Tank tank)
+    {
+        tank.setTurretTexture(Textures.TANKTURRET_GREEN_RAILGUN);
     }
 
 }
