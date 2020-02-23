@@ -24,7 +24,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(4100);
+        tank.setHealth(100);
     }
 
     public void enemy_default(Tank tank)
@@ -75,6 +75,11 @@ public class TankConfigs {
     {
         tank.setMovementSpeed(10);
         tank.setHullTurningDistance(6);
+    }
+
+    public void spikes_upgrade(Tank tank)
+    {
+        tank.setRammingDamage(10);
     }
 
     public void increase_health(Tank tank)
