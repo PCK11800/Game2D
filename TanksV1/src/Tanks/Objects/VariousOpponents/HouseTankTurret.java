@@ -4,6 +4,7 @@ import Tanks.ObjectComponents.Textures;
 import Tanks.Objects.MapGenerator;
 import Tanks.Objects.Opponent;
 import Tanks.Objects.Tank;
+import Tanks.Sounds.SoundsPath;
 
 public class HouseTankTurret extends Opponent
 {
@@ -15,5 +16,8 @@ public class HouseTankTurret extends Opponent
         setFireDelay(100);
         setRammingDamage(10);
         setShellRicochetNumber(3);
+        setTurretTexture(Textures.TANKTURRET_RED_MACHINEGUN);
+        setShellTexture(Textures.TANKSHELL_MACHINEGUN);
+        setFiringSound(SoundsPath.MACHINEGUN, 5);
     }
 }

@@ -2,6 +2,7 @@ package Tanks.ObjectComponents;
 
 public class Textures {
 
+	public static String GAMEICON = "TanksV1/Resources/Images/GameIcon.png";
 	public static String BRICKBLOCK = "TanksV1/Resources/Images/BrickBlockIcon.png";
 	public static String BLACKWALL = "TanksV1/Resources/Images/BlackWall.png";
 
@@ -11,6 +12,8 @@ public class Textures {
 	public static String TANKTURRET_GREEN_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconDefaultMachinegun.png";
 	public static String TANKHULL_RED = "TanksV1/Resources/Images/TankHullIconRed.png";
 	public static String TANKTURRET_RED = "TanksV1/Resources/Images/TankTurretIconRed.png";
+	public static String TANKTURRET_RED_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconRedMachinegun.png";
+	public static String TANKTURRET_RED_RAILGUN = "TanksV1/Resources/Images/TankTurretIconRedRailgun.png";
 	public static String TANKHULL_FUTURE = "TanksV1/Resources/Images/TankHullIconFuture.png";
 	public static String TANKTURRET_FUTURE_DEFAULT = "TanksV1/Resources/Images/TankTurretIconFutureDefault.png";
 	public static String TANKTURRET_FUTURE_RAILGUN = "TanksV1/Resources/Images/TankTurretIconFutureRailgun.png";

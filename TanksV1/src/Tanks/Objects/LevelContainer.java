@@ -191,7 +191,10 @@ public class LevelContainer
                 deadTankList.add(new DeadTank(window, enemy.getDeathData()));
                 enemyKilled(i);
                 enemyList.trimToSize();
-                playerList.get(0).increaseMoney(10);
+
+                if(playerList.size() > 0){
+                    playerList.get(0).increaseMoney(10);
+                }
             }
             enemy.update();
         }

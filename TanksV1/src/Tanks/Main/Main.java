@@ -2,13 +2,16 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
-import Tanks.Objects.UIScreenManager;
-import Tanks.UIScreens.MainMenu;
+import Tanks.ObjectComponents.Textures;
 import Tanks.Objects.GameMode;
 import org.jsfml.graphics.Color;
 
 import Tanks.Window.Window;
+import org.jsfml.graphics.Image;
 import org.jsfml.system.Clock;
 
 public class Main
@@ -33,11 +36,24 @@ public class Main
 		window = new Window((int)screenSize.getWidth(), (int)screenSize.getHeight(), "Tanks", frameRate);
 		window.setBackgroundColor(Color.BLACK);
 	}
+
+	private void iniWindowIcon()
+	{
+		Path imagePath = FileSystems.getDefault().getPath(Textures.GAMEICON);
+		Image image = new Image();
+		try{
+			image.loadFromFile(imagePath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		window.setIcon(image);
+	}
 	
 	private void iniGame() 
 	{
 		//createWindow(1000, 1000, "Tanks", 60);
 		createFullScreenWindow(60);
+		iniWindowIcon();
 
 		this.gameMode = new GameMode(this.window, System.nanoTime());
 	}
