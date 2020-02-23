@@ -63,12 +63,7 @@ public class LevelContainer
         playerY += this.mapGenerator.getOffsetTopY();
 
         initPlayer(playerList.get(0), playerX, playerY);
-
-
-        //testing
-        //enemyKilled(0);
         spawnEnemies();
-        unlockExits();
     }
 
 
@@ -196,9 +191,12 @@ public class LevelContainer
             if(!enemy.isAlive()) {
                 //Add dead tank
                 deadTankList.add(new DeadTank(window, enemy.getDeathData()));
-                enemyList.remove(i);
+                enemyKilled(i);
                 enemyList.trimToSize();
-                playerList.get(0).increaseMoney(10);
+
+                if(playerList.size() > 0){
+                    playerList.get(0).increaseMoney(10);
+                }
             }
             enemy.update();
         }

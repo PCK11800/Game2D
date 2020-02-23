@@ -1,16 +1,9 @@
 package Tanks.Objects;
 
 import Tanks.Listeners.PauseListener;
-import Tanks.Objects.VariousOpponents.GordonOpponent;
-import Tanks.Sounds.GameMusic;
 import Tanks.Sounds.GameMusicHandler;
-import Tanks.Sounds.SoundsPath;
-import Tanks.UIScreens.InGameMonitor;
-import Tanks.UIScreens.ShopScreen;
 import Tanks.Window.Window;
-import org.jsfml.audio.SoundSource;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class GameMode

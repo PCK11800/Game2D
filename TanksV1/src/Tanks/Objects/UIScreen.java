@@ -2,10 +2,13 @@ package Tanks.Objects;
 
 import Tanks.Buttons.*;
 import Tanks.Listeners.UIListener;
+import Tanks.UIScreens.GameFont;
 import Tanks.Window.Window;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -14,13 +17,17 @@ import java.util.ArrayList;
 public abstract class UIScreen
 {
     private Window window;
-
+    private Tank player;
     //All of the button array Lists
     private ArrayList<Button> quitButtons = new ArrayList<Button>();
     private ArrayList<LoadLevelButton> levelButtons = new ArrayList<LoadLevelButton>();
     private ArrayList<LoadUIScreenButton> uiScreenButtons = new ArrayList<LoadUIScreenButton>();
     private ArrayList<LoadGameModeButton> gameModeButtons = new ArrayList<LoadGameModeButton>();
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
+    private ArrayList<Text> screenTexts = new ArrayList<>();
+    private ArrayList<Text> moneyTexts = new ArrayList<>();
+    private ArrayList<Text> healthTexts = new ArrayList<>();
+
 
     private Clock buttonClock = new Clock();
     private UIListener listener;
@@ -105,9 +112,9 @@ public abstract class UIScreen
      * @param hoveredTexture the texture of the button when the mouse is hovering over it
      * @param pressedTexture the texture of the button when it has been pressed
      */
-    public void addUpgradeButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, Tank player, String config)
+    public void addUpgradeButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, Tank player, String config, int cost)
     {
-        UpgradeButton b = new UpgradeButton(this.window, x, y, width, height, activeTexture, player, config);
+        UpgradeButton b = new UpgradeButton(this.window, x, y, width, height, activeTexture, player, config, cost);
         b.setAltTextures(hoveredTexture, pressedTexture);
 
         upgradeButtons.add(b);
@@ -131,6 +138,41 @@ public abstract class UIScreen
         quitButtons.add(b);
     }
 
+    public void addText(float x, float y, String content, int size, String fontPath, Color color)
+    {
+        Text text = new Text();
+        text.setPosition(x, y);
+        text.setFont(new GameFont(fontPath));
+        text.setCharacterSize(size);
+        text.setColor(color);
+        text.setString(content);
+
+        screenTexts.add(text);
+    }
+
+    public void addMoneyText(float x, float y, Tank player, int size, String fontPath, Color color){
+        this.player = player;
+        Text text = new Text();
+        text.setPosition(x, y);
+        text.setFont(new GameFont(fontPath));
+        text.setCharacterSize(size);
+        text.setColor(color);
+        text.setString("£" + player.getMoney());
+
+        moneyTexts.add(text);
+    }
+
+    public void addHealthText(float x, float y, Tank player, int size, String fontPath, Color color){
+        this.player = player;
+        Text text = new Text();
+        text.setPosition(x, y);
+        text.setFont(new GameFont(fontPath));
+        text.setCharacterSize(size);
+        text.setColor(color);
+        text.setString("HP: " + player.getHealth());
+
+        healthTexts.add(text);
+    }
 
     /**
      * This method is used to draw all of the buttons in a given UI Screen to the screen
@@ -162,6 +204,20 @@ public abstract class UIScreen
         for (UpgradeButton upButton: this.upgradeButtons)
         {
             upButton.update();
+        }
+        for(Text text: this.screenTexts)
+        {
+            window.draw(text);
+        }
+        for(Text text: this.moneyTexts)
+        {
+            text.setString("£" + player.getMoney());
+            window.draw(text);
+        }
+        for(Text text: this.healthTexts)
+        {
+            text.setString(player.getHealth() + "/" + player.getStartingHealth());
+            window.draw(text);
         }
     }
 

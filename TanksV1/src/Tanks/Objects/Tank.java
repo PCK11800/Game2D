@@ -6,6 +6,7 @@ import Tanks.ObjectComponents.TankShell;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.Sounds.GameSound;
 import Tanks.Window.Window;
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
@@ -177,6 +178,9 @@ public class Tank
 	{
 		this.delayBetweenShell = rateOfFire;
 	}
+
+	public void setMoney(int money) { this.money = money; }
+
 
 	private TankShell createShell()
 	{
@@ -475,10 +479,12 @@ public class Tank
 		{
 			moveBackward();
 			moveBackward();
+			moveBackward();
 		}
 		//Only backward
 		else if(previousMove == 2 && previousTurn >= 0)
 		{
+			moveForward();
 			moveForward();
 			moveForward();
 		}
@@ -487,10 +493,12 @@ public class Tank
 		{
 			turnRight();
 			turnRight();
+			turnRight();
 		}
 		//Only turnRight
 		else if (previousMove == 0 && previousTurn == 2)
 		{
+			turnLeft();
 			turnLeft();
 			turnLeft();
 		}

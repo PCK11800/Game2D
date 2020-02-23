@@ -10,9 +10,6 @@ public class Map
 	private Window window;
 	private ArrayList<MapObject> objectList = new ArrayList<>();
 
-	private int numOfEnemies = 0;
-
-
 	public Map(Window window)
 	{
 		this.window = window;
@@ -21,16 +18,11 @@ public class Map
 
 	public void unlockExits()
 	{
-		numOfEnemies--;
-
-		if (numOfEnemies <= 0) //If there are no more enemies unlock the exits
+		for (int i = 0; i < objectList.size(); i++)
 		{
-			for (int i = 0; i < objectList.size(); i++)
+			if (objectList.get(i).isExit() == true)
 			{
-				if (objectList.get(i).isExit() == true)
-				{
-					objectList.get(i).unlock();
-				}
+				objectList.get(i).unlock();
 			}
 		}
 	}
