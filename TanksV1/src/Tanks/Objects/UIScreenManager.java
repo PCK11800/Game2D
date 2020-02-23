@@ -62,9 +62,17 @@ public class UIScreenManager
     public void displayEndScreen()
     {
         EndScreen endScreen = new EndScreen(this.window);
-        endScreen.initButtonEnd(initMainMenu());
+        endScreen.initBackButton(initMainMenu());
         this.currentScreen = endScreen;
     }
+
+    public void displayGameOverScreen()
+    {
+        GameOverScreen goScreen = new GameOverScreen(this.window);
+        goScreen.initBackButton(initMainMenu());
+        this.currentScreen = goScreen;
+    }
+
 
 
     /**

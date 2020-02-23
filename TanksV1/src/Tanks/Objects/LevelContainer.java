@@ -23,7 +23,9 @@ public class LevelContainer
     private long seed;
     private MapGenerator mapGenerator;
     private int index;
+
     private boolean loadNextLevel = false;
+    private boolean playerDead = false;
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
@@ -157,6 +159,8 @@ public class LevelContainer
 
     public boolean loadNextLevel() { return this.loadNextLevel; }
 
+    public boolean isPlayerDead() { return this.playerDead; }
+
 
     /**
      * This method updates all players in a level
@@ -180,6 +184,8 @@ public class LevelContainer
                 inGameMonitor.setCurrentData(0, 0);
                 playerList.remove(i);
                 playerList.trimToSize();
+
+                this.playerDead = true;
             }
         }
     }

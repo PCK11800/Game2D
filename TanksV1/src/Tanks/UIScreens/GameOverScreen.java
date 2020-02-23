@@ -4,11 +4,11 @@ import Tanks.ObjectComponents.Textures;
 import Tanks.Objects.UIScreen;
 import Tanks.Window.Window;
 
-public class EndScreen extends UIScreen
+public class GameOverScreen extends UIScreen
 {
     private Window window;
 
-    public EndScreen(Window window)
+    public GameOverScreen(Window window)
     {
         super(window);
         this.window = window;

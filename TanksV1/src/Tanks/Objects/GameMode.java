@@ -188,6 +188,8 @@ public class GameMode
         pauseListener.handlePause();
         gameMusicHandler.musicHandler();
 
+
+
         if(paused)
         {
             gameMusicHandler.pause();
@@ -213,39 +215,48 @@ public class GameMode
             //In an arena
             else
             {
-                if (!this.currentLevel.loadNextLevel()) // If not loading a new level
+                if (currentLevel.isPlayerDead())
                 {
-                    this.currentLevel.update();
+                    uiManager.changeState();
+                    uiManager.displayGameOverScreen();
                 }
 
-                else // Load the next level
+                else // Player is not dead
                 {
-                    if (isShopLevel()) // The rounds before and after a boss
+                    if (!this.currentLevel.loadNextLevel()) // If not loading a new level
                     {
-                        // Already been to the shop
-                        if (uiManager.isInShop())
-                        {
-                            uiManager.closeShop();
-                            loadNextLevel();
-                        }
-
-                        else
-                        {
-                            uiManager.changeState();
-                            uiManager.displayShop(this.player);
-                        }
+                        this.currentLevel.update();
                     }
 
-                    else
+                    else // Load the next level
                     {
-                        if (this.levelNum + 1 >= this.maxLevel)
+                        if (isShopLevel()) // The rounds before and after a boss
                         {
-                            uiManager.changeState();
-                            uiManager.displayEndScreen();
+                            // Already been to the shop
+                            if (uiManager.isInShop())
+                            {
+                                uiManager.closeShop();
+                                loadNextLevel();
+                            }
+
+                            else
+                            {
+                                uiManager.changeState();
+                                uiManager.displayShop(this.player);
+                            }
                         }
+
                         else
                         {
-                            loadNextLevel();
+                            if (this.levelNum + 1 >= this.maxLevel)
+                            {
+                                uiManager.changeState();
+                                uiManager.displayEndScreen();
+                            }
+                            else
+                            {
+                                loadNextLevel();
+                            }
                         }
                     }
                 }
