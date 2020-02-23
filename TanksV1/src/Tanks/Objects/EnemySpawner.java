@@ -193,34 +193,18 @@ public class EnemySpawner
         else if (this.enemyTypes.get(randInt) instanceof PercyOpponent) { enemy = new PercyOpponent(playerList.get(0), mapGenerator, 1); }
         else if (this.enemyTypes.get(randInt) instanceof TobyOpponent) { enemy = new TobyOpponent(playerList.get(0), mapGenerator, 1); }
 
-
+        else if (this.enemyTypes.get(randInt) instanceof ControllerOpponent) { enemy = new ControllerOpponent(playerList.get(0), mapGenerator); }
+        
 
         else
         {
             enemy = new HouseTankSlow(playerList.get(0), mapGenerator);
         }
 
-    /*
-
-        if (this.enemyTypes.get(randInt) instanceof JamesOpponent)
-        {
-            enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1);
-        }
-
-
-        else
-        {
-            enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1);
-        }
-    */
         enemy.setLevelContainer(this.levelContainer);
         enemy.setWindow(window);
         enemy.setTankLocation(xPos, yPos);
         enemyList.add(enemy);
-
-        //HouseTankSniper enemy = new HouseTankSniper(playerList.get(0), mapGenerator);
-        //enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1);
-
     }
 
 }
