@@ -44,7 +44,10 @@ public class ShopScreen extends UIScreen
         //Continue Button
         addLoadLevelButton(screenWidth - 250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
 
-        addMoneyText(screenCenterX - 80, screenCenterY, player,30, FontPath.PIXEL, Color.GREEN);
-        addHealthText(screenCenterX - 100, screenCenterY + 40, player, 30, FontPath.PIXEL, Color.RED);
+        //Back Button
+        //addLoadLevelButton(250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED);
+
+        addMoneyText(screenCenterX - 80, screenHeight - 100, player,30, FontPath.PIXEL, Color.GREEN);
+        addHealthText(screenCenterX - 100, screenHeight - 140, player, 30, FontPath.PIXEL, Color.RED);
     }
 }

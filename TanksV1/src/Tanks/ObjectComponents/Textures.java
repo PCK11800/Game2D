@@ -79,9 +79,33 @@ public class Textures {
 	public static String MINIGUN_HOVER = "TanksV1/Resources/Images/MinigunHover.png";
 	public static String MINIGUN_CLICKED = "TanksV1/Resources/Images/MinigunClicked.png";
 
+	public static String RAILGUN = "TanksV1/Resources/Images/Railgun.png";
+	public static String RAILGUN_HOVER = "TanksV1/Resources/Images/RailgunHover.png";
+	public static String RAILGUN_CLICKED = "TanksV1/Resources/Images/RailgunClicked.png";
+
+	public static String FUTURE = "TanksV1/Resources/Images/Future.png";
+	public static String FUTURE_HOVER = "TanksV1/Resources/Images/FutureHover.png";
+	public static String FUTURE_CLICKED = "TanksV1/Resources/Images/FutureClicked.png";
+
+	public static String SONIC = "TanksV1/Resources/Images/Sonic.png";
+	public static String SONIC_HOVER = "TanksV1/Resources/Images/SonicHover.png";
+	public static String SONIC_CLICKED = "TanksV1/Resources/Images/SonicClicked.png";
+
+	public static String SPIKES = "TanksV1/Resources/Images/Spikes.png";
+	public static String SPIKES_HOVER = "TanksV1/Resources/Images/SpikesHover.png";
+	public static String SPIKES_CLICKED = "TanksV1/Resources/Images/SpikesClicked.png";
+
+	public static String ARMOUR = "TanksV1/Resources/Images/Armour.png";
+	public static String ARMOUR_HOVER = "TanksV1/Resources/Images/ArmourHover.png";
+	public static String ARMOUR_CLICKED = "TanksV1/Resources/Images/ArmourClicked.png";
+
 	public static String CONTINUE = "TanksV1/Resources/Images/Continue.png";
 	public static String CONTINUE_HOVER = "TanksV1/Resources/Images/ContinueHover.png";
 	public static String CONTINUE_CLICKED = "TanksV1/Resources/Images/ContinueClicked.png";
+
+	public static String BACK = "TanksV1/Resources/Images/Back.png";
+	public static String BACK_HOVER = "TanksV1/Resources/Images/BackHover.png";
+	public static String BACK_CLICKED = "TanksV1/Resources/Images/BackClicked.png";
 
 	public static String ENEMYHEALTH_FULL = "TanksV1/Resources/Images/EnemyHealthFull.png";
 	public static String ENEMYHEALTH_QUARTERDAMAGE = "TanksV1/Resources/Images/EnemyHealthQuarterDamage.png";
