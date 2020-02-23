@@ -19,6 +19,7 @@ public class GameMode
     
     private int levelNum = 0;
     private int maxLevel = 12; //LevelNum starts at 0, so it is no. of levels + 1
+    private int[] shopLevels = {2, 6, 10, 3, 7}; // The levels the shop is loaded after - before and after each boss fight
 
     private Random random;
     private long seed;
@@ -219,7 +220,7 @@ public class GameMode
 
                 else // Load the next level
                 {
-                    if (this.levelNum == 2 || this.levelNum == 6 || this.levelNum == 10) // The last round before a boss
+                    if (isShopLevel()) // The rounds before and after a boss
                     {
                         // Already been to the shop
                         if (uiManager.isInShop())
@@ -237,7 +238,7 @@ public class GameMode
 
                     else
                     {
-                        if (this.levelNum + 1 >= 1)
+                        if (this.levelNum + 1 >= this.maxLevel)
                         {
                             uiManager.changeState();
                             uiManager.displayEndScreen();
@@ -250,6 +251,20 @@ public class GameMode
                 }
             }
         }
+    }
+
+
+    private boolean isShopLevel()
+    {
+        for (int i : this.shopLevels)
+        {
+            if (this.levelNum == i)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
