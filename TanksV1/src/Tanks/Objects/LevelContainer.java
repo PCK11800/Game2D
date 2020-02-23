@@ -49,6 +49,7 @@ public class LevelContainer
         this.numEnemies = numEnemies;
         this.index = index;
         this.inGameMonitor = new InGameMonitor(this.window);
+        this.seed = seed;
     }
 
 
@@ -113,10 +114,14 @@ public class LevelContainer
             this.enemyTypes.add(new HouseTankTurret(this.playerList.get(0), this.mapGenerator));
         }
 
-        //this.enemyTypes = new ArrayList<>();
-        //this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
+        int opponentLevel = 1;
 
-        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.enemyTypes, this.playerList, this.map, this.mapGenerator, this.numEnemies, this);
+        if (this.index > 3)
+        {
+            opponentLevel = 2;
+        }
+
+        this.enemySpawner = new EnemySpawner(this.window, this.enemyList, this.enemyTypes, this.playerList, this.mapGenerator, this.numEnemies, this, opponentLevel);
     }
 
 

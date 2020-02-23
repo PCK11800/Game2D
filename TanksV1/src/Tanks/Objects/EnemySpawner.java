@@ -18,28 +18,27 @@ public class EnemySpawner
 {
     private Window window;
     private ArrayList<Opponent> enemyTypes;
-    private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
+    private ArrayList<Opponent> enemyList;
     private ArrayList<Tank> playerList;
     private LevelContainer levelContainer;
     private MapGenerator mapGenerator;
     private int numEnemies;
+    private int opponentLevel;
 
-    private Opponent enemy;
+    private Opponent enemy; // Strange bug occurs if this is not an instance variable
 
     private ArrayList<Tile> availableTiles = new ArrayList<Tile>();
 
 
-    //Should probably think about passing it a tank type / sprites
     /**
      * The constructor
      * @param window the window the enemies are to be drawn into
      * @param enemyTypes the enemy list contained within the LevelContainer class
      * @param playerList the player list contained with the levelContainer class - required as opponents need a reference to the player
-     * @param map the map the enemies are to placed into
      * @param mapGenerator the mapGenerator contained within the levelContainer class - used to get the map's size, scale, etc.
      * @param numEnemies the number of enemies to be spawned into a level
      */
-    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Opponent> enemyTypes, ArrayList<Tank> playerList, Map map, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer)
+    public EnemySpawner(Window window, ArrayList<Opponent> enemyList, ArrayList<Opponent> enemyTypes, ArrayList<Tank> playerList, MapGenerator mapGenerator, int numEnemies, LevelContainer levelContainer, int opponentLevel)
     {
         this.window = window;
         this.enemyList = enemyList;
@@ -48,6 +47,15 @@ public class EnemySpawner
         this.mapGenerator = mapGenerator;
         this.numEnemies = numEnemies;
         this.levelContainer = levelContainer;
+
+        if (opponentLevel == 1 || opponentLevel == 2)
+        {
+            this.opponentLevel = opponentLevel;
+        }
+        else
+        {
+            this.opponentLevel = 1;
+        }
 
         getAvailableTiles();
 
@@ -180,21 +188,19 @@ public class EnemySpawner
         Random rand = new Random();
         int randInt = rand.nextInt(enemyTypes.size());
 
-
         if (this.enemyTypes.get(randInt) instanceof HouseTankTurret) { enemy = new HouseTankTurret(playerList.get(0), mapGenerator); }
         else if (this.enemyTypes.get(randInt) instanceof HouseTankSniper) { enemy = new HouseTankSniper(playerList.get(0), mapGenerator); }
         else if (this.enemyTypes.get(randInt) instanceof HouseTankSlow) { enemy = new HouseTankSlow(playerList.get(0), mapGenerator); }
         else if (this.enemyTypes.get(randInt) instanceof HouseTankFast) { enemy = new HouseTankFast(playerList.get(0), mapGenerator); }
 
-        else if (this.enemyTypes.get(randInt) instanceof EdwardOpponent) { enemy = new EdwardOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof GordonOpponent) { enemy = new GordonOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof HenryOpponent) { enemy = new HenryOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof PercyOpponent) { enemy = new PercyOpponent(playerList.get(0), mapGenerator, 1); }
-        else if (this.enemyTypes.get(randInt) instanceof TobyOpponent) { enemy = new TobyOpponent(playerList.get(0), mapGenerator, 1); }
+        else if (this.enemyTypes.get(randInt) instanceof EdwardOpponent) { enemy = new EdwardOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
+        else if (this.enemyTypes.get(randInt) instanceof GordonOpponent) { enemy = new GordonOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
+        else if (this.enemyTypes.get(randInt) instanceof HenryOpponent) { enemy = new HenryOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
+        else if (this.enemyTypes.get(randInt) instanceof JamesOpponent) { enemy = new JamesOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
+        else if (this.enemyTypes.get(randInt) instanceof PercyOpponent) { enemy = new PercyOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
+        else if (this.enemyTypes.get(randInt) instanceof TobyOpponent) { enemy = new TobyOpponent(playerList.get(0), mapGenerator, this.opponentLevel); }
 
         else if (this.enemyTypes.get(randInt) instanceof ControllerOpponent) { enemy = new ControllerOpponent(playerList.get(0), mapGenerator); }
-        
 
         else
         {
