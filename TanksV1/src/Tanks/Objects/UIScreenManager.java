@@ -16,6 +16,8 @@ public class UIScreenManager
     private boolean onUIScreen = true; //default true - as you start off on the main menu - used in GameMode
     private boolean hideUI = false; //This is set when then you are on a UI screen but want to move on.
     private boolean loadLevel = false; //if this is false and onUIScreen is true, then you load the gameMode
+    private boolean shopClosed = false;
+    private boolean inShop = false;
 
     /**
      * Constructor
@@ -49,7 +51,10 @@ public class UIScreenManager
     public void displayShop(Tank player)
     {
         this.currentScreen = new ShopScreen(this.window, player);
+        this.shopClosed = false;
+        this.inShop = true;
     }
+
 
     /**
      * This method is used to display the end screen when the player either completes the game or dies
@@ -87,6 +92,13 @@ public class UIScreenManager
         this.loadLevel = false;
     }
 
+    public void closeShop()
+    {
+        this.inShop = false;
+        this.shopClosed = true;
+    }
+
+
     /**
      * Returns the onUIScreen flag
      * @return true if it is, false if not
@@ -98,6 +110,8 @@ public class UIScreenManager
      * @return true if it is, false if not
      */
     public boolean hideUI() { return this.hideUI; }
+
+    public boolean isInShop() { return this.inShop; }
 
 
     /**

@@ -19,9 +19,11 @@ public class LevelContainer
     private Window window;
     private Map map;
     private int numEnemies;
+
     private long seed;
     private MapGenerator mapGenerator;
     private int index;
+    private boolean loadNextLevel = false;
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
@@ -141,7 +143,7 @@ public class LevelContainer
      * It updates the enemies the players and the map
      * @return returns true if a new level should be loaded
      */
-    public boolean update()
+    public void update()
     {
         //Will need to check if an enemy has been killed - then call map.enemyKilled() if they have
         updateDeadTanks();
@@ -150,25 +152,26 @@ public class LevelContainer
         updateMap();
         updateInGameMonitor();
 
-        //If need to load the next level
-        return updatePlayers();
+         updatePlayers();
     }
+
+    public boolean loadNextLevel() { return this.loadNextLevel; }
 
 
     /**
      * This method updates all players in a level
      * @return returns true if a new level is to be loaded
      */
-    private boolean updatePlayers()
+    private void updatePlayers()
     {
-        boolean load = false;
+        this.loadNextLevel = false;
 
         for (int i = 0; i < playerList.size(); i++)
         {
             Tank player = playerList.get(i);
             if (player.update())
             {
-                load = true;
+                this.loadNextLevel = true;
             }
 
             else if(!player.isAlive())
@@ -179,7 +182,6 @@ public class LevelContainer
                 playerList.trimToSize();
             }
         }
-        return load;
     }
 
 

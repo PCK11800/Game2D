@@ -25,12 +25,13 @@ public class GameMode
     private Tank player;
     
     private int levelNum = 0;
-    private int maxLevel = 9; //LevelNum starts at 0, so it is no. of levels + 1
+    private int maxLevel = 12; //LevelNum starts at 0, so it is no. of levels + 1
 
     private Random random;
     private long seed;
 
     private boolean paused = false;
+
 
     /**
      * The constructor
@@ -171,7 +172,7 @@ public class GameMode
         }
 
         //Set the map
-        System.out.println("LEVEL:" + this.levelNum);
+        System.out.println("LEVEL: " + this.levelNum);
         this.currentLevel = new LevelContainer(this.window, mapXSize, mapYSize, numEnemies, this.seed, this.levelNum);
     }
 
@@ -198,6 +199,7 @@ public class GameMode
             gameMusicHandler.pause();
             //Go to the pause screen here
         }
+
         else
         {
             gameMusicHandler.resume();
@@ -217,36 +219,59 @@ public class GameMode
             //In an arena
             else
             {
-                if (currentLevel.update()) //This runs the method, regardless, but if it returns true do the following
+                if (!this.currentLevel.loadNextLevel()) // If not loading a new level
                 {
-                    this.levelNum++;
+                    this.currentLevel.update();
+                }
 
-                    if (levelNum == 3 || levelNum == 6 || levelNum == 9)
+                else // Load the next level
+                {
+                    if (this.levelNum == 2 || this.levelNum == 6 || this.levelNum == 10) // The last round before a boss
                     {
-                        uiManager.changeState();
-                        uiManager.displayShop(this.player);
-                    }
+                        // Already been to the shop
+                        if (uiManager.isInShop())
+                        {
+                            uiManager.closeShop();
+                            loadNextLevel();
+                        }
 
-                    else if (this.levelNum >= this.maxLevel)
-                    {
-                        levelNum = 0;
-                        uiManager.changeState();
-                        uiManager.displayEndScreen();
+                        else
+                        {
+                            uiManager.changeState();
+                            uiManager.displayShop(this.player);
+                        }
                     }
 
                     else
                     {
-                        createLevel();
-                        spawnPlayer();
-                        this.currentLevel.createLevel();
+                        if (this.levelNum + 1 >= 1)
+                        {
+                            uiManager.changeState();
+                            uiManager.displayEndScreen();
+                        }
+                        else
+                        {
+                            loadNextLevel();
+                        }
                     }
-
                 }
             }
         }
     }
 
-    public void pause(){
+
+    private void loadNextLevel()
+    {
+        this.levelNum++;
+
+        createLevel();
+        spawnPlayer();
+        this.currentLevel.createLevel();
+    }
+
+
+    public void pause()
+    {
         paused = true;
     }
 
