@@ -77,7 +77,23 @@ public class Opponent extends Tank {
         this(clone.player, clone.mapGenerator);
     }
 
-
+    public void setDifficulty(int difficulty)
+    {
+        switch (difficulty)
+        {
+            case 1: //easy 
+                increaseMaxHealth(-getHealth() / 2);
+                setMovementSpeed(getMovementSpeed() - 1);
+                setFireDelay(getFireDelay() + (getFireDelay() / 4));
+                setRammingDamage(getRammingDamage() / 2);
+                break;
+            case 2: //normal
+                increaseMaxHealth(-getHealth() / 3);
+                setFireDelay(getFireDelay() + (getFireDelay() / 5));
+                setRammingDamage(2 * (getRammingDamage() / 3));
+                break;
+        }
+    }
 
     /**
      * Update method called every game loop.
