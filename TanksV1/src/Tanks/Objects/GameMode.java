@@ -66,6 +66,8 @@ public class GameMode
         this.player.setLevelContainer(this.currentLevel);
         this.player.setWindow(window);
 
+        this.player.setHealth(10000);
+
         this.currentLevel.addPlayer(this.player);
     }
 
