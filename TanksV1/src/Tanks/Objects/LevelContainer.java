@@ -29,7 +29,9 @@ public class LevelContainer
 
     private ArrayList<Tank> playerList = new ArrayList<Tank>();
     private ArrayList<Opponent> enemyList = new ArrayList<Opponent>();
-    private ArrayList<Opponent> enemyTypes = new ArrayList<Opponent>();;
+
+    private ArrayList<Opponent> enemyTypes = new ArrayList<Opponent>();
+
     private ArrayList<TankShell> shellList = new ArrayList<>();
     private ArrayList<DeadTank> deadTankList = new ArrayList<>();
     private EnemySpawner enemySpawner;
@@ -65,7 +67,7 @@ public class LevelContainer
         float playerY = ((this.mapGenerator.getTileSize() + this.mapGenerator.getWallShort()) * this.mapGenerator.getYScale()) / 2;
         playerY += this.mapGenerator.getOffsetTopY();
 
-        initPlayer(playerList.get(0), playerX, playerY);
+        initPlayer(this.playerList.get(0), playerX, playerY);
         spawnEnemies();
     }
 
@@ -80,7 +82,6 @@ public class LevelContainer
 
         else if (this.index == 3)
         {
-            this.enemyTypes = new ArrayList<>();
             this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 1));
             this.enemyTypes.add(new GordonOpponent(this.playerList.get(0), this.mapGenerator, 1));
             this.enemyTypes.add(new EdwardOpponent(this.playerList.get(0), this.mapGenerator, 1));
@@ -92,7 +93,6 @@ public class LevelContainer
 
         else if (this.index == 7)
         {
-            this.enemyTypes = new ArrayList<>();
             this.enemyTypes.add(new JamesOpponent(this.playerList.get(0), this.mapGenerator, 2));
             this.enemyTypes.add(new GordonOpponent(this.playerList.get(0), this.mapGenerator, 2));
             this.enemyTypes.add(new EdwardOpponent(this.playerList.get(0), this.mapGenerator, 2));
@@ -103,13 +103,11 @@ public class LevelContainer
 
         else if (this.index == 11)
         {
-            this.enemyTypes = new ArrayList<>();
             this.enemyTypes.add(new ControllerOpponent(this.playerList.get(0), this.mapGenerator));
         }
 
         else
         {
-            this.enemyTypes = new ArrayList<>();
             this.enemyTypes.add(new HouseTankSlow(this.playerList.get(0), this.mapGenerator));
             this.enemyTypes.add(new HouseTankFast(this.playerList.get(0), this.mapGenerator));
             this.enemyTypes.add(new HouseTankSniper(this.playerList.get(0), this.mapGenerator));

@@ -3,7 +3,6 @@ package Tanks.Objects;
 import Tanks.Listeners.PauseListener;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Window.Window;
-
 import java.util.Random;
 
 public class GameMode
@@ -19,6 +18,7 @@ public class GameMode
     
     private int levelNum = 0;
     private int maxLevel = 12; //LevelNum starts at 0, so it is no. of levels + 1
+
     private int[] shopLevels = {2, 6, 10, 3, 7}; // The levels the shop is loaded after - before and after each boss fight
 
     private Random random;
@@ -44,6 +44,16 @@ public class GameMode
 
         this.random = new Random(this.seed);
     }
+
+
+    private void resetGame()
+    {
+        this.levelNum = 0;
+        createLevel();
+        initPlayer();
+        initGameMode();
+    }
+
 
 
     /**
@@ -194,7 +204,6 @@ public class GameMode
 
             if (!uiManager.isOnPauseScreen())
             {
-                //uiManager.setHideUI(false);
                 uiManager.displayPauseScreen();
             }
 
@@ -207,7 +216,6 @@ public class GameMode
 
             if (uiManager.isOnPauseScreen())
             {
-                //uiManager.setHideUI(true);
                 uiManager.setOnUIScreen(false);
                 uiManager.resumeGame();
             }
@@ -225,6 +233,7 @@ public class GameMode
                 {
                     uiManager.changeState();
                     uiManager.displayGameOverScreen();
+                    resetGame();
                 }
 
                 else // Player is not dead
@@ -283,8 +292,7 @@ public class GameMode
             {
                 uiManager.changeState();
                 uiManager.displayEndScreen();
-                this.levelNum = 0;
-
+                resetGame();
             }
             else
             {

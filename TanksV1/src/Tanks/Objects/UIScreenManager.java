@@ -89,6 +89,8 @@ public class UIScreenManager
         EndScreen endScreen = new EndScreen(this.window);
         endScreen.initBackButton(initMainMenu());
         this.currentScreen = endScreen;
+
+        this.onUIScreen = true;
     }
 
 
@@ -97,6 +99,8 @@ public class UIScreenManager
         GameOverScreen goScreen = new GameOverScreen(this.window);
         goScreen.initBackButton(initMainMenu());
         this.currentScreen = goScreen;
+
+        this.onUIScreen = true;
     }
 
 
@@ -130,8 +134,6 @@ public class UIScreenManager
     {
         this.inShop = false;
     }
-
-    public void setHideUI(boolean b) { this.hideUI = b; }
 
     public void setOnUIScreen(boolean b) {this.onUIScreen = b; }
 

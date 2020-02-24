@@ -16,13 +16,10 @@ public class PauseScreen extends UIScreen
 
         //Continue
         addResumeButton(centerX, (centerY - 200), 400, 125, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
-
         //Quit
         addQuitButton(centerX, (centerY + 200), 400, 125, Textures.EXITGAME, Textures.EXITGAME_HOVER, Textures.EXITGAME_CLICKED);
 
+        //Text
         addText(centerX - 175, 50, "PAUSED", 60, FontPath.PIXEL, Color.WHITE);
     }
-
-
-
 }
