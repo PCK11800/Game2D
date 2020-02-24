@@ -103,6 +103,10 @@ public class Textures {
 	public static String CONTINUE_HOVER = "TanksV1/Resources/Images/ContinueHover.png";
 	public static String CONTINUE_CLICKED = "TanksV1/Resources/Images/ContinueClicked.png";
 
+	public static String RESUME = "TanksV1/Resources/Images/Resume.png";
+	public static String RESUME_HOVER = "TanksV1/Resources/Images/ResumeHover.png";
+	public static String RESUME_CLICKED = "TanksV1/Resources/Images/ResumeClicked.png";
+
 	public static String BACK = "TanksV1/Resources/Images/Back.png";
 	public static String BACK_HOVER = "TanksV1/Resources/Images/BackHover.png";
 	public static String BACK_CLICKED = "TanksV1/Resources/Images/BackClicked.png";
