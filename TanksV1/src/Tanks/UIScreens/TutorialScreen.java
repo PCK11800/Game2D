@@ -23,6 +23,6 @@ public class TutorialScreen extends UIScreen
         float height = window.getHeight();
 
         //Back button - returns to the main menu
-        addLoadUIScreenButton(width - 250, height - 200, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, menu);
+        addLoadUIScreenButton(width - 250, height - 200, 400, 125, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED, menu);
     }
 }
