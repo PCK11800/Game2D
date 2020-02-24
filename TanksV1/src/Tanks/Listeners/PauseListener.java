@@ -17,19 +17,26 @@ public class PauseListener {
     public PauseListener(GameMode gameMode)
     {
         this.gameMode = gameMode;
-        iniPauseText();
+        //iniPauseText();
     }
 
     public void handlePause()
     {
-        if(gameMode.getStatus()){
-            gameMode.getWindow().draw(pauseText);
-        }
-        if (Keyboard.isKeyPressed(Keyboard.Key.ESCAPE)) {
-            if(pauseClock.getElapsedTime().asMilliseconds() >= 100) {
-                if (gameMode.getStatus()) {
+        //if(gameMode.getStatus())
+        //{
+            //gameMode.getWindow().draw(pauseText);
+        //}
+        if (Keyboard.isKeyPressed(Keyboard.Key.ESCAPE))
+        {
+            if(pauseClock.getElapsedTime().asMilliseconds() >= 100)
+            {
+                if (gameMode.getStatus())
+                {
                     gameMode.unpause();
-                } else {
+                }
+
+                else
+                {
                     gameMode.pause();
                 }
             }

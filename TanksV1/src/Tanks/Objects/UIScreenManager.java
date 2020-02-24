@@ -11,13 +11,15 @@ import Tanks.Window.Window;
 public class UIScreenManager
 {
     private UIScreen currentScreen;
+    private UIScreen beforePauseScreen;
     private Window window;
 
     private boolean onUIScreen = true; //default true - as you start off on the main menu - used in GameMode
     private boolean hideUI = false; //This is set when then you are on a UI screen but want to move on.
     private boolean loadLevel = false; //if this is false and onUIScreen is true, then you load the gameMode
-    private boolean shopClosed = false;
     private boolean inShop = false;
+    private boolean onPauseScreen = false;
+    private boolean stateBeforePause = false; // False = gameplay, true = on UISCreen
 
     /**
      * Constructor
@@ -51,8 +53,31 @@ public class UIScreenManager
     public void displayShop(Tank player)
     {
         this.currentScreen = new ShopScreen(this.window, player);
-        this.shopClosed = false;
         this.inShop = true;
+    }
+
+
+    public void displayPauseScreen()
+    {
+        //System.out.println("DISPLAY PAUSE SCREEN CALLED");
+        PauseScreen pauseScreen = new PauseScreen(this.window);
+
+        if (this.onUIScreen)
+        {
+            this.beforePauseScreen = this.currentScreen;
+            this.stateBeforePause = true;
+            this.hideUI = false;
+        }
+
+        else
+        {
+            this.stateBeforePause = false;
+            this.hideUI = false;
+        }
+
+        this.currentScreen = pauseScreen;
+        this.onPauseScreen = true;
+        this.onUIScreen = false;
     }
 
 
@@ -65,6 +90,7 @@ public class UIScreenManager
         endScreen.initBackButton(initMainMenu());
         this.currentScreen = endScreen;
     }
+
 
     public void displayGameOverScreen()
     {
@@ -103,8 +129,11 @@ public class UIScreenManager
     public void closeShop()
     {
         this.inShop = false;
-        this.shopClosed = true;
     }
+
+    public void setHideUI(boolean b) { this.hideUI = b; }
+
+    public void setOnUIScreen(boolean b) {this.onUIScreen = b; }
 
 
     /**
@@ -121,6 +150,31 @@ public class UIScreenManager
 
     public boolean isInShop() { return this.inShop; }
 
+    public boolean isOnPauseScreen() { return this.onPauseScreen; }
+
+
+    public void resumeGame()
+    {
+        this.onPauseScreen = false;
+        //System.out.println("STATE BEFORE: " + this.stateBeforePause);
+
+        if (this.stateBeforePause)
+        {
+            this.currentScreen = beforePauseScreen;
+            this.beforePauseScreen = null;
+
+            this.hideUI = false;
+            this.onUIScreen = true;
+        }
+        else
+        {
+            currentScreen = null;
+            this.hideUI = true;
+            this.onUIScreen = false;
+        }
+        //System.out.println("RESUME GAME CALLED");
+    }
+
 
     /**
      * This method is used to update the currentUI screen.
@@ -128,7 +182,7 @@ public class UIScreenManager
      */
     public void update()
     {
-        if (this.onUIScreen) //Only update if you are on a UIScreen - additional prevention
+        if (this.onUIScreen || this.onPauseScreen) //Only update if you are on a UIScreen - additional prevention
         {
             if (this.currentScreen.loadLinkedScreen())
             {
@@ -151,10 +205,17 @@ public class UIScreenManager
                 this.loadLevel = true;
             }
 
+            else if (this.currentScreen.resumeGame())
+            {
+                this.currentScreen.resetState();
+                this.onUIScreen = false;
+                this.hideUI = true;
+            }
+
             this.currentScreen.update();
         }
 
-        //To help improve ram usage - removes references so that they can be garbage collected+
+        //To help improve ram usage - removes references so that they can be garbage collected
         else if (currentScreen != null)
         {
             this.currentScreen = null;

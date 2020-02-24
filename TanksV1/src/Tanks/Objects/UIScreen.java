@@ -24,12 +24,15 @@ public abstract class UIScreen
     private ArrayList<LoadUIScreenButton> uiScreenButtons = new ArrayList<LoadUIScreenButton>();
     private ArrayList<LoadGameModeButton> gameModeButtons = new ArrayList<LoadGameModeButton>();
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
+    private ArrayList<ResumeButton> resumeButtons = new ArrayList<ResumeButton>();
+
     private ArrayList<Text> screenTexts = new ArrayList<>();
     private ArrayList<Text> moneyTexts = new ArrayList<>();
     private ArrayList<Text> healthTexts = new ArrayList<>();
 
 
     private Clock buttonClock = new Clock();
+    private float buttonDelayMilli = 100; // Delay from when the button is pressed to when it does performs its function - stops multiple executions
     private UIListener listener;
     private UIScreen linkedScreen; //This is set when a button is pressed
 
@@ -37,6 +40,7 @@ public abstract class UIScreen
     private boolean loadGameMode = false;
     private boolean loadNextLevel = false;
     private boolean loadLinkedScreen = false;
+    private boolean resumeGame = false;
 
     /**
      * Constructor
@@ -138,6 +142,26 @@ public abstract class UIScreen
         quitButtons.add(b);
     }
 
+
+    /**
+     * Adds a button to the screen that is used to resume the game
+     * @param x the x position of the button in pixels (the center of the button)
+     * @param y the y position of the button in pixels (the center of the button)
+     * @param width the width of the button in pixels
+     * @param height the height of the button in pixels
+     * @param activeTexture the default (active) texture of the button
+     * @param hoveredTexture the texture of the button when the mouse is hovering over it
+     * @param pressedTexture the texture of the button when it has been pressed
+     */
+    public void addResumeButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture)
+    {
+        ResumeButton b = new ResumeButton(this.window, x, y, width, height, activeTexture);
+        b.setAltTextures(hoveredTexture, pressedTexture);
+
+        resumeButtons.add(b);
+    }
+
+
     public void addText(float x, float y, String content, int size, String fontPath, Color color)
     {
         Text text = new Text();
@@ -181,6 +205,7 @@ public abstract class UIScreen
     {
         this.listener.handleInput();
 
+        // Buttons
         for (Button quitButton : this.quitButtons)
         {
             quitButton.update();
@@ -205,15 +230,24 @@ public abstract class UIScreen
         {
             upButton.update();
         }
+
+        for (ResumeButton resButton: this.resumeButtons)
+        {
+            resButton.update();
+        }
+
+        // Text
         for(Text text: this.screenTexts)
         {
             window.draw(text);
         }
+
         for(Text text: this.moneyTexts)
         {
             text.setString("£" + player.getMoney());
             window.draw(text);
         }
+
         for(Text text: this.healthTexts)
         {
             text.setString(player.getHealth() + "/" + player.getStartingHealth());
@@ -228,6 +262,8 @@ public abstract class UIScreen
 
     public boolean loadGameMode() { return this.loadGameMode; }
 
+    public boolean resumeGame() { return this.resumeGame; }
+
     /**
      * This is called when the linked screen / next level has been loaded.
      * The resets all of the status / flag functions
@@ -237,6 +273,7 @@ public abstract class UIScreen
         this.loadGameMode = false;
         this.loadNextLevel = false;
         this.loadLinkedScreen = false;
+        this.resumeGame = false;
     }
 
     /**
@@ -329,6 +366,22 @@ public abstract class UIScreen
             }
 
         }
+
+        for (ResumeButton resButton : this.resumeButtons)
+        {
+            if (resButton.contains(mouseXPos, mouseYPos) && (!resButton.isHovered()))
+            {
+                resButton.setHovered();
+
+                return;
+            }
+
+            else if ((!resButton.contains(mouseXPos, mouseYPos) && resButton.isHovered()))
+            {
+                resButton.setActive();
+            }
+
+        }
     }
 
 
@@ -370,13 +423,19 @@ public abstract class UIScreen
             {
                 levelButton.setPressed();
 
-                if(buttonClock.getElapsedTime().asSeconds() > 1)
+                this.buttonClock.restart();
+
+                while (true)
                 {
-                    resetState();
-                    this.loadNextLevel = true;
-                    buttonClock.restart();
+                    if(buttonClock.getElapsedTime().asMilliseconds() > this.buttonDelayMilli)
+                    {
+                        resetState();
+                        this.loadNextLevel = true;
+                        buttonClock.restart();
+
+                        return;
+                    }
                 }
-                return;
             }
         }
 
@@ -386,13 +445,19 @@ public abstract class UIScreen
             {
                 gmButton.setPressed();
 
-                if(buttonClock.getElapsedTime().asSeconds() > 1)
+                this.buttonClock.restart();
+
+                while (true)
                 {
-                    resetState();
-                    this.loadGameMode = true;
-                    buttonClock.restart();
+                    if(buttonClock.getElapsedTime().asMilliseconds() > this.buttonDelayMilli)
+                    {
+                        resetState();
+                        this.loadGameMode = true;
+                        buttonClock.restart();
+
+                        return;
+                    }
                 }
-                return;
             }
         }
 
@@ -404,6 +469,29 @@ public abstract class UIScreen
                 resetState();
 
                 return;
+            }
+        }
+
+        for (ResumeButton resButton : this.resumeButtons)
+        {
+            if (resButton.contains(mouseXPos, mouseYPos))
+            {
+                resButton.setPressed();
+
+                this.buttonClock.restart();
+
+                while (true)
+                {
+                    if(buttonClock.getElapsedTime().asMilliseconds() > this.buttonDelayMilli)
+                    {
+                        resetState();
+                        this.resumeGame = true;
+
+                        buttonClock.restart();
+
+                        return;
+                    }
+                }
             }
         }
     }

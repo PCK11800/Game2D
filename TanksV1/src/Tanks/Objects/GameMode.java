@@ -188,28 +188,34 @@ public class GameMode
         pauseListener.handlePause();
         gameMusicHandler.musicHandler();
 
-
-
         if(paused)
         {
             gameMusicHandler.pause();
-            //Go to the pause screen here
+
+            if (!uiManager.isOnPauseScreen())
+            {
+                //uiManager.setHideUI(false);
+                uiManager.displayPauseScreen();
+            }
+
+            uiManagerUpdate();
         }
 
         else
         {
             gameMusicHandler.resume();
 
+            if (uiManager.isOnPauseScreen())
+            {
+                //uiManager.setHideUI(true);
+                uiManager.setOnUIScreen(false);
+                uiManager.resumeGame();
+            }
+
             //Tests to see if you are on a UI Screen - if so update that screen
             if (uiManager.isOnUIScreen())
             {
-                uiManager.update();
-
-                if(uiManager.hideUI())
-                {
-                    uiManager.changeState();
-                    uiManager.resetFlags();
-                }
+                uiManagerUpdate();
             }
 
             //In an arena
@@ -230,39 +236,63 @@ public class GameMode
 
                     else // Load the next level
                     {
-                        if (isShopLevel()) // The rounds before and after a boss
-                        {
-                            // Already been to the shop
-                            if (uiManager.isInShop())
-                            {
-                                uiManager.closeShop();
-                                loadNextLevel();
-                            }
-
-                            else
-                            {
-                                uiManager.changeState();
-                                uiManager.displayShop(this.player);
-                            }
-                        }
-
-                        else
-                        {
-                            if (this.levelNum + 1 >= this.maxLevel)
-                            {
-                                uiManager.changeState();
-                                uiManager.displayEndScreen();
-                            }
-                            else
-                            {
-                                loadNextLevel();
-                            }
-                        }
+                        handleLevelLoading();
                     }
                 }
             }
         }
     }
+
+
+    private void uiManagerUpdate()
+    {
+        if(uiManager.hideUI())
+        {
+            uiManager.changeState();
+            uiManager.resetFlags();
+            this.paused = false;
+        }
+        else
+        {
+            uiManager.update();
+        }
+    }
+
+
+    private void handleLevelLoading()
+    {
+        if (isShopLevel()) // The rounds before and after a boss
+        {
+            // Already been to the shop
+            if (uiManager.isInShop())
+            {
+                uiManager.closeShop();
+                loadNextLevel();
+            }
+
+            else
+            {
+                uiManager.changeState();
+                uiManager.displayShop(this.player);
+            }
+        }
+
+        else
+        {
+            if (this.levelNum + 1 >= this.maxLevel)
+            {
+                uiManager.changeState();
+                uiManager.displayEndScreen();
+                this.levelNum = 0;
+
+            }
+            else
+            {
+                loadNextLevel();
+            }
+        }
+    }
+
 
 
     private boolean isShopLevel()
