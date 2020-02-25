@@ -478,29 +478,51 @@ public class Tank
 		if(previousMove == 1 && previousTurn >= 0)
 		{
 			moveBackward();
-			moveBackward();
-			moveBackward();
+			previousMove = 1;
 		}
 		//Only backward
 		else if(previousMove == 2 && previousTurn >= 0)
 		{
 			moveForward();
-			moveForward();
-			moveForward();
+			previousMove = 2;
 		}
 		//Only turnLeft
 		else if(previousMove == 0 && previousTurn == 1)
 		{
 			turnRight();
-			turnRight();
-			turnRight();
+			previousTurn = 1;
 		}
 		//Only turnRight
-		else if (previousMove == 0 && previousTurn == 2)
+		else if(previousMove == 0 && previousTurn == 2)
 		{
 			turnLeft();
+			previousTurn = 2;
+		}
+		else if(previousMove > 0 && previousTurn == 1)
+		{
+			turnRight();
+			previousTurn = 1;
+			if(previousMove == 1){
+				moveBackward();
+				previousMove = 1;
+			}
+			else if (previousMove == 2){
+				moveForward();
+				previousMove = 2;
+			}
+		}
+		else if(previousMove > 0 && previousTurn == 2)
+		{
 			turnLeft();
-			turnLeft();
+			previousTurn = 2;
+			if(previousMove == 1){
+				moveBackward();
+				previousMove = 1;
+			}
+			else if (previousMove == 2){
+				moveForward();
+				previousMove = 2;
+			}
 		}
 	}
 
