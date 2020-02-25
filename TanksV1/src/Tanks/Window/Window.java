@@ -25,7 +25,7 @@ public class Window extends RenderWindow{
 
 	public void openWindow()
 	{
-		create(new VideoMode(screenWidth, screenHeight), windowName, WindowStyle.DEFAULT);
+		create(new VideoMode(screenWidth, screenHeight), windowName, WindowStyle.DEFAULT); //Can set it to .FULLSCREEN
 	}
 
 	public String getWindowName()
