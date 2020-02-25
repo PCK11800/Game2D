@@ -38,11 +38,12 @@ public class UIScreenManager
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
         TutorialScreen tutorial = new TutorialScreen(this.window);
-
-        MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial);
+        StoryScreen story = new StoryScreen(this.window);
+        MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial, story);
 
         leaderboard.initBackButton(mainMenu);
         tutorial.initBackButton(mainMenu);
+        story.setText("intro");
 
         return mainMenu;
     }
@@ -55,7 +56,6 @@ public class UIScreenManager
         this.currentScreen = new ShopScreen(this.window, player);
         this.inShop = true;
     }
-
 
     public void displayPauseScreen()
     {

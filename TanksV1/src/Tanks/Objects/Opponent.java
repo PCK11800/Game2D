@@ -81,7 +81,7 @@ public class Opponent extends Tank {
     {
         switch (difficulty)
         {
-            case 1: //easy 
+            case 1: //easy
                 increaseMaxHealth(-getHealth() / 2);
                 setMovementSpeed(getMovementSpeed() - 1);
                 setFireDelay(getFireDelay() + (getFireDelay() / 4));
