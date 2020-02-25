@@ -1,13 +1,9 @@
 package Tanks.Objects;
 
 import Tanks.Listeners.PlayerListener;
-import Tanks.ObjectComponents.TankHull;
-import Tanks.ObjectComponents.TankShell;
-import Tanks.ObjectComponents.TankTurret;
+import Tanks.ObjectComponents.*;
 import Tanks.Sounds.GameSound;
 import Tanks.Window.Window;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
@@ -67,6 +63,8 @@ public class Tank
 	private int delayBetweenShell;
 	private int previousMove; //1 = forward, 2 = backward
 	private int previousTurn; //1 = turn left, 2 = turn right
+	private int previousMoveAlt;
+	private int previousTurnAlt;
 	private boolean collisionLastMove = false;
 	private boolean loadNextLevel = false;
 
@@ -243,11 +241,10 @@ public class Tank
 	{
 		if(movementDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
 		{
-			hull.moveForward();
-			turret.setTurretLocation();
-			movementDelayClock.restart();
 			previousMove = 1;
-			tankMovingSoundHandler();
+			previousMoveAlt = 1;
+			collisionHandling();
+			movementDelayClock.restart();
 		}
 	}
 
@@ -259,11 +256,10 @@ public class Tank
 	{
 		if(movementDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
 		{
-			hull.moveBackward();
-			turret.setTurretLocation();
-			movementDelayClock.restart();
 			previousMove = 2;
-			tankMovingSoundHandler();
+			previousMoveAlt = 2;
+			collisionHandling();
+			movementDelayClock.restart();
 		}
 	}
 
@@ -275,11 +271,10 @@ public class Tank
 	{
 		if(rotationDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
 		{
-			hull.turnLeft();
-			turret.setTurretLocation();
-			rotationDelayClock.restart();
 			previousTurn = 1;
-			tankMovingSoundHandler();
+			previousTurnAlt = 1;
+			collisionHandling();
+			movementDelayClock.restart();
 		}
 	}
 
@@ -289,14 +284,12 @@ public class Tank
 	 */
 	public void turnRight()
 	{
-
 		if(rotationDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
 		{
-			hull.turnRight();
-			turret.setTurretLocation();
-			rotationDelayClock.restart();
 			previousTurn = 2;
-			tankMovingSoundHandler();
+			previousTurnAlt = 2;
+			collisionHandling();
+			movementDelayClock.restart();
 		}
 	}
 
@@ -344,24 +337,168 @@ public class Tank
 		return hull.getObjectBounds();
 	}
 
-	/**
-	 * This method is used to handle collisions with the player
-	 */
-	private void tankCollisionHandling()
+	private void collisionHandling()
 	{
-		Line2D linesArray[] = getTankBounds();
-		//Collision Handling
-		objectCollisionHandling(linesArray[0], linesArray[1], linesArray[2], linesArray[3]);
-		tankToTankCollisionHandling(linesArray[0], linesArray[1], linesArray[2], linesArray[3]);
+		//Previous move: 1 = forward, 2 = backward
+		//Previous turn: 1 = left, 2 = right
+
+		int fineTuneMove = 3;
+		int fineTuneTurn = 3;
+		float fineTuneWidthPadding = (float) 2.5;
+		float fineTuneHeightPadding = (float) 1;
+		TankHull ghostHull = new TankHull();
+		ghostHull.setObjectTexture(Textures.TANKHULL_DEAD);
+		ghostHull.setSize(getSizeMult_w() * (53 + fineTuneWidthPadding), getSizeMult_h() * (75 + fineTuneHeightPadding));
+		ghostHull.setLocation(getXPos(), getYPos());
+		ghostHull.rotateObject(hull.getObjectDirection());
+		ghostHull.setMovementSpeed(getMovementSpeed());
+
+		if(previousMove == 1 && previousTurn >= 0){
+			for(int i = 0; i < fineTuneMove; i++){
+				ghostHull.moveForward();
+			}
+		}
+		else if(previousMove == 2 && previousTurn >= 0){
+			for(int i = 0; i < fineTuneMove; i++){
+				ghostHull.moveBackward();
+			}
+		}
+		else if(previousMove == 0 && previousTurn == 1){
+			for(int i = 0; i < fineTuneTurn; i++){
+				ghostHull.turnLeft();
+			}
+		}
+		else if(previousMove == 0 && previousTurn == 2){
+			for(int i = 0; i < fineTuneTurn; i++){
+				ghostHull.turnRight();
+			}
+		}
+
+		Line2D[] ghostHullBounds = ghostHull.getObjectBounds();
+		Line2D top = ghostHullBounds[0];
+		Line2D bottom = ghostHullBounds[1];
+		Line2D left = ghostHullBounds[2];
+		Line2D right = ghostHullBounds[3];
+
+		boolean canMove = false;
+
+		for(int i = 0; i < map.getObjectsInMap().size(); i++)
+		{
+			Line2D objectBounds[] = map.getObjectsInMap().get(i).getObjectBounds();
+
+			Line2D map_top = objectBounds[0];
+			Line2D map_bottom = objectBounds[1];
+			Line2D map_left = objectBounds[2];
+			Line2D map_right = objectBounds[3];
+
+			if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top) || bottom.intersectsLine(map_top) ||
+					top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right) || bottom.intersectsLine(map_right) ||
+					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
+					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
+			{
+				if (map.getObjectsInMap().get(i).isExit()) //If it is an exit
+				{
+					if (!map.getObjectsInMap().get(i).getLockedStatus()) //is unlocked
+					{
+						System.out.println("NEXT LEVEL!");
+						this.loadNextLevel = true;
+						this.increaseMoney(50);
+					}
+				}
+				canMove = false;
+				break;
+			}
+			else {
+				canMove = true;
+			}
+		}
+
+		if(canMove){
+			if(previousMove == 1 && previousTurn >= 0){
+				if(movementDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
+				{
+					hull.moveForward();
+					turret.setTurretLocation();
+					movementDelayClock.restart();
+					tankMovingSoundHandler();
+					previousMove = 0;
+
+					if(previousTurn == 1){
+						hull.turnLeft();
+						turret.setTurretLocation();
+						rotationDelayClock.restart();
+						tankMovingSoundHandler();
+						previousTurn = 0;
+					}
+					else if(previousTurn == 2){
+						hull.turnRight();
+						turret.setTurretLocation();
+						rotationDelayClock.restart();
+						tankMovingSoundHandler();
+						previousTurn = 0;
+					}
+				}
+			}
+			else if(previousMove == 2 && previousTurn >= 0) {
+				if (movementDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame) {
+					hull.moveBackward();
+					turret.setTurretLocation();
+					movementDelayClock.restart();
+					tankMovingSoundHandler();
+					previousMove = 0;
+
+					if(previousTurn == 1){
+						hull.turnLeft();
+						turret.setTurretLocation();
+						rotationDelayClock.restart();
+						tankMovingSoundHandler();
+						previousTurn = 0;
+					}
+					else if(previousTurn == 2){
+						hull.turnRight();
+						turret.setTurretLocation();
+						rotationDelayClock.restart();
+						tankMovingSoundHandler();
+						previousTurn = 0;
+					}
+				}
+			}
+			else if(previousMove == 0 && previousTurn == 1) {
+				if(rotationDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
+				{
+					hull.turnLeft();
+					turret.setTurretLocation();
+					rotationDelayClock.restart();
+					tankMovingSoundHandler();
+					previousTurn = 0;
+				}
+			}
+			else if(previousMove == 0 && previousTurn == 2) {
+				if(rotationDelayClock.getElapsedTime().asMilliseconds() >= timePerFrame)
+				{
+					hull.turnRight();
+					turret.setTurretLocation();
+					rotationDelayClock.restart();
+					tankMovingSoundHandler();
+					previousTurn = 0;
+				}
+			}
+		}
 	}
 
-	private void tankToTankCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
+	private void tankToTankCollisionHandling()
 	{
+		Line2D[] tankHullBounds = hull.getObjectBounds();
+		Line2D top = tankHullBounds[0];
+		Line2D bottom = tankHullBounds[1];
+		Line2D left = tankHullBounds[2];
+		Line2D right = tankHullBounds[3];
+
 		if(isPlayerControlled)
 		{
 			for(int i = 0; i < levelContainer.getEnemyList().size(); i++)
 			{
-			Opponent thisEnemy = levelContainer.getEnemyList().get(i);
+				Opponent thisEnemy = levelContainer.getEnemyList().get(i);
 				Line2D enemyLines[] = thisEnemy.getTankBounds();
 				//Lines of tank hull
 				Line2D enemy_top = enemyLines[0];
@@ -422,106 +559,56 @@ public class Tank
 		}
 	}
 
-	/**
-	 * This method handles collisions between map objects and the player
-	 * @param top
-	 * @param bottom
-	 * @param left
-	 * @param right
-	 */
-	private void objectCollisionHandling(Line2D top, Line2D bottom, Line2D left, Line2D right)
-	{
-		for(int i = 0; i < map.getObjectsInMap().size(); i++)
-		{
-			Line2D objectBounds[] = map.getObjectsInMap().get(i).getObjectBounds();
-
-			Line2D map_top = objectBounds[0];
-			Line2D map_bottom = objectBounds[1];
-			Line2D map_left = objectBounds[2];
-			Line2D map_right = objectBounds[3];
-
-
-			if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top) || bottom.intersectsLine(map_top) ||
-					top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right) || bottom.intersectsLine(map_right) ||
-					top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left) || bottom.intersectsLine(map_left) ||
-					top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom) || bottom.intersectsLine(map_bottom))
-			{
-
-				if (map.getObjectsInMap().get(i).isExit()) //If it is an exit
-				{
-					if (!map.getObjectsInMap().get(i).getLockedStatus()) //is unlocked
-					{
-						System.out.println("NEXT LEVEL!");
-						this.loadNextLevel = true;
-						this.increaseMoney(50);
-					}
-
-					else
-					{
-						collisionLastMove = true;
-						checkPreviousMove();
-					}
-				}
-
-				else
-				{
-					collisionLastMove = true;
-					checkPreviousMove();
-				}
-			}
-		}
-	}
-
 	private void checkPreviousMove()
 	{
 		//Only forward
-		if(previousMove == 1 && previousTurn >= 0)
+		if(previousMoveAlt == 1 && previousTurnAlt >= 0)
 		{
-			moveBackward();
-			previousMove = 1;
+			hull.moveBackward();
+			previousMoveAlt = 1;
 		}
 		//Only backward
-		else if(previousMove == 2 && previousTurn >= 0)
+		else if(previousMoveAlt == 2 && previousTurnAlt >= 0)
 		{
-			moveForward();
-			previousMove = 2;
+			hull.moveForward();
+			previousMoveAlt = 2;
 		}
 		//Only turnLeft
-		else if(previousMove == 0 && previousTurn == 1)
+		else if(previousMoveAlt == 0 && previousTurnAlt == 1)
 		{
-			turnRight();
+			hull.turnRight();
 			previousTurn = 1;
 		}
 		//Only turnRight
-		else if(previousMove == 0 && previousTurn == 2)
+		else if(previousMoveAlt == 0 && previousTurnAlt == 2)
 		{
-			turnLeft();
-			previousTurn = 2;
+			hull.turnLeft();
+			previousTurnAlt = 2;
 		}
-		else if(previousMove > 0 && previousTurn == 1)
+		else if(previousMoveAlt > 0 && previousTurnAlt == 1)
 		{
-			turnRight();
-			previousTurn = 1;
-			if(previousMove == 1){
-				moveBackward();
-				previousMove = 1;
+			hull.turnRight();
+			previousTurnAlt = 1;
+			if(previousMoveAlt == 1){
+				hull.moveBackward();
+				previousMoveAlt = 1;
 			}
-			else if (previousMove == 2){
-				moveForward();
-				previousMove = 2;
+			else if (previousMoveAlt == 2){
+				hull.moveForward();
+				previousMoveAlt = 2;
 			}
 		}
-		else if(previousMove > 0 && previousTurn == 2)
+		else if(previousMoveAlt > 0 && previousTurnAlt == 2)
 		{
-			turnLeft();
-			previousTurn = 2;
-			if(previousMove == 1){
-				moveBackward();
-				previousMove = 1;
+			hull.turnLeft();
+			previousTurnAlt = 2;
+			if(previousMoveAlt == 1){
+				hull.moveBackward();
+				previousMoveAlt = 1;
 			}
-			else if (previousMove == 2){
-				moveForward();
-				previousMove = 2;
+			else if (previousMoveAlt == 2){
+				hull.moveForward();
+				previousMoveAlt = 2;
 			}
 		}
 	}
@@ -529,10 +616,9 @@ public class Tank
 	//Call this in game loop
 	public boolean update()
 	{
-		tankCollisionHandling();
-		previousMove = 0;
-		previousTurn = 0;
-
+		tankToTankCollisionHandling();
+		previousMoveAlt = 0;
+		previousTurnAlt = 0;
 		hull.update();
 		if (isPlayer()) turret.update();
 		
