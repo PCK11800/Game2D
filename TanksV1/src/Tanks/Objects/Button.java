@@ -6,14 +6,21 @@ import Tanks.Window.Window;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.system.Clock;
 
+import java.awt.*;
+
 /**
  * This class represents a button that the user can interact with
  */
 public abstract class Button extends RotatingObject
 {
-    //Instace Variables
+    //Instance Variables
     protected Window window;
     private FloatRect collider;
+
+    private float xPos;
+    private float yPos;
+    private float width;
+    private float height;
 
     private String activeTexture;
     private String hoveredTexture;
@@ -21,6 +28,10 @@ public abstract class Button extends RotatingObject
 
     private boolean isHovered = false;
 
+    private float initialWindowWidth;
+    private float initialWindowHeight;
+    private float currentWindowWidth;
+    private float currentWindowHeight;
 
     /**
      * Constructor
@@ -36,12 +47,37 @@ public abstract class Button extends RotatingObject
         this.window = window;
         this.activeTexture = activeTexture;
 
+        this.xPos = x;
+        this.yPos = y;
+        this.width = width;
+        this.height = height;
+
+        this.activeTexture = activeTexture;
+
+        /*
         setObjectTexture(activeTexture);
         setCenterLocation(x, y);
         setSize(width, height);
+         */
 
-        this.collider = new FloatRect(x - (width / 2), y - (height / 2), width, height); //Left anchor point - height += h/3 as without it there is large area that cannot be pressed that is on the button
+        setButton(1, 1);
+
+        this.initialWindowHeight = window.getHeight();
+        this.initialWindowWidth = window.getWidth();
+
+        this.currentWindowHeight = window.getHeight();
+        this.currentWindowWidth = window.getWidth();
+
+        //this.collider = new FloatRect(x - (width / 2), y - (height / 2), width, height); //Left anchor point - height += h/3 as without it there is large area that cannot be pressed that is on the button
     }
+
+    private void setButton(float xScale, float yScale)
+    {
+        setObjectTexture(this.activeTexture);
+        setCenterLocation(this.xPos * xScale, this.yPos * yScale);
+        setSize(this.width *  xScale, this.height * yScale);
+    }
+
 
 
     /**
@@ -105,6 +141,25 @@ public abstract class Button extends RotatingObject
     /**
      * This method draws the button in the window
      */
-    public void update() { draw(this.window); }
+    public void update()
+    {
+        //System.out.println("Current Width:"  + window.getWidth() + " Stored: " + this.currentWindowWidth);
+        //System.out.println("Current Height:"  + window.getHeight() + " Stored: " + this.currentWindowHeight);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        if (screenSize.getWidth() != this.currentWindowWidth || screenSize.getHeight() != this.currentWindowHeight)
+        {
+            System.out.println("THIS IS CALLED");
+            float xScale =  (float) screenSize.getWidth() / this.initialWindowWidth;
+            float yScale =  (float) screenSize.getHeight() / this.initialWindowHeight;
+
+            this.currentWindowWidth = (float) screenSize.getWidth();
+            this.currentWindowHeight = (float) screenSize.getHeight();
+
+            setButton(xScale, yScale);
+        }
+        draw(this.window);
+    }
 
 }

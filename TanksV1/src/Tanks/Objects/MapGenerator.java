@@ -235,7 +235,7 @@ public class MapGenerator
 			if (!exitAdded && i == exitWall)
 			{
 				System.out.println("E");
-				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL, Textures.EXIT_UNLOCKED);
+				addExit(this.maxXPos, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL, Textures.BLACK);
 				addObject(this.maxXPos + wallShort, yPos + this.wallShort, this.wallShort, this.wallLong, Textures.BLACKWALL);
 
 

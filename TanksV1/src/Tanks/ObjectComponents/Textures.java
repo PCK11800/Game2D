@@ -5,6 +5,7 @@ public class Textures {
 	public static String GAMEICON = "TanksV1/Resources/Images/GameIconTransparent.png";
 	public static String BRICKBLOCK = "TanksV1/Resources/Images/BrickBlockIcon.png";
 	public static String BLACKWALL = "TanksV1/Resources/Images/BlackWall.png";
+	public static String BLACK = "TanksV1/Resources/Images/Black.png";
 
 	public static String TANKHULL_GREEN = "TanksV1/Resources/Images/TankHullIcon.png";
 	public static String TANKTURRET_GREEN = "TanksV1/Resources/Images/TankTurretIcon.png";
@@ -102,6 +103,10 @@ public class Textures {
 	public static String CONTINUE = "TanksV1/Resources/Images/Continue.png";
 	public static String CONTINUE_HOVER = "TanksV1/Resources/Images/ContinueHover.png";
 	public static String CONTINUE_CLICKED = "TanksV1/Resources/Images/ContinueClicked.png";
+
+	public static String RESUME = "TanksV1/Resources/Images/Resume.png";
+	public static String RESUME_HOVER = "TanksV1/Resources/Images/ResumeHover.png";
+	public static String RESUME_CLICKED = "TanksV1/Resources/Images/ResumeClicked.png";
 
 	public static String BACK = "TanksV1/Resources/Images/Back.png";
 	public static String BACK_HOVER = "TanksV1/Resources/Images/BackHover.png";

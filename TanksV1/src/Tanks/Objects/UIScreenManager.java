@@ -53,7 +53,8 @@ public class UIScreenManager
      */
     public void displayShop(Tank player)
     {
-        this.currentScreen = new ShopScreen(this.window, player);
+        ShopScreen shop = new ShopScreen(this.window, player);
+        this.currentScreen = new StoryScreen(this.window, "..", shop);
         this.inShop = true;
     }
 
@@ -102,7 +103,6 @@ public class UIScreenManager
 
         this.onUIScreen = true;
     }
-
 
 
     /**
