@@ -147,6 +147,8 @@ public abstract class Button extends RotatingObject
         //System.out.println("Current Height:"  + window.getHeight() + " Stored: " + this.currentWindowHeight);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //this.window.getSize();
+        //this.window.get
 
         if (screenSize.getWidth() != this.currentWindowWidth || screenSize.getHeight() != this.currentWindowHeight)
         {

@@ -408,12 +408,19 @@ public abstract class UIScreen
             {
                 uiButton.setPressed();
 
-                resetState();
-                this.loadLinkedScreen = true;
-                this.linkedScreen = uiButton.getLinkedScreen();
+                this.buttonClock.restart();
 
-                return;
+                while (true)
+                {
+                    if(buttonClock.getElapsedTime().asMilliseconds() > this.buttonDelayMilli)
+                    {
+                        resetState();
+                        this.loadLinkedScreen = true;
+                        this.linkedScreen = uiButton.getLinkedScreen();
 
+                        return;
+                    }
+                }
             }
         }
 
