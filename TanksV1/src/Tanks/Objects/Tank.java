@@ -342,10 +342,10 @@ public class Tank
 		//Previous move: 1 = forward, 2 = backward
 		//Previous turn: 1 = left, 2 = right
 
-		int fineTuneMove = 3;
-		int fineTuneTurn = 3;
-		float fineTuneWidthPadding = (float) 2.5;
-		float fineTuneHeightPadding = (float) 1;
+		int fineTuneMove = 2;
+		int fineTuneTurn = 8;
+		float fineTuneWidthPadding = (float) 0.5;
+		float fineTuneHeightPadding = (float) 0.5;
 		TankHull ghostHull = new TankHull();
 		ghostHull.setObjectTexture(Textures.TANKHULL_DEAD);
 		ghostHull.setSize(getSizeMult_w() * (53 + fineTuneWidthPadding), getSizeMult_h() * (75 + fineTuneHeightPadding));
@@ -364,14 +364,10 @@ public class Tank
 			}
 		}
 		else if(previousMove == 0 && previousTurn == 1){
-			for(int i = 0; i < fineTuneTurn; i++){
-				ghostHull.turnLeft();
-			}
+			ghostHull.rotateObject(ghostHull.getObjectDirection() - fineTuneTurn);
 		}
 		else if(previousMove == 0 && previousTurn == 2){
-			for(int i = 0; i < fineTuneTurn; i++){
-				ghostHull.turnRight();
-			}
+			ghostHull.rotateObject(ghostHull.getObjectDirection() + fineTuneTurn);
 		}
 
 		Line2D[] ghostHullBounds = ghostHull.getObjectBounds();
@@ -380,6 +376,7 @@ public class Tank
 		Line2D left = ghostHullBounds[2];
 		Line2D right = ghostHullBounds[3];
 
+		//ghostHull.draw(window);
 		boolean canMove = false;
 
 		for(int i = 0; i < map.getObjectsInMap().size(); i++)
