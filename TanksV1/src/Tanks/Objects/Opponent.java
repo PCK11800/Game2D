@@ -538,8 +538,8 @@ public class Opponent extends Tank {
         c =  y2 - (m*x2);
 
         //constant val for parallel lines between which player tank can be shot at
-        upperBound = isSelf ? c + hull.getHeight()/2 : c + player.hull.getHeight()/2;
-        lowerBound = isSelf ? c - hull.getHeight()/2 : c - player.hull.getHeight()/2;
+        upperBound = isSelf ? c + hull.getHeight() : c + player.hull.getHeight();
+        lowerBound = isSelf ? c - hull.getHeight() : c - player.hull.getHeight();
 
         if (m.isInfinite())
         {
@@ -578,7 +578,7 @@ public class Opponent extends Tank {
             Line2D bottom = new Line2D.Float(obj.getLeftBounds(), obj.getBottomBounds(), obj.getRightBounds(), obj.getBottomBounds());
             Line2D right = new Line2D.Float(obj.getRightBounds(), obj.getTopBounds(), obj.getRightBounds(), obj.getBottomBounds());
             Line2D left = new Line2D.Float(obj.getLeftBounds(), obj.getTopBounds(), obj.getLeftBounds(), obj.getBottomBounds());
-            if (line.intersectsLine(top) && line.intersectsLine(left) || line.intersectsLine(top) && line.intersectsLine(right) || line.intersectsLine(top) && line.intersectsLine(bottom) || line.intersectsLine(bottom) && line.intersectsLine(right) || line.intersectsLine(bottom) && line.intersectsLine(left) || line.intersectsLine(right) && line.intersectsLine(left))
+            if ((line.intersectsLine(top) && line.intersectsLine(left)) || (line.intersectsLine(top) && line.intersectsLine(right)) || (line.intersectsLine(top) && line.intersectsLine(bottom)) || (line.intersectsLine(bottom) && line.intersectsLine(right)) || line.intersectsLine(bottom) && line.intersectsLine(left) || line.intersectsLine(right) && line.intersectsLine(left))
             {
                 return true;
             }
@@ -615,25 +615,13 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right
                     {
-                        switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomRIGHT"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomRIGHT"));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //bottom
                     {
-                        switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightBOTTOM"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightBOTTOM"));
                     }
                 }
             }
@@ -648,25 +636,13 @@ public class Opponent extends Tank {
                      y = (m * x) + c;
                      if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right side
                      {
-                         switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topRIGHT"))
-                         {
-                             case -1:
-                                 return false;
-                             case 1:
-                                 return true;
-                         }
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topRIGHT"));
                      }
                      y = obj.getTopBounds();
                      x = (y - c) / m;
                      if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                      {
-                         switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightTOP"))
-                         {
-                             case -1:
-                                 return false;
-                             case 1:
-                                 return true;
-                         }
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightTOP"));
                      }
                  }
             }
@@ -681,24 +657,12 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomLEFT"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomLEFT"));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) {
-                        switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftBOTTOM"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftBOTTOM"));
                     }
                 }
             }
@@ -713,25 +677,13 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topLEFT"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topLEFT"));
                     }
                     y = obj.getTopBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                     {
-                       switch (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftTOP"))
-                        {
-                            case -1:
-                                return false;
-                            case 1:
-                                return true;
-                        }
+                       return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftTOP"));
                     }
                 }
             }
@@ -751,7 +703,7 @@ public class Opponent extends Tank {
      * @param sideHit
      * @return 1 if can hit, -1 if run out of ricochets, 0 if can't hit but still have ricochets left
      */
-    private int checkIfCanHitAfterRotation(float x, float y, float x1, float y1, float x2, float y2, float direction, String sideHit)
+    private boolean checkIfCanHitAfterRotation(float x, float y, float x1, float y1, float x2, float y2, float direction, String sideHit)
     {
         float newX, newY;
         boolean playerOnSide = false;
@@ -786,17 +738,16 @@ public class Opponent extends Tank {
         newY = coords[1];
         if (!isObjectInPath(x1, y1, x, y)) {
             if (playerOnSide && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                return 1;
+                return true;
             } else if (ricochetCount < shellRicochetNumber - 1) {
                 ricochetCount++;
                 if (canHitPlayer(x, y, newX, newY, changeOfDir))
                 {
-                    return 1;
+                    return true;
                 }
-                return -1;
             }
         }
-        return 0;
+        return false;
     }
 
 
