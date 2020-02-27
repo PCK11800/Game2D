@@ -83,6 +83,7 @@ public class StoryScreen extends UIScreen {
                 addText(50, row, new String(c), 25, FontPath.PIXEL, Color.BLUE);
                 count++;
                 posLastLine = pos;
+                pos++;
             }
             else
             {
@@ -93,7 +94,7 @@ public class StoryScreen extends UIScreen {
         {
             row = (count) * 50;
             char[] c = new char[text.length - posLastLine];
-            for (int j = text.length - posLastLine; j > 1; j--) {
+            for (int j = text.length - posLastLine; j > 0; j--) {
                 c[(text.length - posLastLine) - j] = text[i - j];
             }
             addText(50, row, new String(c), 25, FontPath.PIXEL, Color.BLUE);
