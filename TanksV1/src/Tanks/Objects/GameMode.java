@@ -34,7 +34,7 @@ public class GameMode
     public GameMode(Window window, long seed)
     {
         this.window = window;
-        this.uiManager = new UIScreenManager(window);
+        this.uiManager = new UIScreenManager(window, this);
         this.pauseListener = new PauseListener(this);
         this.seed = seed;
 
@@ -343,4 +343,6 @@ public class GameMode
     }
 
     public Window getWindow() { return window; }
+
+    public int getLevelNum() { return levelNum; }
 }
