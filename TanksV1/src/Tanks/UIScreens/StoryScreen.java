@@ -20,6 +20,15 @@ public class StoryScreen extends UIScreen {
     private String beforeBattle1 = "26/02/2021 : " +
             "Congratulations. You have successfully fought your way through the House Tanks. Now comes the real challenge... the first Competitor..." +
             "You may want to prepare for this...";
+    private String afterBattle1 = "27/02/2021:" +
+            "Well done! Keep up the good work and you'll be giving The Controller a run for his money!";
+    private String beforeBattle2 = "28/02/2021: " +
+            "Are you ready for round two? I've heard this guy's a feisty one.";
+    private String afterBattle2 = "29/02/2021: " +
+            "Just three more House Tank levels to go before the final showdown! Make sure you're prepared.";
+    private String beforeBattle3 = "02/03/2021: " +
+            "I have to admit I didn't think you'd make it this far..." +
+            "Well, good luck. You'll need it. The Controller is waiting.";
 
     public StoryScreen(Window window)
     {
@@ -34,7 +43,7 @@ public class StoryScreen extends UIScreen {
         this.window = window;
         float width = window.getWidth();
         float height = window.getHeight();
-        setText("before_battle_one");
+        setText(text);
         addLoadUIScreenButton(width - 250, height - 200, 400, 125, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED, shop);
     }
 
@@ -56,19 +65,30 @@ public class StoryScreen extends UIScreen {
         float screenHeight = window.getHeight();
         int ROW_LENGTH = 40;
         char[] text;
-  //addText(0, 0, intro, 42, FontPath.PIXEL, Color.BLUE);
-        if (section.equals("intro"))
+        switch (section)
         {
-            text = intro.toCharArray();
+            case "intro":
+                text = intro.toCharArray();
+                break;
+            case "before_battle_1":
+                text = beforeBattle1.toCharArray();
+                break;
+            case "after_battle_1":
+                text = afterBattle1.toCharArray();
+                break;
+            case "before_battle_2":
+                text = beforeBattle2.toCharArray();
+                break;
+            case "after_battle_2":
+                text = afterBattle2.toCharArray();
+                break;
+            default:
+                text = beforeBattle3.toCharArray();
         }
-        else
-        {
-            text = beforeBattle1.toCharArray();
-        }
+
         int count = 1;
         int pos = 0;
         int row = 0;
-        int column;
         int posLastLine = 0;
         int i;
         for (i = 0; i < text.length; i++)
@@ -80,23 +100,20 @@ public class StoryScreen extends UIScreen {
                 {
                     c[(pos - posLastLine) - j] = text[i - j];
                 }
-                addText(50, row, new String(c), 25, FontPath.PIXEL, Color.BLUE);
+                addText(50, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
                 count++;
                 posLastLine = pos;
             }
-            else
-            {
-                pos++;
-            }
+            pos++;
         }
         if (posLastLine < text.length - 1)
         {
             row = (count) * 50;
             char[] c = new char[text.length - posLastLine];
-            for (int j = text.length - posLastLine; j > 1; j--) {
+            for (int j = text.length - posLastLine; j > 0; j--) {
                 c[(text.length - posLastLine) - j] = text[i - j];
             }
-            addText(50, row, new String(c), 25, FontPath.PIXEL, Color.BLUE);
+            addText(50, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
         }
         isSetup = false;
     }
