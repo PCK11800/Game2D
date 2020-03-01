@@ -29,6 +29,7 @@ public abstract class UIScreen
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
     private ArrayList<ResumeButton> resumeButtons = new ArrayList<ResumeButton>();
     private ArrayList<SoundButton> soundButtons = new ArrayList<>();
+    private ArrayList<DifficultyButton> difficultyButtons = new ArrayList<DifficultyButton>();
 
     private ArrayList<Text> screenTexts = new ArrayList<>();
     private ArrayList<Text> moneyTexts = new ArrayList<>();
@@ -109,6 +110,14 @@ public abstract class UIScreen
         b.setAltTextures(hoveredTexture, pressedTexture);
 
         uiScreenButtons.add(b);
+    }
+
+    public void addDifficultyButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, int difficulty)
+    {
+        DifficultyButton b = new DifficultyButton(this.window, x, y, width, height, activeTexture, difficulty);
+        b.setAltTextures(hoveredTexture, pressedTexture);
+
+        difficultyButtons.add(b);
     }
 
     /**
@@ -261,6 +270,11 @@ public abstract class UIScreen
         for (SoundButton soundButton: this.soundButtons)
         {
             soundButton.update();
+        }
+
+        for (DifficultyButton difficultyButton : this.difficultyButtons)
+        {
+            difficultyButton.update();
         }
 
         // Text
@@ -440,6 +454,22 @@ public abstract class UIScreen
             }
 
         }
+
+        for (DifficultyButton difficultyButton : this.difficultyButtons)
+        {
+            if (difficultyButton.contains(mouseXPos, mouseYPos) && (!difficultyButton.isHovered()) && !(difficultyButton.isSelected()))
+            {
+                difficultyButton.setHovered();
+
+                return;
+            }
+
+            else if ((!difficultyButton.contains(mouseXPos, mouseYPos) && difficultyButton.isHovered() && !(difficultyButton.isSelected())))
+            {
+                difficultyButton.setActive();
+            }
+
+        }
     }
 
 
@@ -567,6 +597,23 @@ public abstract class UIScreen
                 soundButton.setPressed();
                 resetState();
 
+                return;
+            }
+        }
+
+        for (DifficultyButton difficultyButton : this.difficultyButtons)
+        {
+            if (difficultyButton.contains(mouseXPos, mouseYPos))
+            {
+                for (DifficultyButton db : this.difficultyButtons)
+                {
+                    if (db.isSelected())
+                    {
+                        db.deSelect();
+                    }
+                }
+                difficultyButton.setPressed();
+                resetState();
                 return;
             }
         }

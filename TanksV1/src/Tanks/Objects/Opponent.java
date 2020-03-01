@@ -78,19 +78,24 @@ public class Opponent extends Tank {
         this(clone.player, clone.mapGenerator);
     }
 
-    public void setDifficulty(int difficulty)
+    private void setDifficulty(int difficulty)
     {
+        System.out.println("Difficulty: " + difficulty);
         switch (difficulty)
         {
             case 1: //easy
-                increaseMaxHealth(-getHealth() / 2);
+                increaseMaxHealth(-(getHealth() / 2));
+                tankIsHit(getHealth() / 2);
                 setMovementSpeed(getMovementSpeed() - 1);
                 setFireDelay(getFireDelay() + (getFireDelay() / 4));
+                setDamagePerShell(getDamagePerShell() / 2);
                 setRammingDamage(getRammingDamage() / 2);
                 break;
             case 2: //normal
-                increaseMaxHealth(-getHealth() / 3);
+                increaseMaxHealth(-(getHealth() / 3));
+                tankIsHit((getHealth() / 3) * 2);
                 setFireDelay(getFireDelay() + (getFireDelay() / 5));
+                setDamagePerShell((getDamagePerShell() / 3) * 2);
                 setRammingDamage(2 * (getRammingDamage() / 3));
                 break;
         }
@@ -122,6 +127,7 @@ public class Opponent extends Tank {
               generateMovementPathToTile();
             }
             clone = turret.stationaryCopy();
+            setDifficulty(window.getDifficulty());
             healthBar = new HealthBar(window, this);
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))

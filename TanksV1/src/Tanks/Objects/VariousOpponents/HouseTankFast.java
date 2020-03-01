@@ -12,7 +12,7 @@ public class HouseTankFast extends ConfusedOpponent
         setHullTexture(Textures.TANKHULL_RED);
         setTurretTexture(Textures.TANKTURRET_BLUE);
         setHealth(50);
-        setFireDelay(600);
+        setFireDelay(1000);
         setDamagePerShell(10);
         setRammingDamage(10);
         setMovementSpeed(10);

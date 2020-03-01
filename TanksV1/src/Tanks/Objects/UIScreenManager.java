@@ -40,12 +40,11 @@ public class UIScreenManager
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
         TutorialScreen tutorial = new TutorialScreen(this.window);
-        StoryScreen story = new StoryScreen(this.window);
+        StoryScreen story = new StoryScreen(this.window, "intro");
         MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial, story);
 
         leaderboard.initBackButton(mainMenu);
         tutorial.initBackButton(mainMenu);
-        story.setText("intro");
 
         return mainMenu;
     }

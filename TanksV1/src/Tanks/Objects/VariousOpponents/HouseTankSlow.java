@@ -11,5 +11,6 @@ public class HouseTankSlow extends ChasingOpponent {
         setHealth(100);
         setDamagePerShell(20);
         setRammingDamage(20);
+        setFireDelay(900);
     }
 }

@@ -12,6 +12,7 @@ public class Window extends RenderWindow{
 	private String windowName;
 	private int frameRate;
 	private Color backgroundColor;
+	private int difficulty = 1; //1 = easy, 2 = normal, 3 = hard
 
 	public Window(int screenWidth, int screenHeight, String windowName, int frameRate)
 	{
@@ -72,6 +73,8 @@ public class Window extends RenderWindow{
 		}
 	}
 
+	public void setDifficulty(int difficulty) { this.difficulty = difficulty; }
+
 	public int getWidth()
 	{
 		return screenWidth;
@@ -81,4 +84,6 @@ public class Window extends RenderWindow{
 	{
 		return screenHeight;
 	}
+
+	public int getDifficulty() { return difficulty; }
 }

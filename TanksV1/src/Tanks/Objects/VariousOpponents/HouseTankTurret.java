@@ -13,7 +13,7 @@ public class HouseTankTurret extends Opponent
         super(player, mapGen);
         disableMovement();
         setHealth(100);
-        setFireDelay(100);
+        setFireDelay(600);
         setRammingDamage(10);
         setShellRicochetNumber(3);
         setTurretTexture(Textures.TANKTURRET_RED_MACHINEGUN);
