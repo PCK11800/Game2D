@@ -4,7 +4,8 @@ public class Textures {
 
 	public static String GAMEICON = "TanksV1/Resources/Images/GameIconTransparent.png";
 	public static String BRICKBLOCK = "TanksV1/Resources/Images/BrickBlockIcon.png";
-	public static String BLACKWALL = "TanksV1/Resources/Images/BlackWall.png";
+	public static String BLACKWALL = "TanksV1/Resources/Images/BackgroundImage.png";
+	public static String EXITWALL = "TanksV1/Resources/Images/ExitDoor.png";
 	public static String BLACK = "TanksV1/Resources/Images/Black.png";
 
 	public static String TANKHULL_GREEN = "TanksV1/Resources/Images/TankHullIcon.png";
