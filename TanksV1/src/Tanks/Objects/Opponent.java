@@ -6,6 +6,7 @@ import Tanks.UIScreens.HealthBar;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -527,36 +528,44 @@ public class Opponent extends Tank {
      * @param y1 start point of line y position
      * @param x2 end point of line x position
      * @param y2 end point of line y position
-     * @param isSelf indicates whether the tank to checked is the player tank or this opponent (true if self, false if player)
      * @return true if player lies on the line between start and end points, false if not.
      */
-    private boolean isTankInFiringLine(float x1, float y1, float x2, float y2, boolean isSelf)
+    private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
-        Float m, c, tankConstant, upperBound, lowerBound;
+        Float m, c, playerConstant, oppConstant , uBound, lBound, oppLBound, oppUBound;
         //working out equation of line through turret (firing line)
         m = (y1 - y2) / (x1 - x2);
         c =  y2 - (m*x2);
 
         //constant val for parallel lines between which player tank can be shot at
-        upperBound = isSelf ? c + hull.getHeight() : c + player.hull.getHeight();
-        lowerBound = isSelf ? c - hull.getHeight() : c - player.hull.getHeight();
+        uBound =  c + (player.hull.getHeight() / 2);
+        lBound =  c - (player.hull.getHeight() / 2);
+        oppUBound = c + (hull.getHeight() / 2);
+        oppLBound = c - (hull.getHeight() / 2);
 
         if (m.isInfinite())
         {
             if (x1 == x2)
             {
-                if (!isSelf && playerXPos < (x1 + player.hull.getWidth()/2) && playerXPos > (x1 - player.hull.getWidth()/2)) return true;
-                if (isSelf && getXPos() < (x1 + hull.getWidth()/2) && getXPos() > (x1 - hull.getWidth()/2)) return true;
+                if (getXPos() < (x1 + hull.getWidth()/2) && getXPos() > (x1 - hull.getWidth()/2)) return false;
+                if (playerXPos < (x1 + player.hull.getWidth()/2) && playerXPos > (x1 - player.hull.getWidth()/2)) return true;
             }
             else
             {
+                if (getXPos() < (y1 + hull.getWidth()/2) && getXPos() > (y1 - hull.getWidth()/2)) return false;
                 if (playerYPos < (y1 + player.hull.getWidth()/2) && playerYPos > (y1 - player.hull.getWidth()/2)) return true;
-                if (isSelf && getXPos() < (y1 + hull.getWidth()/2) && getXPos() > (y1 - hull.getWidth()/2)) return true;
             }
         }
 
-        tankConstant = isSelf ? getYPos() - (m*getXPos()) : (playerYPos - (m*playerXPos));
-        return (upperBound > tankConstant && lowerBound < tankConstant); //check player between two parallel lines
+        playerConstant = (playerYPos - (m*playerXPos));
+        oppConstant = getYPos() - (m*getXPos());
+        if (oppUBound > oppConstant && oppLBound < oppConstant)
+        {
+            double playerDist = Point2D.distance(x1, y1, playerXPos, playerYPos);
+            double oppDist = Point2D.distance(x1, y1, getXPos(), getYPos());
+            if (oppDist != 0 && (playerDist > oppDist)) return false;
+        }
+        return (uBound > playerConstant && lBound < playerConstant); //check player between two parallel lines
     }
 
 
@@ -737,7 +746,7 @@ public class Opponent extends Tank {
         newX = coords[0];
         newY = coords[1];
         if (!isObjectInPath(x1, y1, x, y)) {
-            if (playerOnSide && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
+            if (playerOnSide && isPlayerInFiringLine(x1, y1, x2, y2)) {
                 return true;
             } else if (ricochetCount < shellRicochetNumber - 1) {
                 ricochetCount++;
