@@ -66,8 +66,6 @@ public class GameMode
         this.player.setLevelContainer(this.currentLevel);
         this.player.setWindow(window);
 
-        this.player.setHealth(10000);
-
         this.currentLevel.addPlayer(this.player);
     }
 
@@ -345,4 +343,6 @@ public class GameMode
     public Window getWindow() { return window; }
 
     public int getLevelNum() { return levelNum; }
+
+    public GameMusicHandler getGameMusicHandler() { return gameMusicHandler; }
 }

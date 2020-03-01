@@ -74,8 +74,11 @@ public class Tank
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
 
-	GameSound tankFiring;
-	GameSound tankMoving;
+	private GameSound tankFiring;
+	private GameSound tankMoving;
+
+	private float tankFiringVolume;
+	private float tankMovingVolume;
 
 	public Tank()
 	{
@@ -159,12 +162,14 @@ public class Tank
 	{
 		tankFiring = new GameSound(firingSound);
 		tankFiring.setVolume(volume);
+		tankFiringVolume = volume;
 	}
 
 	public void setMovingSound(String moveSound, float volume)
 	{
 		tankMoving = new GameSound(moveSound);
 		tankMoving.setVolume(volume);
+		tankMovingVolume = volume;
 	}
 
 	public void setShellSpeed(float shellSpeed)
@@ -342,10 +347,10 @@ public class Tank
 		//Previous move: 1 = forward, 2 = backward
 		//Previous turn: 1 = left, 2 = right
 
-		int fineTuneMove = 2;
+		int fineTuneMove = 5;
 		int fineTuneTurn = 8;
 		float fineTuneWidthPadding = (float) 0.5;
-		float fineTuneHeightPadding = (float) 0.5;
+		float fineTuneHeightPadding = (float) 1;
 		TankHull ghostHull = new TankHull();
 		ghostHull.setObjectTexture(Textures.TANKHULL_DEAD);
 		ghostHull.setSize(getSizeMult_w() * (53 + fineTuneWidthPadding), getSizeMult_h() * (75 + fineTuneHeightPadding));
@@ -354,14 +359,14 @@ public class Tank
 		ghostHull.setMovementSpeed(getMovementSpeed());
 
 		if(previousMove == 1 && previousTurn >= 0){
-			for(int i = 0; i < fineTuneMove; i++){
-				ghostHull.moveForward();
-			}
+			float xPos = (float) (getXPos() + (fineTuneMove * Math.sin(Math.toRadians(ghostHull.getObjectDirection()))));
+			float yPos = (float) (getYPos() - (fineTuneMove * Math.cos(Math.toRadians(ghostHull.getObjectDirection()))));
+			ghostHull.setCenterLocation(xPos, yPos);
 		}
 		else if(previousMove == 2 && previousTurn >= 0){
-			for(int i = 0; i < fineTuneMove; i++){
-				ghostHull.moveBackward();
-			}
+			float xPos = (float) (getXPos() - (fineTuneMove * Math.sin(Math.toRadians(ghostHull.getObjectDirection()))));
+			float yPos = (float) (getYPos() + (fineTuneMove * Math.cos(Math.toRadians(ghostHull.getObjectDirection()))));
+			ghostHull.setCenterLocation(xPos, yPos);
 		}
 		else if(previousMove == 0 && previousTurn == 1){
 			ghostHull.rotateObject(ghostHull.getObjectDirection() - fineTuneTurn);
@@ -768,4 +773,12 @@ public class Tank
 	public TankTurret getTurret() { return turret; }
 
 	public int getStartingHealth() { return startingHealth; }
+
+	public float getTankFiringVolume() { return tankFiringVolume; }
+
+	public void setTankFiringVolume(float tankFiringVolume) { this.tankFiringVolume = tankFiringVolume; }
+
+	public float getTankMovingVolume() { return tankMovingVolume; }
+
+	public void setTankMovingVolume(float tankMovingVolume) { this.tankMovingVolume = tankMovingVolume; }
 }
