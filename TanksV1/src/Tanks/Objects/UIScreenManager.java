@@ -81,7 +81,7 @@ public class UIScreenManager
     public void displayPauseScreen()
     {
         //System.out.println("DISPLAY PAUSE SCREEN CALLED");
-        PauseScreen pauseScreen = new PauseScreen(this.window);
+        PauseScreen pauseScreen = new PauseScreen(this.window, game.getGameMusicHandler());
 
         if (this.onUIScreen)
         {

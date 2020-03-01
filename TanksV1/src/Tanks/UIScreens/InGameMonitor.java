@@ -11,7 +11,7 @@ import org.jsfml.graphics.Text;
 public class InGameMonitor {
 
     private int[] currentData;
-    private Text healthText, enemyText, moneyText;
+    private Text healthText, enemyText, moneyText, levelText;
     private Window window;
     private Tank tank;
 
@@ -27,7 +27,7 @@ public class InGameMonitor {
     {
         this.window = window;
         iniComponents();
-        currentData = new int[4];
+        currentData = new int[5];
     }
 
     private void iniComponents()
@@ -35,6 +35,7 @@ public class InGameMonitor {
         iniHealthBar();
         iniEnemyLeft();
         iniMoney();
+        iniLevelIndicator();
     }
 
     private void iniHealthBar()
@@ -91,6 +92,7 @@ public class InGameMonitor {
         enemyText.setCharacterSize(15);
         enemyText.setColor(Color.WHITE);
     }
+
     private void printEnemyLeft(int enemyLeft)
     {
         enemyText.setString("X" + enemyLeft);
@@ -104,11 +106,27 @@ public class InGameMonitor {
         window.draw(moneyText);
     }
 
+    private void iniLevelIndicator()
+    {
+        levelText = new Text();
+        levelText.setPosition(window.getWidth() - 125, 20);
+        levelText.setFont(new GameFont(FontPath.PIXEL));
+        levelText.setCharacterSize(15);
+        levelText.setColor(Color.YELLOW);
+    }
+
+    private void printLevelText(int level)
+    {
+        levelText.setString("Level " + level);
+        window.draw(levelText);
+    }
+
     public void updateMonitor()
     {
         printHealthBar(currentData[0]);
         printEnemyLeft(currentData[1]);
         printMoney(currentData[2]);
+        printLevelText(currentData[4] + 1);
     }
 
     public void setCurrentData(int i, int data) { currentData[i] = data; }
