@@ -34,7 +34,7 @@ public class GameMode
     public GameMode(Window window, long seed)
     {
         this.window = window;
-        this.uiManager = new UIScreenManager(window);
+        this.uiManager = new UIScreenManager(window, this);
         this.pauseListener = new PauseListener(this);
         this.seed = seed;
 
@@ -65,8 +65,6 @@ public class GameMode
         this.player.config("player_default");
         this.player.setLevelContainer(this.currentLevel);
         this.player.setWindow(window);
-
-        this.player.setHealth(10000);
 
         this.currentLevel.addPlayer(this.player);
     }
@@ -343,4 +341,8 @@ public class GameMode
     }
 
     public Window getWindow() { return window; }
+
+    public int getLevelNum() { return levelNum; }
+
+    public GameMusicHandler getGameMusicHandler() { return gameMusicHandler; }
 }

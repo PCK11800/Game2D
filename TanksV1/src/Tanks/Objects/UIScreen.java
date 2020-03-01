@@ -2,6 +2,7 @@ package Tanks.Objects;
 
 import Tanks.Buttons.*;
 import Tanks.Listeners.UIListener;
+import Tanks.Sounds.GameMusicHandler;
 import Tanks.UIScreens.GameFont;
 import Tanks.Window.Window;
 import org.jsfml.graphics.Color;
@@ -18,6 +19,8 @@ public abstract class UIScreen
 {
     private Window window;
     private Tank player;
+    private GameMusicHandler handler;
+
     //All of the button array Lists
     private ArrayList<Button> quitButtons = new ArrayList<Button>();
     private ArrayList<LoadLevelButton> levelButtons = new ArrayList<LoadLevelButton>();
@@ -25,10 +28,12 @@ public abstract class UIScreen
     private ArrayList<LoadGameModeButton> gameModeButtons = new ArrayList<LoadGameModeButton>();
     private ArrayList<UpgradeButton> upgradeButtons = new ArrayList<UpgradeButton>();
     private ArrayList<ResumeButton> resumeButtons = new ArrayList<ResumeButton>();
+    private ArrayList<SoundButton> soundButtons = new ArrayList<>();
 
     private ArrayList<Text> screenTexts = new ArrayList<>();
     private ArrayList<Text> moneyTexts = new ArrayList<>();
     private ArrayList<Text> healthTexts = new ArrayList<>();
+    private ArrayList<Text> soundTexts = new ArrayList<>();
 
 
     private Clock buttonClock = new Clock();
@@ -161,6 +166,14 @@ public abstract class UIScreen
         resumeButtons.add(b);
     }
 
+    public void addSoundButton(float x, float y, float width, float height, String type, String activeTexture, String hoveredTexture, String pressedTexture)
+    {
+        SoundButton b = new SoundButton(this.window, x, y, width, height, activeTexture, type, handler, player);
+        b.setAltTextures(hoveredTexture, pressedTexture);
+
+        soundButtons.add(b);
+    }
+
 
     public void addText(float x, float y, String content, int size, String fontPath, Color color)
     {
@@ -196,6 +209,16 @@ public abstract class UIScreen
         text.setString("HP: " + player.getHealth());
 
         healthTexts.add(text);
+    }
+
+    public void addSoundText(float x, float y, int size, String fontPath, Color color){
+        Text text = new Text();
+        text.setFont(new GameFont(fontPath));
+        text.setPosition(x , y);
+        text.setCharacterSize(size);
+        text.setColor(color);
+        text.setString(handler.getVolume() + "%");
+        soundTexts.add(text);
     }
 
     /**
@@ -235,6 +258,10 @@ public abstract class UIScreen
         {
             resButton.update();
         }
+        for (SoundButton soundButton: this.soundButtons)
+        {
+            soundButton.update();
+        }
 
         // Text
         for(Text text: this.screenTexts)
@@ -251,6 +278,21 @@ public abstract class UIScreen
         for(Text text: this.healthTexts)
         {
             text.setString(player.getHealth() + "/" + player.getStartingHealth());
+            window.draw(text);
+        }
+        for(Text text: this.soundTexts)
+        {
+            if(handler.getVolume() < 10)
+            {
+                text.setString("  " + handler.getVolume() + "%  ");
+            }
+            else if(handler.getVolume() >= 10 && handler.getVolume() < 100)
+            {
+                text.setString(" " + handler.getVolume() + "% ");
+            }
+            else{
+                text.setString(handler.getVolume() + "%");
+            }
             window.draw(text);
         }
     }
@@ -382,6 +424,22 @@ public abstract class UIScreen
             }
 
         }
+
+        for (SoundButton soundButton : this.soundButtons)
+        {
+            if (soundButton.contains(mouseXPos, mouseYPos) && (!soundButton.isHovered()))
+            {
+                soundButton.setHovered();
+
+                return;
+            }
+
+            else if ((!soundButton.contains(mouseXPos, mouseYPos) && soundButton.isHovered()))
+            {
+                soundButton.setActive();
+            }
+
+        }
     }
 
 
@@ -408,12 +466,19 @@ public abstract class UIScreen
             {
                 uiButton.setPressed();
 
-                resetState();
-                this.loadLinkedScreen = true;
-                this.linkedScreen = uiButton.getLinkedScreen();
+                this.buttonClock.restart();
 
-                return;
+                while (true)
+                {
+                    if(buttonClock.getElapsedTime().asMilliseconds() > this.buttonDelayMilli)
+                    {
+                        resetState();
+                        this.loadLinkedScreen = true;
+                        this.linkedScreen = uiButton.getLinkedScreen();
 
+                        return;
+                    }
+                }
             }
         }
 
@@ -494,5 +559,21 @@ public abstract class UIScreen
                 }
             }
         }
+
+        for (SoundButton soundButton : this.soundButtons)
+        {
+            if (soundButton.contains(mouseXPos, mouseYPos))
+            {
+                soundButton.setPressed();
+                resetState();
+
+                return;
+            }
+        }
+    }
+
+    protected void setGameMusicHandler(GameMusicHandler handler)
+    {
+        this.handler = handler;
     }
 }

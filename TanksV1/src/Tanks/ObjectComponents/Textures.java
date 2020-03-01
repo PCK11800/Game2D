@@ -4,7 +4,9 @@ public class Textures {
 
 	public static String GAMEICON = "TanksV1/Resources/Images/GameIconTransparent.png";
 	public static String BRICKBLOCK = "TanksV1/Resources/Images/BrickBlockIcon.png";
-	public static String BLACKWALL = "TanksV1/Resources/Images/BlackWall.png";
+	public static String BLACKWALL = "TanksV1/Resources/Images/BackgroundImage.png";
+	public static String EXITWALL = "TanksV1/Resources/Images/ExitDoor.png";
+	public static String BLACK = "TanksV1/Resources/Images/Black.png";
 
 	public static String TANKHULL_GREEN = "TanksV1/Resources/Images/TankHullIcon.png";
 	public static String TANKTURRET_GREEN = "TanksV1/Resources/Images/TankTurretIcon.png";
@@ -112,8 +114,12 @@ public class Textures {
 	public static String BACK_CLICKED = "TanksV1/Resources/Images/BackClicked.png";
 
 	public static String ENEMYHEALTH_FULL = "TanksV1/Resources/Images/EnemyHealthFull.png";
-	public static String ENEMYHEALTH_QUARTERDAMAGE = "TanksV1/Resources/Images/EnemyHealthQuarterDamage.png";
-	public static String ENEMYHEALTH_HALFDAMAGE = "TanksV1/Resources/Images/EnemyHealthHalfDamage.png";
-	public static String ENEMYHEALTH_NEARDEATH = "TanksV1/Resources/Images/EnemyHealthNearDeath.png";
 
+	public static String RIGHT_ARROW = "TanksV1/Resources/Images/RightArrow.png";
+	public static String RIGHT_ARROW_HOVERED = "TanksV1/Resources/Images/RightArrowHovered.png";
+	public static String RIGHT_ARROW_CLICKED = "TanksV1/Resources/Images/RightArrowClicked.png";
+
+	public static String LEFT_ARROW = "TanksV1/Resources/Images/LeftArrow.png";
+	public static String LEFT_ARROW_HOVERED = "TanksV1/Resources/Images/LeftArrowHovered.png";
+	public static String LEFT_ARROW_CLICKED = "TanksV1/Resources/Images/LeftArrowClicked.png";
 }
