@@ -213,12 +213,11 @@ public abstract class UIScreen
 
     public void addSoundText(float x, float y, int size, String fontPath, Color color){
         Text text = new Text();
-        text.setPosition(x, y);
         text.setFont(new GameFont(fontPath));
+        text.setPosition(x , y);
         text.setCharacterSize(size);
         text.setColor(color);
         text.setString(handler.getVolume() + "%");
-
         soundTexts.add(text);
     }
 
@@ -283,7 +282,17 @@ public abstract class UIScreen
         }
         for(Text text: this.soundTexts)
         {
-            text.setString(handler.getVolume() + "%");
+            if(handler.getVolume() < 10)
+            {
+                text.setString("  " + handler.getVolume() + "%  ");
+            }
+            else if(handler.getVolume() >= 10 && handler.getVolume() < 100)
+            {
+                text.setString(" " + handler.getVolume() + "% ");
+            }
+            else{
+                text.setString(handler.getVolume() + "%");
+            }
             window.draw(text);
         }
     }

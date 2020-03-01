@@ -28,15 +28,13 @@ public class SoundButton extends Button
         {
             super.setPressed();
 
-            if(type.equals("increase_volume"))
+            if(type.equals("increase_music_volume"))
             {
                 if(handler.getVolume() < 100) { handler.setVolume(handler.getVolume() + 1); }
-                System.out.println("Volume Increased");
             }
-            else if(type.equals("decrease_volume"))
+            else if(type.equals("decrease_music_volume"))
             {
                 if(handler.getVolume() > 0) { handler.setVolume(handler.getVolume() - 1); }
-                System.out.println("Volume Decreased");
             }
             else {
                 System.out.println("No such function");

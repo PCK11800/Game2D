@@ -74,8 +74,11 @@ public class Tank
 	private boolean enemyCollision = false;
 	private TankConfigs tankConfigs = new TankConfigs();
 
-	GameSound tankFiring;
-	GameSound tankMoving;
+	private GameSound tankFiring;
+	private GameSound tankMoving;
+
+	private float tankFiringVolume;
+	private float tankMovingVolume;
 
 	public Tank()
 	{
@@ -159,12 +162,14 @@ public class Tank
 	{
 		tankFiring = new GameSound(firingSound);
 		tankFiring.setVolume(volume);
+		tankFiringVolume = volume;
 	}
 
 	public void setMovingSound(String moveSound, float volume)
 	{
 		tankMoving = new GameSound(moveSound);
 		tankMoving.setVolume(volume);
+		tankMovingVolume = volume;
 	}
 
 	public void setShellSpeed(float shellSpeed)
@@ -768,4 +773,12 @@ public class Tank
 	public TankTurret getTurret() { return turret; }
 
 	public int getStartingHealth() { return startingHealth; }
+
+	public float getTankFiringVolume() { return tankFiringVolume; }
+
+	public void setTankFiringVolume(float tankFiringVolume) { this.tankFiringVolume = tankFiringVolume; }
+
+	public float getTankMovingVolume() { return tankMovingVolume; }
+
+	public void setTankMovingVolume(float tankMovingVolume) { this.tankMovingVolume = tankMovingVolume; }
 }
