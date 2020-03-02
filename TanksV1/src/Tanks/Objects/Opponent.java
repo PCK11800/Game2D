@@ -35,6 +35,7 @@ public class Opponent extends Tank {
     protected MapGenerator mapGenerator;
     private boolean doesMove = true;
     private HealthBar healthBar;
+    private String name = "";
 
 
     /**
@@ -76,6 +77,11 @@ public class Opponent extends Tank {
     public Opponent(Opponent clone)
     {
         this(clone.player, clone.mapGenerator);
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     private void setDifficulty(int difficulty)
@@ -128,7 +134,7 @@ public class Opponent extends Tank {
             }
             clone = turret.stationaryCopy();
             setDifficulty(window.getDifficulty());
-            healthBar = new HealthBar(window, this);
+            healthBar = new HealthBar(window, this, name);
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
