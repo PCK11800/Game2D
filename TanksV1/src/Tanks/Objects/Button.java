@@ -146,18 +146,19 @@ public abstract class Button extends RotatingObject
         //System.out.println("Current Width:"  + window.getWidth() + " Stored: " + this.currentWindowWidth);
         //System.out.println("Current Height:"  + window.getHeight() + " Stored: " + this.currentWindowHeight);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //this.window.getSize();
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        float screenSizeX  = this.window.getSize().x;
+        float screenSizeY = this.window.getSize().y;
         //this.window.get
 
-        if (screenSize.getWidth() != this.currentWindowWidth || screenSize.getHeight() != this.currentWindowHeight)
+        if (screenSizeX != this.currentWindowWidth || screenSizeY != this.currentWindowHeight)
         {
             System.out.println("THIS IS CALLED");
-            float xScale =  (float) screenSize.getWidth() / this.initialWindowWidth;
-            float yScale =  (float) screenSize.getHeight() / this.initialWindowHeight;
+            float xScale = screenSizeX  / this.initialWindowWidth;
+            float yScale = screenSizeY / this.initialWindowHeight;
 
-            this.currentWindowWidth = (float) screenSize.getWidth();
-            this.currentWindowHeight = (float) screenSize.getHeight();
+            this.currentWindowWidth = screenSizeX;
+            this.currentWindowHeight = screenSizeY;
 
             setButton(xScale, yScale);
         }
