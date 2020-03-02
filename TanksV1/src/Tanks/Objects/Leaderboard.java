@@ -45,7 +45,7 @@ public class Leaderboard
 
     public String getString(int i)
     {
-        String s = i + ". " + names[i-1] + "   " + scores[i-1];
+        String s = i + ".      " + names[i-1] + "        " + scores[i-1];
         return s;
     }
 }

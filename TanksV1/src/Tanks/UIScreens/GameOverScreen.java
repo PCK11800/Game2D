@@ -33,8 +33,6 @@ public class GameOverScreen extends UIScreen
         //title text
         addText(centerX - 300, 50, "GAME OVER", 60, FontPath.PIXEL, Color.WHITE);
 
-        leaderboard.addToLeaderboard(name, 100);
-
         //Back button - returns to the main menu
         addLoadUIScreenButton(width - 200, height - 110, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, menu);
     }
