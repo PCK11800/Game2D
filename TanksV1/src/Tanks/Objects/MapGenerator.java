@@ -4,7 +4,6 @@ import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -30,8 +29,8 @@ public class MapGenerator
 	private float yScale;
 
 
-	private float screenWidth; //= 1920;
-	private float screenHeight; // = 1080;
+	private int screenWidth; //= 1920;
+	private int screenHeight; // = 1080;
 
 	//Default values
 	private float offsetX = 0;
@@ -113,76 +112,61 @@ public class MapGenerator
 
 
 	/**
-	 * This class is used to represent the directions that a wall can face (north, south, east and west)
-	 * The class contains 4 instance variables are: A bit number - used for testing, direction on the x axis, as well direction on the y axis are stored, in addition to the the opposite of the current direction
+	 * A private enum called direction which stores 4 instances of the enum - north, south, east and west
+	 * A bit number - used for testing, direction on the x axis, as well direction on the y axis are stored, in addition to the the opposite of the current direction
 	 */
-	private class Direction
+	private enum Direction
 	{
+		//Creates instances of the enum - north, south, east and west, with the specified bits
+		N(1, 0, -1), S(2, 0, 1), E(4, 1, 0), W(8, -1, 0);
+
 		private final int bit;
-		private final int dirX;
-		private final int dirY;
+		private final int dx;
+		private final int dy;
 		private Direction opposite;
 
-		/**
-		 * Constructor
-		 * @param b the bit number (used for testing against)
-		 * @param dx the x direction (1, 0 or -1)
-		 * @param dy the y direction (1, 0 or -1)
-		 */
-		private Direction(int b, int dx, int dy)
+		//This is used to resolve forward references, as it is called before the constructor.
+		static
 		{
-			bit = b;
-			dirX = dx;
-			dirY = dy;
+			N.opposite = S;
+			S.opposite = N;
+			E.opposite = W;
+			W.opposite = E;
 		}
-	}
 
-
-	/**
-	 * This method is used to create all possible directions a wall can face (N, S, E & W)
-	 * @return an array containing 4 instances of the direction class for N, S, E & W
-	 */
-	private Direction[] initDirections()
-	{
-		Direction north = new Direction(1, 0, -1);
-		Direction south = new Direction(2, 0, 1);
-		Direction east = new Direction(4, 1, 0);
-		Direction west = new Direction(8, -1, 0);
-
-		north.opposite = south;
-		south.opposite = north;
-		east.opposite = west;
-		west.opposite = east;
-
-		return new Direction[]{north, south, east, west};
-	}
-
+		//Constructor
+		private Direction(int bit, int dx, int dy)
+		{
+			this.bit = bit;
+			this.dx = dx;
+			this.dy = dy;
+		}
+	};
 
 
 	/**
 	 * This method is used to generate the level - it populates the level int 2D array which is used later to place all objects within the level
-	 * @param currentX the current x coordinate (level[x][y])
-	 * @param currentY the current y coordinate (level[x][y])
+	 * @param cx the current x coordinate (level[x][y])
+	 * @param cy the current y coordinate (level[x][y])
 	 * @param seed the seed used to randomly generate the level - can be set to a given value which wil produce identical maps when run
 	 */
-	private void generateLevel(int currentX, int currentY, long seed)
+	private void generateLevel(int cx, int cy, long seed)
 	{
-		Direction[] directions = initDirections();
+		Direction[] dirs = Direction.values();
+		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+		Collections.shuffle(Arrays.asList(dirs)); //Done twice so that it is less likely to produce the same map 
 
-		Collections.shuffle(Arrays.asList(directions)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
-		Collections.shuffle(Arrays.asList(directions)); //Done twice so that it is less likely to produce the same map
-
-		for (Direction dir : directions)
+		for (Direction dir : dirs)
 		{
-			int newX = currentX + dir.dirX;
-			int newY = currentY + dir.dirY;
+			int nx = cx + dir.dx;
+			int ny = cy + dir.dy;
 
-			if (between(newX, this.x) && between(newY, this.y) && (this.level[newX][newY] == 0))
+			if (between(nx, x) && between(ny, y) && (level[nx][ny] == 0))
 			{
-				this.level[currentX][currentY] |= dir.bit; //|=  is bitwise or equal (i.e. reads the same as +=)
-				this.level[newX][newY] |= dir.opposite.bit;
+				level[cx][cy] |= dir.bit; //|=  is bitwise or equal (i.e. reads the same as +=)
+				level[nx][ny] |= dir.opposite.bit;
 
-				generateLevel(newX, newY, seed);
+				generateLevel(nx, ny, seed);
 			}
 		}
 	}

@@ -259,7 +259,7 @@ public class GameMode
         }
 
 
-        //this.mouseCursor.update();
+        this.mouseCursor.update();
     }
 
 

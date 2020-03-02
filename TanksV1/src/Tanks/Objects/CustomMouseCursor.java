@@ -11,8 +11,6 @@ import org.jsfml.window.Mouse;
 public class CustomMouseCursor extends RotatingObject
 {
     private Window window;
-    private float xScale = 1;
-    private float yScale = 1;
 
     /**
      * The constructor
@@ -31,11 +29,8 @@ public class CustomMouseCursor extends RotatingObject
      */
     public void update()
     {
-        this.xScale = this.window.getSize().x /  this.window.getWidth();
-        this.yScale = this.window.getSize().y /  this.window.getHeight();
-
-        Vector2i mousePos = Mouse.getPosition(); //Mouse.getPosition(this.window);
-        setCenterLocation(mousePos.x * xScale, mousePos.y * yScale);
+        Vector2i mousePos = Mouse.getPosition(this.window);
+        setCenterLocation(mousePos.x, mousePos.y);
 
         draw(this.window);
     }

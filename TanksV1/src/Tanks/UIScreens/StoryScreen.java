@@ -100,7 +100,7 @@ public class StoryScreen extends UIScreen {
                 {
                     c[(pos - posLastLine) - j] = text[i - j];
                 }
-                addText(250, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
+                addText(ROW_OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
                 count++;
                 posLastLine = pos;
             }
@@ -110,11 +110,10 @@ public class StoryScreen extends UIScreen {
         {
             row = TOP_OFFSET+ ((count) * ROW_OFFSET);
             char[] c = new char[text.length - posLastLine];
-            for (int j = text.length - posLastLine; j > 0; j--)
-            {
+            for (int j = text.length - posLastLine; j > 0; j--) {
                 c[(text.length - posLastLine) - j] = text[i - j];
             }
-            addText(250, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
+            addText(ROW_OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
         }
         isSetup = false;
     }
