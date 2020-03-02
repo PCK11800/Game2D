@@ -624,4 +624,10 @@ public abstract class UIScreen
     {
         this.handler = handler;
     }
+
+    /**
+     * This method is used in UIListener for mouse input
+     * @return returns the window 
+     */
+    public Window getWindow() { return this.window; }
 }
