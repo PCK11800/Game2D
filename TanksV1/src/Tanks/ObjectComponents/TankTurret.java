@@ -2,6 +2,8 @@ package Tanks.ObjectComponents;
 
 import java.awt.MouseInfo;
 import Tanks.Window.Window;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.Mouse;
 
 public class TankTurret extends RotatingObject {
 
@@ -34,8 +36,9 @@ public class TankTurret extends RotatingObject {
 	
 	public void setPlayerTurretDirection() 
 	{
-		 float mouseXPos = MouseInfo.getPointerInfo().getLocation().x;
-	     float mouseYPos = MouseInfo.getPointerInfo().getLocation().y;
+		// This sets the mouse position to be relative to the window
+		 float mouseXPos = Mouse.getPosition(this.window).x; //MouseInfo.getPointerInfo().getLocation().x;
+	     float mouseYPos = Mouse.getPosition(this.window).y; //MouseInfo.getPointerInfo().getLocation().y;
 
 	     double dx = connectedTankHull.getxPos() - mouseXPos;
 	     double dy = connectedTankHull.getyPos() - mouseYPos;

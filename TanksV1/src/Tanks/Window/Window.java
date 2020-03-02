@@ -8,7 +8,7 @@ import org.jsfml.window.event.Event;
 
 public class Window extends RenderWindow{
 
-	private int screenWidth, screenHeight;
+	private float screenWidth, screenHeight;
 	private String windowName;
 	private int frameRate;
 	private Color backgroundColor;
@@ -23,12 +23,12 @@ public class Window extends RenderWindow{
 
 		openWindow();
 		setFrameRate(this.frameRate);
-		setMouseCursorVisible(false); //This allows for the use of a custom mouse cursor
+		//setMouseCursorVisible(false); //This allows for the use of a custom mouse cursor
 	}
 
 	public void openWindow()
 	{
-		create(new VideoMode(screenWidth, screenHeight), windowName, WindowStyle.DEFAULT); //Can set it to .FULLSCREEN
+		create(new VideoMode((int) screenWidth, (int) screenHeight), windowName, WindowStyle.DEFAULT); //Can set it to .FULLSCREEN
 	}
 
 	public String getWindowName()
@@ -75,14 +75,12 @@ public class Window extends RenderWindow{
 		}
 	}
 
-	public void setDifficulty(int difficulty) { this.difficulty = difficulty; }
-
-	public int getWidth()
+	public float getWidth()
 	{
 		return screenWidth;
 	}
 
-	public int getHeight()
+	public float getHeight()
 	{
 		return screenHeight;
 	}
