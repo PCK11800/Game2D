@@ -110,7 +110,7 @@ public class MapGenerator
 			this.yScale = this.xScale;
 		}
 	}
-	
+
 
 	/**
 	 * This class is used to represent the directions that a wall can face (north, south, east and west)

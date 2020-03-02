@@ -3,6 +3,9 @@ package Tanks.UIScreens;
 import Tanks.ObjectComponents.Textures;
 import Tanks.Objects.UIScreen;
 import Tanks.Window.Window;
+import org.jsfml.graphics.Color;
+
+import java.awt.*;
 
 public class GameOverScreen extends UIScreen
 {
@@ -19,10 +22,14 @@ public class GameOverScreen extends UIScreen
      */
     public void initBackButton(MainMenu menu)
     {
-        float width = window.getWidth();
-        float height = window.getHeight();
+        float width = window.getSize().x;
+        float height =  window.getSize().y;
+
+        float centerX = width / 2;
 
         //Back button - returns to the main menu
-        addLoadUIScreenButton(width - 200, height - 110, 400, 125, Textures.BRICKBLOCK, Textures.EXIT_LOCKED, Textures.EXIT_UNLOCKED, menu);
+        addLoadUIScreenButton(width - 250, height - 100, 400, 125, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED, menu);
+
+        addText(centerX - 350, 100, "GAME OVER!", 80, FontPath.PIXEL, Color.WHITE);
     }
 }
