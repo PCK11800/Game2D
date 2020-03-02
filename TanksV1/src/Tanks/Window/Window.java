@@ -19,8 +19,10 @@ public class Window extends RenderWindow{
 		this.screenHeight = screenHeight;
 		this.windowName = windowName;
 		this.frameRate = frameRate;
+
 		openWindow();
 		setFrameRate(this.frameRate);
+		setMouseCursorVisible(false); //This allows for the use of a custom mouse cursor
 	}
 
 	public void openWindow()

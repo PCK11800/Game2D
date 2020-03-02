@@ -122,4 +122,9 @@ public class Textures {
 	public static String LEFT_ARROW = "TanksV1/Resources/Images/LeftArrow.png";
 	public static String LEFT_ARROW_HOVERED = "TanksV1/Resources/Images/LeftArrowHovered.png";
 	public static String LEFT_ARROW_CLICKED = "TanksV1/Resources/Images/LeftArrowClicked.png";
+
+	public static String MOUSE_CURSOR_SMALL_RED = "TanksV1/Resources/Images/CustomCursor32Red.png";
+	public static String MOUSE_CURSOR_SMALL_WHITE = "TanksV1/Resources/Images/CustomCursor32White.png";
+	public static String MOUSE_CURSOR_LARGE_RED = "TanksV1/Resources/Images/CustomCursor48Red.png";
+	public static String MOUSE_CURSOR_LARGE_WHITE = "TanksV1/Resources/Images/CustomCursor48White.png";
 }
