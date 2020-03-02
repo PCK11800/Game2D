@@ -43,37 +43,6 @@ public class Leaderboard
 
     }
 
-    public void addToLeaderboard(String name, int score)
-    {
-        if (score > scores[9])
-        {
-            int n = 10;
-            for (int i = 0; i < n-1; i++)
-            {
-                for (int j = 0; j < n-1-1; j++)
-                {
-                    if (scores[j] > scores[j+1])
-                    {
-                        int tempScore = scores[j];
-                        String tempName = names[j];
-
-                        scores[j] = scores[j+1];
-                        names[j] = names[j+1];
-
-                        scores[j+1] = tempScore;
-                        names[j+1] = tempName;
-                    }
-                }
-            }
-        }
-        updateLeaderboard();
-    }
-
-    public void updateLeaderboard()
-    {
-
-    }
-
     public String getString(int i)
     {
         String s = i + ". " + names[i-1] + "   " + scores[i-1];
