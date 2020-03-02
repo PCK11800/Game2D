@@ -9,6 +9,7 @@ public class GordonOpponent extends PatrollingOpponent
     public GordonOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
+        setName("GORDON");
         setHullTexture(Textures.TANKHULL_GORDON);
         setTurretTexture(Textures.TANKTURRET_GORDON);
         setNoticeDistance(-1);

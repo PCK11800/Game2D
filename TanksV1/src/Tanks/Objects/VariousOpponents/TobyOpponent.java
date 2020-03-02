@@ -9,6 +9,7 @@ public class TobyOpponent extends ConfusedOpponent
     public TobyOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
+        setName("TOBY");
         setHullTexture(Textures.TANKHULL_TOBY);
         setTurretTexture(Textures.TANKTURRET_TOBY);
         if (levelNum == 1) //first difficulty

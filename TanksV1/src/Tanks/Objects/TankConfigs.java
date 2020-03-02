@@ -24,7 +24,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(100);
+        tank.setHealth(10000);
     }
 
     public void enemy_default(Tank tank)

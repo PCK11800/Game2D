@@ -8,6 +8,7 @@ public class ControllerOpponent extends PatrollingOpponent {
     public ControllerOpponent(Tank player, MapGenerator mapGen)
     {
         super(player, mapGen);
+        setName("CONTROLLER");
         setHullTexture(Textures.TANKHULL_FUTURE);
         setTurretTexture(Textures.TANKTURRET_RED);
         setHealth(400);

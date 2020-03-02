@@ -9,6 +9,7 @@ public class HenryOpponent extends ChasingOpponent
      public HenryOpponent(Tank player, MapGenerator mapGen, int levelNum)
      {
          super(player, mapGen);
+         setName("HENRY");
          setHullTexture(Textures.TANKHULL_HENRY);
          setTurretTexture(Textures.TANKTURRET_HENRY);
          if (levelNum == 1) //first difficulty

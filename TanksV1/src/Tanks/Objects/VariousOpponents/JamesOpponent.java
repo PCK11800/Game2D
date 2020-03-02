@@ -9,6 +9,7 @@ public class JamesOpponent extends ConfusedOpponent
     public JamesOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
+        setName("JAMES");
         setHullTexture(Textures.TANKHULL_JAMES);
         setTurretTexture(Textures.TANKTURRET_JAMES);
         if (levelNum == 1) //first difficulty

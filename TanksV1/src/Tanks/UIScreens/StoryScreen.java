@@ -10,7 +10,9 @@ public class StoryScreen extends UIScreen {
     private Window window;
     private String section;
     private boolean isSetup = true;
-    private int OFFSET = 35;
+    private int ROW_OFFSET = 35;
+    private int TOP_OFFSET = 200;
+    private  int ROW_LENGTH = 50;
     private String intro = "25/02/2021 : " +
             "It has been 364 days since you lost the title of Tank Champion. " +
             "This time last year, The Controller won the Tank Wars contest by foul means, using illegal" +
@@ -61,12 +63,12 @@ public class StoryScreen extends UIScreen {
         this.section = section;
         float screenWidth = window.getWidth();
         float screenHeight = window.getHeight();
-        int ROW_LENGTH = 50;
         char[] text;
         switch (section)
         {
             case "intro":
                 text = intro.toCharArray();
+                TOP_OFFSET = 0;
                 break;
             case "before_battle_1":
                 text = beforeBattle1.toCharArray();
@@ -92,13 +94,13 @@ public class StoryScreen extends UIScreen {
         for (i = 0; i < text.length; i++)
         {
             if (text[i] == ' ' && pos - posLastLine > ROW_LENGTH) {
-                row = (count) * OFFSET;
+                row = TOP_OFFSET + ((count) * ROW_OFFSET);
                 char[] c = new char[pos - posLastLine];
                 for (int j = pos - posLastLine; j > 0; j--)
                 {
                     c[(pos - posLastLine) - j] = text[i - j];
                 }
-                addText(OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
+                addText(ROW_OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
                 count++;
                 posLastLine = pos;
             }
@@ -106,12 +108,12 @@ public class StoryScreen extends UIScreen {
         }
         if (posLastLine < text.length - 1)
         {
-            row = (count) * OFFSET;
+            row = TOP_OFFSET+ ((count) * ROW_OFFSET);
             char[] c = new char[text.length - posLastLine];
             for (int j = text.length - posLastLine; j > 0; j--) {
                 c[(text.length - posLastLine) - j] = text[i - j];
             }
-            addText(OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
+            addText(ROW_OFFSET, row, new String(c), 25, FontPath.PIXEL, Color.WHITE);
         }
         isSetup = false;
     }

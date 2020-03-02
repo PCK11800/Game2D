@@ -10,6 +10,7 @@ public class EdwardOpponent extends PatrollingOpponent
     public EdwardOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
+        setName("EDWARD");
         setHullTexture(Textures.TANKHULL_EDWARD);
         setTurretTexture(Textures.TANKTURRET_EDWARD);
         if (levelNum == 1) //first difficulty
