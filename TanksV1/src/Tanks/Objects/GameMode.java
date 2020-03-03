@@ -4,8 +4,6 @@ import Tanks.Listeners.PauseListener;
 import Tanks.ObjectComponents.Textures;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Window.Window;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.Mouse;
 
 import java.util.Random;
 
@@ -20,7 +18,7 @@ public class GameMode
     private CustomMouseCursor mouseCursor;
 
     private Tank player;
-    
+
     private int levelNum = 0;
     private int maxLevel = 12; //LevelNum starts at 0, so it is no. of levels + 1
 
