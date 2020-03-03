@@ -17,11 +17,11 @@ public class ShopScreen extends UIScreen
 
     private void initButtons(Window window, Tank player)
     {
-        float screenCenterX = window.getWidth() / 2;
-        float screenCenterY = window.getHeight() / 2;
+        float screenCenterX = window.getSize().x / 2;
+        float screenCenterY = window.getSize().y / 2;
 
-        float screenWidth = window.getWidth();
-        float screenHeight = window.getHeight();
+        float screenWidth = window.getSize().x;
+        float screenHeight = window.getSize().y;
 
         float upgradeButtonWidth = 300;
         float upgradeButtonHeight = 300;
