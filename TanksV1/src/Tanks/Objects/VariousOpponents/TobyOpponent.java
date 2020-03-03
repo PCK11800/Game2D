@@ -19,7 +19,7 @@ public class TobyOpponent extends ConfusedOpponent
         }
         else //second difficulty
         {
-            setHealth(700);
+            setHealth(600);
             setFireDelay(350);
         }
         setDamagePerShell(20);

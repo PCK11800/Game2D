@@ -16,12 +16,12 @@ public class EdwardOpponent extends PatrollingOpponent
         if (levelNum == 1) //first difficulty
         {
             setNoticeDistance(2);
-            setHealth(200);
+            setHealth(400);
         }
         else //second difficulty
         {
             setNoticeDistance(4);
-            setHealth(300);
+            setHealth(500);
             setFireDelay(450);
             setDamagePerShell(25);
         }

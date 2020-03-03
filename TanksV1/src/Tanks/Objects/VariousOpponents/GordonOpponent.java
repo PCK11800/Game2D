@@ -15,13 +15,13 @@ public class GordonOpponent extends PatrollingOpponent
         setNoticeDistance(-1);
         if (levelNum == 1) //first difficulty
         {
-            setHealth(70);
+            setHealth(300);
             setMovementSpeed(10);
             setFireDelay(600);
         }
         else //second difficulty
         {
-            setHealth(100);
+            setHealth(400);
             setMovementSpeed(10);
             setFireDelay(400);
         }

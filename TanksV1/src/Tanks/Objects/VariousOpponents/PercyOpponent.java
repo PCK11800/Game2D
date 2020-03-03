@@ -15,13 +15,13 @@ public class PercyOpponent extends ChasingOpponent
         setNoticeDistance(-1);
         if (levelNum == 1) //first difficulty
         {
-            setHealth(100);
+            setHealth(400);
             setMovementSpeed(5);
             setFireDelay(500);
         }
         else //second difficulty
         {
-            setHealth(150);
+            setHealth(500);
             setMovementSpeed(7);
             setFireDelay(500);
         }
