@@ -54,6 +54,9 @@ public class GameMode
     private void resetGame()
     {
         this.levelNum = 0;
+        this.paused = false;
+        this.uiManager.resetFlags();
+        this.uiManager.setOnUIScreen(true);
         createLevel();
         initPlayer();
         initGameMode();
@@ -119,7 +122,6 @@ public class GameMode
             mapXSize = (this.random.nextInt(1) + 2);
             mapYSize = (this.random.nextInt(1) + 2);
             numEnemies = 1;
-
         }
 
         //Round 2
@@ -236,7 +238,8 @@ public class GameMode
             {
                 if (currentLevel.isPlayerDead())
                 {
-                    uiManager.changeState();
+                    uiManager.setOnUIScreen(true);
+                    //uiManager.setIsPaused(false);
                     uiManager.displayGameOverScreen();
                     resetGame();
                 }
@@ -298,7 +301,7 @@ public class GameMode
         {
             if (this.levelNum + 1 >= this.maxLevel)
             {
-                uiManager.changeState();
+                uiManager.setOnUIScreen(true);
                 uiManager.displayEndScreen();
                 resetGame();
             }

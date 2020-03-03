@@ -243,4 +243,6 @@ public class UIScreenManager
         }
     }
 
+
+    public void setIsPaused(boolean b) { this.onPauseScreen = b; }
 }
