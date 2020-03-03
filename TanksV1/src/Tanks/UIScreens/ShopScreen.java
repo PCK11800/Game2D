@@ -39,7 +39,7 @@ public class ShopScreen extends UIScreen
         addUpgradeButton((screenWidth - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.SPIKES, Textures.SPIKES_HOVER, Textures.SPIKES_CLICKED, player, "spikes_upgrade", 250);
 
         //Upgrade buttons - Second
-        addUpgradeButton(upgradeButtonWidth, (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 300);
+        addUpgradeButton(upgradeButtonWidth, (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 200);
         addUpgradeButton((screenCenterX - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.RAILGUN, Textures.RAILGUN_HOVER, Textures.RAILGUN_CLICKED, player, "railgun_upgrade", 300);
         addUpgradeButton((screenCenterX + upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.SONIC, Textures.SONIC_HOVER, Textures.SONIC_CLICKED, player, "sonicmode_upgrade", 150);
         addUpgradeButton((screenWidth - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.ARMOUR, Textures.ARMOUR_HOVER, Textures.ARMOUR_CLICKED, player, "armour_upgrade", 200);
