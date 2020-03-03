@@ -82,7 +82,7 @@ public class TankConfigs {
         tank.setRammingDamage(10);
     }
 
-    public void increase_halfhealth(Tank tank)
+    public void halfheal(Tank tank)
     {
         if (tank.getHealth() + tank.getStartingHealth()/2 > tank.getStartingHealth())
         {
@@ -94,7 +94,7 @@ public class TankConfigs {
         }
     }
 
-    public void increase_fullhealth(Tank tank)
+    public void fullheal(Tank tank)
     {
         tank.setHealth(tank.getStartingHealth());
     }
