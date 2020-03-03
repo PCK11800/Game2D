@@ -239,7 +239,6 @@ public class GameMode
                 if (currentLevel.isPlayerDead())
                 {
                     uiManager.setOnUIScreen(true);
-                    //uiManager.setIsPaused(false);
                     uiManager.displayGameOverScreen();
                     resetGame();
                 }
