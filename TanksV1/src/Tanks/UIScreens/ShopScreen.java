@@ -9,46 +9,73 @@ import org.jsfml.graphics.Color;
 public class ShopScreen extends UIScreen
 {
 
-    float screenCenterX, screenCenterY;
+    private float screenCenterX, screenCenterY;
+    private float screenWidth;
+    private float screenHeight;
+
+    private float upgradeButtonWidth = 300;
+    private float upgradeButtonHeight = 300;
+
+    private float continueButtonWidth = 400;
+    private float continueButtonHeight = 125;
 
     public ShopScreen(Window window, Tank player)
     {
         super(window);
         screenCenterX = window.getSize().x / 2;
         screenCenterY = window.getSize().y / 2;
+
+        screenWidth = window.getSize().x;
+        screenHeight = window.getSize().y;
+
         initButtons(window, player);
     }
 
     private void initButtons(Window window, Tank player)
     {
-        float screenWidth = window.getSize().x;
-        float screenHeight = window.getSize().y;
-
-        float upgradeButtonWidth = 300;
-        float upgradeButtonHeight = 300;
-
-        float continueButtonWidth = 400;
-        float continueButtonHeight = 125;
 
         //Upgrade buttons - Top Row
-        addUpgradeButton(upgradeButtonWidth, upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.MAXHEALTH, Textures.MAXHEALTH_HOVER, Textures.MAXHEALTH_CLICKED, player, "increase_maxhealth", 75);
-        addUpgradeButton((screenCenterX - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.HALFHEALTH, Textures.HALFHEALTH_HOVER, Textures.HALFHEALTH_CLICKED, player, "halfheal", 50);
-        addUpgradeButton((screenCenterX + upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.HEALTH, Textures.HEALTH_HOVER, Textures.HEALTH_CLICKED, player, "fullheal", 90);
-        addUpgradeButton((screenWidth - upgradeButtonWidth), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.SPIKES, Textures.SPIKES_HOVER, Textures.SPIKES_CLICKED, player, "spikes_upgrade", 250);
+        addUpgradeButton(getXPos(0), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.MAXHEALTH, Textures.MAXHEALTH_HOVER, Textures.MAXHEALTH_CLICKED, player, "increase_maxhealth", 75);
+        addUpgradeButton(getXPos(1), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.HALFHEALTH, Textures.HALFHEALTH_HOVER, Textures.HALFHEALTH_CLICKED, player, "halfheal", 50);
+        addUpgradeButton(getXPos(2), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.HEALTH, Textures.HEALTH_HOVER, Textures.HEALTH_CLICKED, player, "fullheal", 90);
+        addUpgradeButton(getXPos(3), upgradeButtonHeight, upgradeButtonWidth, upgradeButtonHeight, Textures.SPIKES, Textures.SPIKES_HOVER, Textures.SPIKES_CLICKED, player, "spikes_upgrade", 250);
 
         //Upgrade buttons - Second
-        addUpgradeButton(upgradeButtonWidth, (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 200);
-        addUpgradeButton((screenCenterX - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.RAILGUN, Textures.RAILGUN_HOVER, Textures.RAILGUN_CLICKED, player, "railgun_upgrade", 300);
-        addUpgradeButton((screenCenterX + upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.SONIC, Textures.SONIC_HOVER, Textures.SONIC_CLICKED, player, "sonicmode_upgrade", 150);
-        addUpgradeButton((screenWidth - upgradeButtonWidth), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.ARMOUR, Textures.ARMOUR_HOVER, Textures.ARMOUR_CLICKED, player, "armour_upgrade", 200);
+        addUpgradeButton(getXPos(0), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 200);
+        addUpgradeButton(getXPos(1), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.RAILGUN, Textures.RAILGUN_HOVER, Textures.RAILGUN_CLICKED, player, "railgun_upgrade", 300);
+        addUpgradeButton(getXPos(2), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.SONIC, Textures.SONIC_HOVER, Textures.SONIC_CLICKED, player, "sonicmode_upgrade", 150);
+        addUpgradeButton(getXPos(3), (upgradeButtonHeight * 2) + 100, upgradeButtonWidth, upgradeButtonHeight, Textures.ARMOUR, Textures.ARMOUR_HOVER, Textures.ARMOUR_CLICKED, player, "armour_upgrade", 200);
 
         //Continue Button
         addLoadLevelButton(screenWidth - 250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
 
-        //Back Button
-        //addLoadLevelButton(250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED);
 
         addMoneyText(screenCenterX - 80, screenHeight - 100, player,30, FontPath.PIXEL, Color.GREEN);
         addHealthText(screenCenterX - 100, screenHeight - 140, player, 30, FontPath.PIXEL, Color.RED);
+    }
+
+
+    private float getXPos(int i)
+    {
+        int xOffset = 50;
+        int buttonPadding = 100;
+
+        switch (i)
+        {
+            case 0:
+                return  (xOffset + (upgradeButtonWidth * i) + (upgradeButtonWidth / 2));
+
+            case 1:
+                return (xOffset + buttonPadding + (upgradeButtonWidth * i) + (upgradeButtonWidth / 2));
+
+            case 2:
+                return (this.getWindow().getSize().x - (xOffset + buttonPadding + upgradeButtonWidth + (upgradeButtonWidth / 2)));
+
+            case 3:
+                return (this.getWindow().getSize().x - (xOffset + (upgradeButtonWidth / 2)));
+
+            default:
+                return xOffset + upgradeButtonWidth;
+        }
     }
 }

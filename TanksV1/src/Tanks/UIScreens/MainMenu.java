@@ -10,8 +10,8 @@ public class MainMenu extends UIScreen
     {
         super(window);
 
-        float centerX = window.getWidth() / 2;
-        float centerY = window.getHeight() / 2;
+        float centerX = window.getSize().x / 2;
+        float centerY = window.getSize().y / 2;
 
         //Play
         addLoadUIScreenButton(centerX, (centerY - 200), 400, 125, Textures.NEWGAME, Textures.NEWGAME_HOVER, Textures.NEWGAME_CLICKED, intro);
