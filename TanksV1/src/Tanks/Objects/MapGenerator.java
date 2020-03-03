@@ -3,7 +3,6 @@ package Tanks.Objects;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.Window.Window;
 import Tanks.ObjectComponents.Textures;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -18,7 +17,7 @@ public class MapGenerator
 	//Instance variables
 	private Window window;
 	private Map map;
-	
+
 	private int[][] level;
 
 	private int x;
@@ -29,8 +28,8 @@ public class MapGenerator
 	private float yScale;
 
 
-	private int screenWidth; //= 1920;
-	private int screenHeight; // = 1080;
+	private float screenWidth; //= 1920;
+	private float screenHeight; // = 1080;
 
 	//Default values
 	private float offsetX = 0;
@@ -112,61 +111,76 @@ public class MapGenerator
 
 
 	/**
-	 * A private enum called direction which stores 4 instances of the enum - north, south, east and west
-	 * A bit number - used for testing, direction on the x axis, as well direction on the y axis are stored, in addition to the the opposite of the current direction
+	 * This class is used to represent the directions that a wall can face (north, south, east and west)
+	 * The class contains 4 instance variables are: A bit number - used for testing, direction on the x axis, as well direction on the y axis are stored, in addition to the the opposite of the current direction
 	 */
-	private enum Direction
+	private class Direction
 	{
-		//Creates instances of the enum - north, south, east and west, with the specified bits
-		N(1, 0, -1), S(2, 0, 1), E(4, 1, 0), W(8, -1, 0);
-
 		private final int bit;
-		private final int dx;
-		private final int dy;
+		private final int dirX;
+		private final int dirY;
 		private Direction opposite;
 
-		//This is used to resolve forward references, as it is called before the constructor.
-		static
+		/**
+		 * Constructor
+		 * @param b the bit number (used for testing against)
+		 * @param dx the x direction (1, 0 or -1)
+		 * @param dy the y direction (1, 0 or -1)
+		 */
+		private Direction(int b, int dx, int dy)
 		{
-			N.opposite = S;
-			S.opposite = N;
-			E.opposite = W;
-			W.opposite = E;
+			bit = b;
+			dirX = dx;
+			dirY = dy;
 		}
+	}
 
-		//Constructor
-		private Direction(int bit, int dx, int dy)
-		{
-			this.bit = bit;
-			this.dx = dx;
-			this.dy = dy;
-		}
-	};
+
+	/**
+	 * This method is used to create all possible directions a wall can face (N, S, E & W)
+	 * @return an array containing 4 instances of the direction class for N, S, E & W
+	 */
+	private Direction[] initDirections()
+	{
+		Direction north = new Direction(1, 0, -1);
+		Direction south = new Direction(2, 0, 1);
+		Direction east = new Direction(4, 1, 0);
+		Direction west = new Direction(8, -1, 0);
+
+		north.opposite = south;
+		south.opposite = north;
+		east.opposite = west;
+		west.opposite = east;
+
+		return new Direction[]{north, south, east, west};
+	}
+
 
 
 	/**
 	 * This method is used to generate the level - it populates the level int 2D array which is used later to place all objects within the level
-	 * @param cx the current x coordinate (level[x][y])
-	 * @param cy the current y coordinate (level[x][y])
+	 * @param currentX the current x coordinate (level[x][y])
+	 * @param currentY the current y coordinate (level[x][y])
 	 * @param seed the seed used to randomly generate the level - can be set to a given value which wil produce identical maps when run
 	 */
-	private void generateLevel(int cx, int cy, long seed)
+	private void generateLevel(int currentX, int currentY, long seed)
 	{
-		Direction[] dirs = Direction.values();
-		Collections.shuffle(Arrays.asList(dirs)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
-		Collections.shuffle(Arrays.asList(dirs)); //Done twice so that it is less likely to produce the same map 
+		Direction[] directions = initDirections();
 
-		for (Direction dir : dirs)
+		Collections.shuffle(Arrays.asList(directions)); //Can add shuffle(Arrays.asList(dirs), new Random(seed)) which will allow for repeatable maps
+		Collections.shuffle(Arrays.asList(directions)); //Done twice so that it is less likely to produce the same map
+
+		for (Direction dir : directions)
 		{
-			int nx = cx + dir.dx;
-			int ny = cy + dir.dy;
+			int newX = currentX + dir.dirX;
+			int newY = currentY + dir.dirY;
 
-			if (between(nx, x) && between(ny, y) && (level[nx][ny] == 0))
+			if (between(newX, this.x) && between(newY, this.y) && (this.level[newX][newY] == 0))
 			{
-				level[cx][cy] |= dir.bit; //|=  is bitwise or equal (i.e. reads the same as +=)
-				level[nx][ny] |= dir.opposite.bit;
+				this.level[currentX][currentY] |= dir.bit; //|=  is bitwise or equal (i.e. reads the same as +=)
+				this.level[newX][newY] |= dir.opposite.bit;
 
-				generateLevel(nx, ny, seed);
+				generateLevel(newX, newY, seed);
 			}
 		}
 	}
@@ -265,7 +279,7 @@ public class MapGenerator
 	}
 
 
-	
+
 	/**
 	 * This method adds a given object to the maps Object arrayList and therefore the map
 	 * @param xPos the x position of the object to be added in pixels
@@ -277,11 +291,11 @@ public class MapGenerator
 	private void addObject(float xPos, float yPos, float width, float height, String texture)
 	{
 		//It is xPos + width / 2, is because mapObjects anchor point is its center, but to keep the map gen code cleaner, it is assumed the anchor point is the top left.
-        xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
-        yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
+		xPos = ((xPos + (width / 2)) * this.xScale) + offsetX;
+		yPos = ((yPos + (height / 2)) * this.yScale) + offsetTopY;
 
-        width *= this.xScale;
-        height *= this.yScale;
+		width *= this.xScale;
+		height *= this.yScale;
 
 		try
 		{
@@ -334,17 +348,17 @@ public class MapGenerator
 
 	public int getXSize() { return this.x; }
 
-    public int getYSize() { return this.y; }
+	public int getYSize() { return this.y; }
 
-    public float getXScale() { return this.xScale; }
+	public float getXScale() { return this.xScale; }
 
-    public float getYScale() { return this.yScale; }
+	public float getYScale() { return this.yScale; }
 
-    public float getWallLong() { return this.wallLong; }
+	public float getWallLong() { return this.wallLong; }
 
-    public float getWallShort() { return this.wallShort; }
+	public float getWallShort() { return this.wallShort; }
 
-    public float getTileSize() { return this.tileSize; }
+	public float getTileSize() { return this.tileSize; }
 
-    public float getOffsetTopY() { return this.offsetTopY; }
+	public float getOffsetTopY() { return this.offsetTopY; }
 }
