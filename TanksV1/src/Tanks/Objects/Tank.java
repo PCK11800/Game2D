@@ -577,37 +577,37 @@ public class Tank
 		//Only forward
 		if(previousMoveAlt == 1 && previousTurnAlt >= 0)
 		{
-			hull.moveBackward();
+			moveBackward();
 			previousMoveAlt = 1;
 		}
 		//Only backward
 		else if(previousMoveAlt == 2 && previousTurnAlt >= 0)
 		{
-			hull.moveForward();
+			moveForward();
 			previousMoveAlt = 2;
 		}
 		//Only turnLeft
 		else if(previousMoveAlt == 0 && previousTurnAlt == 1)
 		{
-			hull.turnRight();
+			turnRight();
 			previousTurn = 1;
 		}
 		//Only turnRight
 		else if(previousMoveAlt == 0 && previousTurnAlt == 2)
 		{
-			hull.turnLeft();
+			turnLeft();
 			previousTurnAlt = 2;
 		}
 		else if(previousMoveAlt > 0 && previousTurnAlt == 1)
 		{
-			hull.turnRight();
+			turnRight();
 			previousTurnAlt = 1;
 			if(previousMoveAlt == 1){
-				hull.moveBackward();
+				moveBackward();
 				previousMoveAlt = 1;
 			}
 			else if (previousMoveAlt == 2){
-				hull.moveForward();
+				moveForward();
 				previousMoveAlt = 2;
 			}
 		}
@@ -616,11 +616,11 @@ public class Tank
 			hull.turnLeft();
 			previousTurnAlt = 2;
 			if(previousMoveAlt == 1){
-				hull.moveBackward();
+				moveBackward();
 				previousMoveAlt = 1;
 			}
 			else if (previousMoveAlt == 2){
-				hull.moveForward();
+				moveForward();
 				previousMoveAlt = 2;
 			}
 		}
