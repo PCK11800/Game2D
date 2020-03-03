@@ -72,8 +72,13 @@ public class Main
 	
 	public static void main(String[] args) 
 	{
-		File lib = new File("TanksV1/src/Tanks/Main/" + System.mapLibraryName("fixXInitThreads"));
-		System.load(lib.getAbsolutePath());
+		switch (OSCheck.getOS())
+		{
+			case LINUX:
+				File lib = new File("TanksV1/src/Tanks/Main/" + System.mapLibraryName("fixXInitThreads"));
+				System.load(lib.getAbsolutePath());
+				break;
+		}
 		Main main = new Main();
 		main.iniGame();
 		main.loop();
