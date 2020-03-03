@@ -343,6 +343,9 @@ public class Tank
 		return hull.getObjectBounds();
 	}
 
+	/**
+	 * Handles collision with map objects
+	 */
 	private void collisionHandling()
 	{
 		//Previous move: 1 = forward, 2 = backward
@@ -489,6 +492,9 @@ public class Tank
 		}
 	}
 
+	/**
+	 * Handles collision with another tank
+	 */
 	private void tankToTankCollisionHandling()
 	{
 		Line2D[] tankHullBounds = hull.getObjectBounds();
@@ -562,6 +568,10 @@ public class Tank
 		}
 	}
 
+	/**
+	 * Function that handles tank physics when a tank collides with another tank.
+	 * Called whenever a collision occurs. Works essentially as Newton's Third Law.
+	 */
 	private void checkPreviousMove()
 	{
 		//Only forward
@@ -616,7 +626,10 @@ public class Tank
 		}
 	}
 
-	//Call this in game loop
+	/**
+	 * Updates tank. Repeatedly called.
+	 * @return loadNextLevel - boolean showing whether should the next level be called
+	 */
 	public boolean update()
 	{
 		tankToTankCollisionHandling();
