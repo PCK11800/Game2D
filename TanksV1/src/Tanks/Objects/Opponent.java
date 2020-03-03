@@ -6,6 +6,7 @@ import Tanks.UIScreens.HealthBar;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -34,6 +35,7 @@ public class Opponent extends Tank {
     protected MapGenerator mapGenerator;
     private boolean doesMove = true;
     private HealthBar healthBar;
+    private String name = "";
 
 
     /**
@@ -77,19 +79,29 @@ public class Opponent extends Tank {
         this(clone.player, clone.mapGenerator);
     }
 
-    public void setDifficulty(int difficulty)
+    public void setName(String name)
     {
+        this.name = name;
+    }
+
+    private void setDifficulty(int difficulty)
+    {
+        System.out.println("Difficulty: " + difficulty);
         switch (difficulty)
         {
             case 1: //easy
-                increaseMaxHealth(-getHealth() / 2);
+                increaseMaxHealth(-(getHealth() / 2));
+                tankIsHit(getHealth() / 2);
                 setMovementSpeed(getMovementSpeed() - 1);
                 setFireDelay(getFireDelay() + (getFireDelay() / 4));
+                setDamagePerShell(getDamagePerShell() / 2);
                 setRammingDamage(getRammingDamage() / 2);
                 break;
             case 2: //normal
-                increaseMaxHealth(-getHealth() / 3);
+                increaseMaxHealth(-(getHealth() / 3));
+                tankIsHit((getHealth() / 3) * 2);
                 setFireDelay(getFireDelay() + (getFireDelay() / 5));
+                setDamagePerShell((getDamagePerShell() / 3) * 2);
                 setRammingDamage(2 * (getRammingDamage() / 3));
                 break;
         }
@@ -121,7 +133,8 @@ public class Opponent extends Tank {
               generateMovementPathToTile();
             }
             clone = turret.stationaryCopy();
-            healthBar = new HealthBar(window, this);
+            setDifficulty(window.getDifficulty());
+            healthBar = new HealthBar(window, this, name);
         }
         if (timer.getElapsedTime().asSeconds() > pathCalcDelay && middleOfSpace(hull.getxPos(), hull.getyPos()))
         {
@@ -527,36 +540,44 @@ public class Opponent extends Tank {
      * @param y1 start point of line y position
      * @param x2 end point of line x position
      * @param y2 end point of line y position
-     * @param isSelf indicates whether the tank to checked is the player tank or this opponent (true if self, false if player)
      * @return true if player lies on the line between start and end points, false if not.
      */
-    private boolean isTankInFiringLine(float x1, float y1, float x2, float y2, boolean isSelf)
+    private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
-        Float m, c, tankConstant, upperBound, lowerBound;
+        Float m, c, playerConstant, oppConstant , uBound, lBound, oppLBound, oppUBound;
         //working out equation of line through turret (firing line)
         m = (y1 - y2) / (x1 - x2);
         c =  y2 - (m*x2);
 
         //constant val for parallel lines between which player tank can be shot at
-        upperBound = isSelf ? c + hull.getHeight()/2 : c + player.hull.getHeight()/2;
-        lowerBound = isSelf ? c - hull.getHeight()/2 : c - player.hull.getHeight()/2;
+        uBound =  c + (player.hull.getHeight() / 2);
+        lBound =  c - (player.hull.getHeight() / 2);
+        oppUBound = c + (hull.getHeight() / 2);
+        oppLBound = c - (hull.getHeight() / 2);
 
         if (m.isInfinite())
         {
             if (x1 == x2)
             {
-                if (!isSelf && playerXPos < (x1 + player.hull.getWidth()/2) && playerXPos > (x1 - player.hull.getWidth()/2)) return true;
-                if (isSelf && getXPos() < (x1 + hull.getWidth()/2) && getXPos() > (x1 - hull.getWidth()/2)) return true;
+                if (getXPos() < (x1 + hull.getWidth()/2) && getXPos() > (x1 - hull.getWidth()/2)) return false;
+                if (playerXPos < (x1 + player.hull.getWidth()/2) && playerXPos > (x1 - player.hull.getWidth()/2)) return true;
             }
             else
             {
+                if (getXPos() < (y1 + hull.getWidth()/2) && getXPos() > (y1 - hull.getWidth()/2)) return false;
                 if (playerYPos < (y1 + player.hull.getWidth()/2) && playerYPos > (y1 - player.hull.getWidth()/2)) return true;
-                if (isSelf && getXPos() < (y1 + hull.getWidth()/2) && getXPos() > (y1 - hull.getWidth()/2)) return true;
             }
         }
 
-        tankConstant = isSelf ? getYPos() - (m*getXPos()) : (playerYPos - (m*playerXPos));
-        return (upperBound > tankConstant && lowerBound < tankConstant); //check player between two parallel lines
+        playerConstant = (playerYPos - (m*playerXPos));
+        oppConstant = getYPos() - (m*getXPos());
+        if (oppUBound > oppConstant && oppLBound < oppConstant)
+        {
+            double playerDist = Point2D.distance(x1, y1, playerXPos, playerYPos);
+            double oppDist = Point2D.distance(x1, y1, getXPos(), getYPos());
+            if (oppDist != 0 && (playerDist > oppDist)) return false;
+        }
+        return (uBound > playerConstant && lBound < playerConstant); //check player between two parallel lines
     }
 
 
@@ -578,7 +599,7 @@ public class Opponent extends Tank {
             Line2D bottom = new Line2D.Float(obj.getLeftBounds(), obj.getBottomBounds(), obj.getRightBounds(), obj.getBottomBounds());
             Line2D right = new Line2D.Float(obj.getRightBounds(), obj.getTopBounds(), obj.getRightBounds(), obj.getBottomBounds());
             Line2D left = new Line2D.Float(obj.getLeftBounds(), obj.getTopBounds(), obj.getLeftBounds(), obj.getBottomBounds());
-            if (line.intersectsLine(top) && line.intersectsLine(left) || line.intersectsLine(top) && line.intersectsLine(right) || line.intersectsLine(top) && line.intersectsLine(bottom) || line.intersectsLine(bottom) && line.intersectsLine(right) || line.intersectsLine(bottom) && line.intersectsLine(left) || line.intersectsLine(right) && line.intersectsLine(left))
+            if ((line.intersectsLine(top) && line.intersectsLine(left)) || (line.intersectsLine(top) && line.intersectsLine(right)) || (line.intersectsLine(top) && line.intersectsLine(bottom)) || (line.intersectsLine(bottom) && line.intersectsLine(right)) || line.intersectsLine(bottom) && line.intersectsLine(left) || line.intersectsLine(right) && line.intersectsLine(left))
             {
                 return true;
             }
@@ -615,38 +636,13 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right
                     {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y))
-                        {
-                            if (playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount <= shellRicochetNumber) {
-                                ricochetCount++;
-                                return canHitPlayer(x, y, newX, newY, 180 - direction);
-                            }
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomRIGHT"));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //bottom
                     {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y)) {
-                            if (playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount < shellRicochetNumber) {
-                                ricochetCount++;
-                                return canHitPlayer(x, y, newX, newY, 0 - direction);
-                            }
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightBOTTOM"));
                     }
                 }
             }
@@ -661,37 +657,13 @@ public class Opponent extends Tank {
                      y = (m * x) + c;
                      if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right side
                      {
-                         newX = x;
-                         newY = y + 70;
-                         float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
-                         newX = coords[0];
-                         newY = coords[1];
-                         if (!isObjectInPath(x1, y1, x, y)) {
-                             if (playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                 return true;
-                             } else if (ricochetCount < shellRicochetNumber - 1) {
-                                 ricochetCount++;
-                                 return canHitPlayer(x, y, newX, newY, 180 - direction);
-                             }
-                         }
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topRIGHT"));
                      }
                      y = obj.getTopBounds();
                      x = (y - c) / m;
                      if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                      {
-                         newX = x;
-                         newY = y + 70;
-                         float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
-                         newX = coords[0];
-                         newY = coords[1];
-                         if (!isObjectInPath(x1, y1, x, y)) {
-                             if (playerXPos + (player.hull.getWidth() / 2) < y && playerXPos + (player.hull.getWidth() / 2) > y1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                 return true;
-                             } else if (ricochetCount < shellRicochetNumber - 1) {
-                                 ricochetCount++;
-                                 return canHitPlayer(x, y, newX, newY, 0 - direction);
-                             }
-                         }
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightTOP"));
                      }
                  }
             }
@@ -706,35 +678,12 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y)) {
-                            if (playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount < shellRicochetNumber - 1) {
-                                ricochetCount++;
-                                return canHitPlayer(x, y, newX, newY, 180 - direction);
-                            }
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomLEFT"));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y)) {
-                            if (playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount < shellRicochetNumber - 1) {
-                                return canHitPlayer(x, y, newX, newY, 0 - direction);
-                            }
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftBOTTOM"));
                     }
                 }
             }
@@ -749,41 +698,76 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 0 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y)) {
-                            if (playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount < shellRicochetNumber - 1) {
-                                ricochetCount++;
-                                return canHitPlayer(x, y, newX, newY, 0 - direction);
-                            }
-                        }
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topLEFT"));
                     }
                     y = obj.getTopBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                     {
-                        newX = x;
-                        newY = y + 70;
-                        float coords[] = rotateCoordinates(x, y, newX, newY, 180 - direction);
-                        newX = coords[0];
-                        newY = coords[1];
-                        if (!isObjectInPath(x1, y1, x, y)) {
-                            if (playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1 && isTankInFiringLine(x1, y1, x2, y2, false) && !isTankInFiringLine(x1, y1, x2, y2, true)) {
-                                return true;
-                            } else if (ricochetCount < shellRicochetNumber - 1) {
-                                ricochetCount++;
-                                return canHitPlayer(x, y, newX, newY, 180 - direction);
-                            }
-                        }
+                       return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftTOP"));
                     }
                 }
             }
 
+        return false;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param direction
+     * @param sideHit
+     * @return 1 if can hit, -1 if run out of ricochets, 0 if can't hit but still have ricochets left
+     */
+    private boolean checkIfCanHitAfterRotation(float x, float y, float x1, float y1, float x2, float y2, float direction, String sideHit)
+    {
+        float newX, newY;
+        boolean playerOnSide = false;
+        float changeOfDir = 0;
+        switch (sideHit)
+        {
+            case "leftTOP":
+            case "bottomLEFT":
+                playerOnSide = playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1;
+                changeOfDir = 180 - direction;
+                break;
+            case "topLEFT":
+            case "leftBOTTOM":
+                playerOnSide = playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1;
+                changeOfDir = 0 - direction;
+                break;
+            case "rightTOP":
+            case "rightBOTTOM":
+                playerOnSide = playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1 ;
+                changeOfDir = 0 - direction;
+                break;
+            case "topRIGHT":
+            case "bottomRIGHT":
+                playerOnSide = playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1;
+                changeOfDir = 180 - direction;
+                break;
+        }
+        newX = x;
+        newY = y + 70;
+        float coords[] = rotateCoordinates(x, y, newX, newY, changeOfDir);
+        newX = coords[0];
+        newY = coords[1];
+        if (!isObjectInPath(x1, y1, x, y)) {
+            if (playerOnSide && isPlayerInFiringLine(x1, y1, x2, y2)) {
+                return true;
+            } else if (ricochetCount < shellRicochetNumber - 1) {
+                ricochetCount++;
+                if (canHitPlayer(x, y, newX, newY, changeOfDir))
+                {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

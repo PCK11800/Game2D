@@ -13,7 +13,7 @@ public class HouseTankSniper extends PatrollingOpponent {
         setMovementSpeed(5);
         setShellRicochetNumber(5);
         setDamagePerShell(40);
-        setFireDelay(700);
+        setFireDelay(2000);
         setTurretTexture(Textures.TANKTURRET_RED_RAILGUN);
         setShellTexture(Textures.TANKSHELL_FAST);
         setFiringSound(SoundsPath.RAILGUN, 80);

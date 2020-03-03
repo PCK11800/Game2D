@@ -1,7 +1,9 @@
 package Tanks.Listeners;
 
 import Tanks.Objects.UIScreen;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
+import org.jsfml.window.Window;
 
 import java.awt.*;
 
@@ -19,20 +21,23 @@ public class UIListener
     }
 
     /**
-     * Handles mouse input
+     * This method handles the players mouse inputs
+     * It handles both movement and left-clicks
      */
     public void handleInput()
     {
+        Vector2i mousePos = Mouse.getPosition(uiScreen.getWindow()); // This gets the mouse position relative to the window
+        float mousePosX = mousePos.x;
+        float mousePosY = mousePos.y;
+
+
         if(Mouse.isButtonPressed(Mouse.Button.LEFT))
         {
-            uiScreen.handleMouseClick(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
+            uiScreen.handleMouseClick(mousePosX, mousePosY);
         }
         else
         {
-            uiScreen.handleMouseMovement(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
+            uiScreen.handleMouseMovement(mousePosX, mousePosY);
         }
-
     }
-
-
 }

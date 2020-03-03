@@ -1,8 +1,12 @@
 package Tanks.Objects;
 
 import Tanks.Listeners.PauseListener;
+import Tanks.ObjectComponents.Textures;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Window.Window;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.Mouse;
+
 import java.util.Random;
 
 public class GameMode
@@ -13,6 +17,7 @@ public class GameMode
     private UIScreenManager uiManager;
     private PauseListener pauseListener;
     private GameMusicHandler gameMusicHandler = new GameMusicHandler();
+    private CustomMouseCursor mouseCursor;
 
     private Tank player;
     
@@ -30,11 +35,12 @@ public class GameMode
     /**
      * The constructor
      * @param window the window for everything to be drawn into
+     * @param seed the seed that is used for level gen, etc.
      */
     public GameMode(Window window, long seed)
     {
         this.window = window;
-        this.uiManager = new UIScreenManager(window);
+        this.uiManager = new UIScreenManager(window, this);
         this.pauseListener = new PauseListener(this);
         this.seed = seed;
 
@@ -43,6 +49,7 @@ public class GameMode
         initGameMode();
 
         this.random = new Random(this.seed);
+        this.mouseCursor = new CustomMouseCursor(this.window, Textures.MOUSE_CURSOR_SMALL_WHITE);
     }
 
 
@@ -65,8 +72,6 @@ public class GameMode
         this.player.config("player_default");
         this.player.setLevelContainer(this.currentLevel);
         this.player.setWindow(window);
-
-        this.player.setHealth(10000);
 
         this.currentLevel.addPlayer(this.player);
     }
@@ -252,6 +257,9 @@ public class GameMode
                 }
             }
         }
+
+
+        this.mouseCursor.update();
     }
 
 
@@ -343,4 +351,8 @@ public class GameMode
     }
 
     public Window getWindow() { return window; }
+
+    public int getLevelNum() { return levelNum; }
+
+    public GameMusicHandler getGameMusicHandler() { return gameMusicHandler; }
 }

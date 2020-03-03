@@ -24,7 +24,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(100);
+        tank.setHealth(10000);
     }
 
     public void enemy_default(Tank tank)
@@ -82,21 +82,21 @@ public class TankConfigs {
         tank.setRammingDamage(10);
     }
 
-    public void increase_health(Tank tank)
+    public void increase_halfhealth(Tank tank)
     {
-        if(tank.getStartingHealth() - tank.getHealth() >= 10)
+        if (tank.getHealth() + tank.getStartingHealth()/2 > tank.getStartingHealth())
         {
-            tank.increaseHealth(10);
+            tank.setHealth(tank.getStartingHealth());
         }
-        else if(tank.getStartingHealth() - tank.getHealth() < 10)
+        else
         {
-            tank.increaseHealth(tank.getStartingHealth() - tank.getHealth());
+            tank.increaseHealth(tank.getStartingHealth()/2);
         }
+    }
 
-        if(tank.getStartingHealth() - tank.getHealth() <= 0)
-        {
-            tank.increaseMoney(10);
-        }
+    public void increase_fullhealth(Tank tank)
+    {
+        tank.setHealth(tank.getStartingHealth());
     }
 
     public void increase_maxhealth(Tank tank)

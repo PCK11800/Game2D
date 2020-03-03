@@ -20,15 +20,17 @@ public class UIScreenManager
     private boolean inShop = false;
     private boolean onPauseScreen = false;
     private boolean stateBeforePause = false; // False = gameplay, true = on UISCreen
+    private GameMode game;
 
     /**
      * Constructor
      * @param window the window that all UIScreens are to be drawn into
      */
-    public UIScreenManager(Window window) // Will need to pass in the player tank here
+    public UIScreenManager(Window window, GameMode game) // Will need to pass in the player tank here
     {
         this.window = window;
         this.currentScreen = initMainMenu();
+        this.game = game;
     }
 
     /**
@@ -38,12 +40,11 @@ public class UIScreenManager
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
         TutorialScreen tutorial = new TutorialScreen(this.window);
-        StoryScreen story = new StoryScreen(this.window);
+        StoryScreen story = new StoryScreen(this.window, "intro");
         MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial, story);
 
         leaderboard.initBackButton(mainMenu);
         tutorial.initBackButton(mainMenu);
-        story.setText("intro");
 
         return mainMenu;
     }
@@ -54,14 +55,32 @@ public class UIScreenManager
     public void displayShop(Tank player)
     {
         ShopScreen shop = new ShopScreen(this.window, player);
-        this.currentScreen = new StoryScreen(this.window, "..", shop);
+        System.out.println(game.getLevelNum());
+        switch (game.getLevelNum())
+        {
+            case 2:
+                this.currentScreen = new StoryScreen(this.window, "before_battle_1", shop);
+                break;
+            case 3:
+                this.currentScreen = new StoryScreen(this.window, "after_battle_1", shop);
+                break;
+            case 6:
+                this.currentScreen = new StoryScreen(this.window, "before_battle_2", shop);
+                break;
+            case 7:
+                this.currentScreen = new StoryScreen(this.window, "after_battle_2", shop);
+                break;
+            case 10:
+                this.currentScreen = new StoryScreen(this.window, "before_battle_3", shop);
+                break;
+        }
         this.inShop = true;
     }
 
     public void displayPauseScreen()
     {
         //System.out.println("DISPLAY PAUSE SCREEN CALLED");
-        PauseScreen pauseScreen = new PauseScreen(this.window);
+        PauseScreen pauseScreen = new PauseScreen(this.window, game.getGameMusicHandler());
 
         if (this.onUIScreen)
         {

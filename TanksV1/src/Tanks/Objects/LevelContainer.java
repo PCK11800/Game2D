@@ -246,6 +246,7 @@ public class LevelContainer
             inGameMonitor.setCurrentData(2, player.getMoney());
         }
         inGameMonitor.setCurrentData(1, enemyList.size());
+        inGameMonitor.setCurrentData(4, index);
         inGameMonitor.updateMonitor();
     }
 

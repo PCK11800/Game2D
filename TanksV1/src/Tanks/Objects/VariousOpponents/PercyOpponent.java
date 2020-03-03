@@ -9,6 +9,7 @@ public class PercyOpponent extends ChasingOpponent
     public PercyOpponent(Tank player, MapGenerator mapGen, int levelNum)
     {
         super(player, mapGen);
+        setName("PERCY");
         setHullTexture(Textures.TANKHULL_PERCY);
         setTurretTexture(Textures.TANKTURRET_PERCY);
         setNoticeDistance(-1);

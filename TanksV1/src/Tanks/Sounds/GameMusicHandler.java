@@ -12,10 +12,12 @@ public class GameMusicHandler {
     private boolean isBackgroundMusicDonePlaying;
     private GameMusic currentSong;
     private Random rand = new Random();
+    private float volume;
 
     public GameMusicHandler() {
         musicListLoad();
         isBackgroundMusicDonePlaying = true;
+        volume = 100;
     }
 
     //PUT YOUR BACKGROUND MUSIC HERE
@@ -27,7 +29,7 @@ public class GameMusicHandler {
         if (isBackgroundMusicDonePlaying) {
             int randomSelection = rand.nextInt(musicList.size());
             currentSong = musicList.get(randomSelection);
-            currentSong.setVolume(100);
+            currentSong.setVolume(volume);
             currentSong.play();
             isBackgroundMusicDonePlaying = false;
         }
@@ -51,5 +53,16 @@ public class GameMusicHandler {
         {
             currentSong.play();
         }
+    }
+
+    public void setVolume(float volume)
+    {
+        currentSong.setVolume(volume);
+        this.volume = volume;
+    }
+
+    public float getVolume()
+    {
+        return currentSong.getVolume();
     }
 }
