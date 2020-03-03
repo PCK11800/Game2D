@@ -14,13 +14,13 @@ public class JamesOpponent extends ConfusedOpponent
         setTurretTexture(Textures.TANKTURRET_JAMES);
         if (levelNum == 1) //first difficulty
         {
-            setHealth(100);
+            setHealth(300);
             setFireDelay(400);
             setDamagePerShell(25);
         }
         else //second difficulty
         {
-            setHealth(100);
+            setHealth(400);
             setFireDelay(350);
             setDamagePerShell(30);
         }

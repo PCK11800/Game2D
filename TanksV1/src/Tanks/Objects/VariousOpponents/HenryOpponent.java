@@ -14,12 +14,12 @@ public class HenryOpponent extends ChasingOpponent
          setTurretTexture(Textures.TANKTURRET_HENRY);
          if (levelNum == 1) //first difficulty
          {
-             setHealth(50);
+             setHealth(300);
              setFireDelay(300);
          }
          else //second difficulty
          {
-             setHealth(100);
+             setHealth(400);
              setFireDelay(300);
              setDamagePerShell(25);
          }
