@@ -82,6 +82,11 @@ public class TankConfigs {
         tank.setRammingDamage(10);
     }
 
+    public void armour_upgrade(Tank tank)
+    {
+        tank.setArmour(true);
+    }
+
     public void halfheal(Tank tank)
     {
         if (tank.getHealth() + tank.getStartingHealth()/2 > tank.getStartingHealth())

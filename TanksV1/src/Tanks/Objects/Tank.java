@@ -48,6 +48,7 @@ public class Tank
 	private int startingHealth = 100;
 	private int damagePerShell;
 	private int rammingDamage;
+	private boolean armour = false;
 
 	private float sizeMult_w, sizeMult_h;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
@@ -661,7 +662,10 @@ public class Tank
 
 	public void tankIsRammed(int damage)
 	{
-		health = health - damage;
+		if (armour)
+			health = health - damage/2;
+		else
+			health = health - damage;
 	}
 
 	public boolean isOpponent() { return !isPlayerControlled; }
@@ -781,4 +785,9 @@ public class Tank
 	public float getTankMovingVolume() { return tankMovingVolume; }
 
 	public void setTankMovingVolume(float tankMovingVolume) { this.tankMovingVolume = tankMovingVolume; }
+
+	public void setArmour(boolean b)
+	{
+		this.armour = b;
+	}
 }
