@@ -9,16 +9,19 @@ import org.jsfml.graphics.Color;
 public class ShopScreen extends UIScreen
 {
 
+    float screenCenterX, screenCenterY;
+
     public ShopScreen(Window window, Tank player)
     {
         super(window);
+        screenCenterX = window.getWidth() / 2;
+        screenCenterY = window.getHeight() / 2;
         initButtons(window, player);
     }
 
     private void initButtons(Window window, Tank player)
     {
-        float screenCenterX = window.getWidth() / 2;
-        float screenCenterY = window.getHeight() / 2;
+
 
         float screenWidth = window.getWidth();
         float screenHeight = window.getHeight();
