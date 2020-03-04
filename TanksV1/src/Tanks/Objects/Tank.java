@@ -54,6 +54,7 @@ public class Tank
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 
 	private int money = 0;
+	private String name = "Simon";
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
@@ -811,5 +812,10 @@ public class Tank
 	public void setArmour(boolean b)
 	{
 		this.armour = b;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 }

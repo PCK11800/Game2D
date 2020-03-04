@@ -5,3 +5,4 @@ Conor,200
 Conor,100
 Conor,80
 Conor,79
+Simon,60

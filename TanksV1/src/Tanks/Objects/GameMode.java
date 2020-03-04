@@ -238,6 +238,8 @@ public class GameMode
             {
                 if (currentLevel.isPlayerDead())
                 {
+                    Leaderboard leaderboard = new Leaderboard();
+                    leaderboard.addScore(player.getName(), player.getMoney());
                     uiManager.setOnUIScreen(true);
                     uiManager.displayGameOverScreen();
                     resetGame();
