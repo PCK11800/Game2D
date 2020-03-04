@@ -31,6 +31,7 @@ public class LeaderboardScreen extends UIScreen
         //title text
         addText(centerX - 300, 50, "LEADERBOARD", 60, FontPath.PIXEL, Color.WHITE);
 
+        //column headings
         addText(centerX - 200, 300, "Rank", 40, FontPath.MONTSERRAT, Color.WHITE);
         addText(centerX, 300, "Name", 40, FontPath.MONTSERRAT, Color.WHITE);
         addText(centerX + 200, 300, "Score", 40, FontPath.MONTSERRAT, Color.WHITE);
