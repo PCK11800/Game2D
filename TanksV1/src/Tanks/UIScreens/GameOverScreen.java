@@ -1,7 +1,6 @@
 package Tanks.UIScreens;
 
 import Tanks.ObjectComponents.Textures;
-import Tanks.Objects.Leaderboard;
 import Tanks.Objects.UIScreen;
 import Tanks.Window.Window;
 import org.jsfml.graphics.Color;
@@ -9,9 +8,6 @@ import org.jsfml.graphics.Color;
 public class GameOverScreen extends UIScreen
 {
     private Window window;
-    private Leaderboard leaderboard;
-    private String name;
-    private int score;
 
     public GameOverScreen(Window window)
     {
