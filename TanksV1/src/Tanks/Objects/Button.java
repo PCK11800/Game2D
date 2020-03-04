@@ -17,7 +17,6 @@ public abstract class Button extends RotatingObject
     private float width;
     private float height;
 
-    private float[] scale = ObjectSizeHandler.scaleConstant();
     private float xScale = 1;
     private float yScale = 1;
 
@@ -48,8 +47,11 @@ public abstract class Button extends RotatingObject
 
         this.xPos = x;
         this.yPos = y;
-        this.width = width;
-        this.height = height;
+        float[] scale = ObjectSizeHandler.scaleConstant();
+        this.width = width * scale[0];
+        this.height = height * scale[1];
+
+        System.out.println(width + ", " + height);
 
         this.activeTexture = activeTexture;
 
@@ -72,7 +74,6 @@ public abstract class Button extends RotatingObject
 
         this.width = this.width * xScale;
         this.height = this.height * yScale ;
-        setSize(this.width, this.height);
     }
 
 

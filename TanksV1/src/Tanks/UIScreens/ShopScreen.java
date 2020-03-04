@@ -1,7 +1,6 @@
 package Tanks.UIScreens;
 
 import Tanks.ObjectComponents.Textures;
-import Tanks.Objects.ObjectSizeHandler;
 import Tanks.Objects.Tank;
 import Tanks.Objects.UIScreen;
 import Tanks.Window.Window;
@@ -19,8 +18,6 @@ public class ShopScreen extends UIScreen
 
     private float continueButtonWidth = 400;
     private float continueButtonHeight = 125;
-    private float[] scale = ObjectSizeHandler.scaleConstant();
-
 
     public ShopScreen(Window window, Tank player)
     {
@@ -44,10 +41,10 @@ public class ShopScreen extends UIScreen
         addUpgradeButton(getXPos(3), upgradeButtonHeight / 2, upgradeButtonWidth, upgradeButtonHeight, Textures.SPIKES, Textures.SPIKES_HOVER, Textures.SPIKES_CLICKED, player, "spikes_upgrade", 250);
 
         //Upgrade buttons - Second
-        addUpgradeButton(getXPos(0), (upgradeButtonHeight * 2) * scale[1], upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 200);
-        addUpgradeButton(getXPos(1), (upgradeButtonHeight * 2) * scale[1], upgradeButtonWidth, upgradeButtonHeight, Textures.RAILGUN, Textures.RAILGUN_HOVER, Textures.RAILGUN_CLICKED, player, "railgun_upgrade", 300);
-        addUpgradeButton(getXPos(2), (upgradeButtonHeight * 2) * scale[1], upgradeButtonWidth, upgradeButtonHeight, Textures.SONIC, Textures.SONIC_HOVER, Textures.SONIC_CLICKED, player, "sonicmode_upgrade", 150);
-        addUpgradeButton(getXPos(3), (upgradeButtonHeight * 2) * scale[1], upgradeButtonWidth, upgradeButtonHeight, Textures.ARMOUR, Textures.ARMOUR_HOVER, Textures.ARMOUR_CLICKED, player, "armour_upgrade", 200);
+        addUpgradeButton(getXPos(0), (upgradeButtonHeight * 2), upgradeButtonWidth, upgradeButtonHeight, Textures.MINIGUN, Textures.MINIGUN_HOVER, Textures.MINIGUN_CLICKED, player, "minigun_upgrade", 200);
+        addUpgradeButton(getXPos(1), (upgradeButtonHeight * 2), upgradeButtonWidth, upgradeButtonHeight, Textures.RAILGUN, Textures.RAILGUN_HOVER, Textures.RAILGUN_CLICKED, player, "railgun_upgrade", 300);
+        addUpgradeButton(getXPos(2), (upgradeButtonHeight * 2), upgradeButtonWidth, upgradeButtonHeight, Textures.SONIC, Textures.SONIC_HOVER, Textures.SONIC_CLICKED, player, "sonicmode_upgrade", 150);
+        addUpgradeButton(getXPos(3), (upgradeButtonHeight * 2), upgradeButtonWidth, upgradeButtonHeight, Textures.ARMOUR, Textures.ARMOUR_HOVER, Textures.ARMOUR_CLICKED, player, "armour_upgrade", 200);
 
         //Continue Button
         addLoadLevelButton(screenWidth - 250, screenHeight - 100, continueButtonWidth, continueButtonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
