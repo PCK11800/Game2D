@@ -1,9 +1,6 @@
 package Tanks.Objects;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Leaderboard
@@ -56,14 +53,17 @@ public class Leaderboard
     {
         if (score > scores.get(9).getScore())
         {
-            scores.set(9, new Score(name, score));
+            scores.remove(9);
+            scores.add(new Score(name, score));
             Collections.sort(scores, new Comparator<Score>() {
                 @Override
                 public int compare(Score o1, Score o2) {
-                    return Integer.compare(o1.getScore(), o2.getScore());
+                    return Integer.compare(o2.getScore(), o1.getScore());
                 }
             });
         }
+
+        update();
     }
 
     public String getName(int i)
@@ -76,5 +76,27 @@ public class Leaderboard
     {
         int score = scores.get(i-1).getScore();
         return score;
+    }
+
+    public void update()
+    {
+        try
+        {
+            file = new File("TanksV1/Resources/leaderboard.txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for (int i = 0; i < 10; i++)
+            {
+                if (scores.get(i).getName() != "EMPTY" && scores.get(i).getScore() != 0)
+                {
+                    writer.write(scores.get(i).getName() + "," + scores.get(i).getScore());
+                    writer.newLine();
+                }
+            }
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println(e);
+        }
     }
 }

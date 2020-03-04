@@ -17,6 +17,7 @@ public class GameOverScreen extends UIScreen
     {
         super(window);
         Leaderboard leaderboard = new Leaderboard();
+        leaderboard.addScore("Flip", 12);
         this.window = window;
     }
 
