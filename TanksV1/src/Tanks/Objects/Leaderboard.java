@@ -33,8 +33,17 @@ public class Leaderboard
                 {
                     scores.add(new Score("EMPTY", 0));
                 }
-                System.out.println(scores.get(i).getName() + "   " + scores.get(i).getScore());
             }
+
+            Collections.sort(scores, new Comparator<Score>() {
+                @Override
+                public int compare(Score o1, Score o2) {
+                    return Integer.compare(o2.getScore(), o1.getScore());
+                }
+            });
+
+            for (int i = 0; i < 10; i++)
+                System.out.println(scores.get(i).getName() + "   " + scores.get(i).getScore());
         }
         catch (IOException e)
         {
@@ -43,9 +52,29 @@ public class Leaderboard
 
     }
 
-    public String getString(int i)
+    public void addScore(String name, int score)
     {
-        String s = "test";
+        if (score > scores.get(9).getScore())
+        {
+            scores.set(9, new Score(name, score));
+            Collections.sort(scores, new Comparator<Score>() {
+                @Override
+                public int compare(Score o1, Score o2) {
+                    return Integer.compare(o1.getScore(), o2.getScore());
+                }
+            });
+        }
+    }
+
+    public String getName(int i)
+    {
+        String s = scores.get(i-1).getName();
         return s;
+    }
+
+    public int getScore(int i)
+    {
+        int score = scores.get(i-1).getScore();
+        return score;
     }
 }
