@@ -19,6 +19,7 @@ public abstract class Button extends RotatingObject
 
     private float xScale = 1;
     private float yScale = 1;
+    private float[] scale = ObjectSizeHandler.scaleConstant();
 
     private String activeTexture;
     private String hoveredTexture;
@@ -47,11 +48,8 @@ public abstract class Button extends RotatingObject
 
         this.xPos = x;
         this.yPos = y;
-        float[] scale = ObjectSizeHandler.scaleConstant();
-        this.width = width * scale[0];
-        this.height = height * scale[1];
-
-        System.out.println(width + ", " + height);
+        this.width = width;
+        this.height = height;
 
         this.activeTexture = activeTexture;
 
@@ -74,6 +72,7 @@ public abstract class Button extends RotatingObject
 
         this.width = this.width * xScale;
         this.height = this.height * yScale ;
+        setSize(this.width * scale[0], this.height * scale[1]);
     }
 
 
