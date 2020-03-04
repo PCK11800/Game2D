@@ -12,6 +12,7 @@ public class HenryOpponent extends ChasingOpponent
          setName("HENRY");
          setHullTexture(Textures.TANKHULL_HENRY);
          setTurretTexture(Textures.TANKTURRET_HENRY);
+         setSize((float) 1, (float) 1);
          if (levelNum == 1) //first difficulty
          {
              setHealth(300);

@@ -17,5 +17,6 @@ public class HouseTankSniper extends PatrollingOpponent {
         setTurretTexture(Textures.TANKTURRET_RED_RAILGUN);
         setShellTexture(Textures.TANKSHELL_FAST);
         setFiringSound(SoundsPath.RAILGUN, 80);
+        setSize((float) 1, (float) 1);
     }
 }

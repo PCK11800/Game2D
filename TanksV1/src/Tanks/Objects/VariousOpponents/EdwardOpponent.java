@@ -13,6 +13,7 @@ public class EdwardOpponent extends PatrollingOpponent
         setName("EDWARD");
         setHullTexture(Textures.TANKHULL_EDWARD);
         setTurretTexture(Textures.TANKTURRET_EDWARD);
+        setSize((float) 1, (float) 1);
         if (levelNum == 1) //first difficulty
         {
             setNoticeDistance(2);

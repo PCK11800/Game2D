@@ -153,8 +153,9 @@ public class Tank
 
 	public void setSize(float width, float height)
 	{
-		hull.setSize(width * 53, height * 75);
-		turret.setSize(width * 53, height * 75);
+		float[] scale = ObjectSizeHandler.scaleConstant();
+		hull.setSize(width * 53 * scale[0], height * 75 * scale[1]);
+		turret.setSize(width * 53 * scale[0], height * 75 * scale[1]);
 		sizeMult_w = width;
 		sizeMult_h = height;
 	}

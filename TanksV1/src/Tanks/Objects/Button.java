@@ -69,7 +69,8 @@ public abstract class Button extends RotatingObject
         this.xPos = this.xPos * xScale;
         this.yPos = this.yPos * yScale;
 
-        setSize(this.width * xScale, this.height * yScale);
+        float[] scale = ObjectSizeHandler.scaleConstant();
+        setSize(this.width * xScale * scale[0], this.height * yScale * scale[1]);
         this.width = this.width * xScale;
         this.height = this.height * yScale;
 
