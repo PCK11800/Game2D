@@ -302,6 +302,8 @@ public class GameMode
         {
             if (this.levelNum + 1 >= this.maxLevel)
             {
+                Leaderboard leaderboard = new Leaderboard();
+                leaderboard.addScore(player.getName(), player.getMoney());
                 uiManager.setOnUIScreen(true);
                 uiManager.displayEndScreen();
                 resetGame();
