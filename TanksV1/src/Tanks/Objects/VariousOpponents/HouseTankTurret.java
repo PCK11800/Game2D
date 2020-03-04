@@ -19,6 +19,6 @@ public class HouseTankTurret extends Opponent
         setTurretTexture(Textures.TANKTURRET_RED_MACHINEGUN);
         setShellTexture(Textures.TANKSHELL_MACHINEGUN);
         setFiringSound(SoundsPath.MACHINEGUN, 5);
-        setSize((float) 1, (float) 1);
+        setScale();
     }
 }

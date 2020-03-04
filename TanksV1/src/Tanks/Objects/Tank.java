@@ -153,11 +153,17 @@ public class Tank
 
 	public void setSize(float width, float height)
 	{
-		float[] scale = ObjectSizeHandler.scaleConstant();
-		hull.setSize(width * 53 * scale[0], height * 75 * scale[1]);
-		turret.setSize(width * 53 * scale[0], height * 75 * scale[1]);
+		hull.setSize(width * 53, height * 75);
+		turret.setSize(width * 53, height * 75);
 		sizeMult_w = width;
 		sizeMult_h = height;
+	}
+
+	public void setScale()
+	{
+		float[] scale = ObjectSizeHandler.scaleConstant();
+		hull.setSize(hull.getWidth() * scale[0], hull.getHeight() * scale[1]);
+		turret.setSize(turret.getWidth() * scale[0], turret.getHeight() * scale[1]);
 	}
 
 	public void setFiringSound(String firingSound, float volume)
@@ -362,6 +368,8 @@ public class Tank
 		ghostHull.setLocation(getXPos(), getYPos());
 		ghostHull.rotateObject(hull.getObjectDirection());
 		ghostHull.setMovementSpeed(getMovementSpeed());
+		float[] scale = ObjectSizeHandler.scaleConstant();
+		ghostHull.setSize(ghostHull.getWidth() * scale[0], ghostHull.getHeight() * scale[1]);
 
 		if(previousMove == 1 && previousTurn >= 0){
 			float xPos = (float) (getXPos() + (fineTuneMove * Math.sin(Math.toRadians(ghostHull.getObjectDirection()))));

@@ -10,12 +10,13 @@ public class ControllerOpponent extends PatrollingOpponent {
         super(player, mapGen);
         setName("CONTROLLER");
         setHullTexture(Textures.TANKHULL_FUTURE);
-        setTurretTexture(Textures.TANKTURRET_RED);
+        setTurretTexture(Textures.TANKTURRET_FUTURE_DEFAULT);
         setHealth(400);
         setMovementSpeed(3);
         setDamagePerShell(35);
         setFireDelay(500);
         setRammingDamage(30);
         setNoticeDistance(3);
+        setScale();
     }
 }

@@ -12,7 +12,7 @@ public class PercyOpponent extends ChasingOpponent
         setName("PERCY");
         setHullTexture(Textures.TANKHULL_PERCY);
         setTurretTexture(Textures.TANKTURRET_PERCY);
-        setSize((float) 1, (float) 1);
+        setScale();
         setNoticeDistance(-1);
         if (levelNum == 1) //first difficulty
         {

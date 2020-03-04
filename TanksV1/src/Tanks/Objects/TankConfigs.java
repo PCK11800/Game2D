@@ -14,6 +14,7 @@ public class TankConfigs {
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
         tank.setSize((float) 1, (float) 1);
+        tank.setScale();
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
         tank.setMovementSpeed(5);

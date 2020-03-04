@@ -129,7 +129,7 @@ public class StoryScreen extends UIScreen {
         //continue button
         addLoadLevelButton(screenWidth - 250, screenHeight - 100, buttonWidth, buttonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
         if (section.equals("intro")) {
-            addText(250, screenHeight - 400, "SELECT DIFFICULTY: ", 40, FontPath.PIXEL, Color.WHITE);
+            addText(250, screenHeight - 450, "SELECT DIFFICULTY: ", 40, FontPath.PIXEL, Color.WHITE);
             addDifficultyButton(250, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.EASY, Textures.EASY_HOVERED, Textures.EASY_CLICKED, 1);
             addDifficultyButton(250 + buttonWidth + 50, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.NORMAL, Textures.NORMAL_HOVERED, Textures.NORMAL_CLICKED, 2);
             addDifficultyButton(250 + ((buttonWidth + 50) * 2), screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.HARD, Textures.HARD_HOVERED, Textures.HARD_CLICKED, 3);
