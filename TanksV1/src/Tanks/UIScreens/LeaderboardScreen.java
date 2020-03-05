@@ -32,20 +32,20 @@ public class LeaderboardScreen extends UIScreen
         addText(centerX - 300, 50, "LEADERBOARD", 60, FontPath.PIXEL, Color.WHITE);
 
         //column headings
-        addText(centerX - 200, 300, "Rank", 40, FontPath.MONTSERRAT, Color.WHITE);
-        addText(centerX, 300, "Name", 40, FontPath.MONTSERRAT, Color.WHITE);
-        addText(centerX + 200, 300, "Score", 40, FontPath.MONTSERRAT, Color.WHITE);
+        addText(centerX - 480, 200, "Rank", 40, FontPath.PIXEL, Color.WHITE);
+        addText(centerX - 80, 200, "Name", 40, FontPath.PIXEL, Color.WHITE);
+        addText(centerX + 320, 200, "Score", 40, FontPath.PIXEL, Color.WHITE);
 
         //leaderboard scores
         for (int i = 1; i <= 10; i++)
         {
-            addText(centerX - 200, 300 + i * 50, String.valueOf(i), 40, FontPath.MONTSERRAT, Color.WHITE);
-            addText(centerX, 300 + i * 50, leaderboard.getName(i), 40, FontPath.MONTSERRAT, Color.WHITE);
-            addText(centerX + 200, 300 + i * 50, String.valueOf(leaderboard.getScore(i)), 40, FontPath.MONTSERRAT, Color.WHITE);
+            addText(centerX - 480, 200 + i * 50, String.valueOf(i), 40, FontPath.PIXEL, Color.WHITE);
+            addText(centerX - 80, 200 + i * 50, leaderboard.getName(i), 40, FontPath.PIXEL, Color.WHITE);
+            addText(centerX + 320, 200 + i * 50, String.valueOf(leaderboard.getScore(i)), 40, FontPath.PIXEL, Color.WHITE);
         }
 
         //Back button - returns to the main menu
-        addLoadUIScreenButton(width - 250, height - 200, 400, 125, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED, menu);
+        addLoadUIScreenButton(width - 150, height - 60, 400, 125, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED, menu);
     }
 
 }
