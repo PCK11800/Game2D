@@ -1,5 +1,6 @@
 package Tanks.ObjectComponents;
 
+import Tanks.Objects.ObjectSizeHandler;
 import Tanks.Sounds.GameSound;
 import Tanks.Sounds.SoundsPath;
 import Tanks.Window.Window;
@@ -41,6 +42,10 @@ public class DeadTank{
         dead_turret.setSize(deathData[4] * 53, deathData[5] * 75);
         dead_hull.rotateObject(deathData[6]);
         dead_turret.rotateObject(deathData[7]);
+
+        float[] scale = ObjectSizeHandler.scaleConstant();
+        dead_hull.setSize(dead_hull.getWidth() * scale[0], dead_hull.getHeight() * scale[1]);
+        dead_turret.setSize(dead_turret.getWidth() * scale[0], dead_turret.getHeight() * scale[1]);
 
         explosion_sound.play();
     }

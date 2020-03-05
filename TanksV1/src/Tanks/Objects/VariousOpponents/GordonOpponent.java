@@ -21,6 +21,7 @@ public class GordonOpponent extends PatrollingOpponent
         setName("GORDON");
         setHullTexture(Textures.TANKHULL_GORDON);
         setTurretTexture(Textures.TANKTURRET_GORDON);
+        setScale();
         setNoticeDistance(-1);
         if (levelNum == 1) //first difficulty
         {

@@ -4,8 +4,6 @@ import Tanks.Listeners.PauseListener;
 import Tanks.ObjectComponents.Textures;
 import Tanks.Sounds.GameMusicHandler;
 import Tanks.Window.Window;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.Mouse;
 
 import java.util.Random;
 
@@ -20,7 +18,7 @@ public class GameMode
     private CustomMouseCursor mouseCursor;
 
     private Tank player;
-    
+
     private int levelNum = 0;
     private int maxLevel = 12; //LevelNum starts at 0, so it is no. of levels + 1
 
@@ -56,6 +54,9 @@ public class GameMode
     private void resetGame()
     {
         this.levelNum = 0;
+        this.paused = false;
+        this.uiManager.resetFlags();
+        this.uiManager.setOnUIScreen(true);
         createLevel();
         initPlayer();
         initGameMode();
@@ -121,7 +122,6 @@ public class GameMode
             mapXSize = (this.random.nextInt(1) + 2);
             mapYSize = (this.random.nextInt(1) + 2);
             numEnemies = 1;
-
         }
 
         //Round 2
@@ -238,7 +238,9 @@ public class GameMode
             {
                 if (currentLevel.isPlayerDead())
                 {
-                    uiManager.changeState();
+                    Leaderboard leaderboard = new Leaderboard();
+                    leaderboard.addScore(player.getName(), player.getMoney());
+                    uiManager.setOnUIScreen(true);
                     uiManager.displayGameOverScreen();
                     resetGame();
                 }
@@ -300,7 +302,9 @@ public class GameMode
         {
             if (this.levelNum + 1 >= this.maxLevel)
             {
-                uiManager.changeState();
+                Leaderboard leaderboard = new Leaderboard();
+                leaderboard.addScore(player.getName(), player.getMoney());
+                uiManager.setOnUIScreen(true);
                 uiManager.displayEndScreen();
                 resetGame();
             }
