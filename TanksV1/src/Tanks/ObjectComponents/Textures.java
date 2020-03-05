@@ -40,6 +40,7 @@ public class Textures {
 
 	public static String TANKHULL_BLUE = "TanksV1/Resources/Images/TankHullIconBlue.png";
 	public static String TANKTURRET_BLUE = "TanksV1/Resources/Images/TankTurretIconBlue.png";
+	public static String TANKHULL_BLUE_FAST = "TanksV1/Resources/Images/TankHullIconBlueFast.png";
 
 	public static String TANKHULL_DEAD = "TanksV1/Resources/Images/DeadTankHull.png";
 	public static String TANKTURRET_DEAD = "TanksV1/Resources/Images/DeadTankTurret.png";

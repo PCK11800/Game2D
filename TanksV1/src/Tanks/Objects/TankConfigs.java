@@ -74,6 +74,7 @@ public class TankConfigs {
 
     public void sonicmode_upgrade(Tank tank)
     {
+        tank.setHullTexture(Textures.TANKHULL_BLUE_FAST);
         tank.setMovementSpeed(10);
         tank.setHullTurningDistance(6);
     }

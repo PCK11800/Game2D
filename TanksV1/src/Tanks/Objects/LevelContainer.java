@@ -152,7 +152,7 @@ public class LevelContainer
         updateMap();
         updateInGameMonitor();
 
-         updatePlayers();
+        updatePlayers();
     }
 
     public boolean loadNextLevel() { return this.loadNextLevel; }

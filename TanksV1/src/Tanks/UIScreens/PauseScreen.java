@@ -29,7 +29,7 @@ public class PauseScreen extends UIScreen
         float musicVolumeControl_y = centerY - 20;
         addText(musicVolumeControl_x - 170, musicVolumeControl_y - 60, "Music Volume", 30, FontPath.PIXEL, Color.WHITE);
         addSoundText(musicVolumeControl_x - 85, musicVolumeControl_y - 10, 30, FontPath.PIXEL, Color.WHITE);
-        addSoundButton(musicVolumeControl_x + 120, musicVolumeControl_y, 53, 53, "increase_music_volume", Textures.RIGHT_ARROW, Textures.RIGHT_ARROW_HOVERED, Textures.RIGHT_ARROW_CLICKED);
+        addSoundButton(musicVolumeControl_x + 130, musicVolumeControl_y, 53, 53, "increase_music_volume", Textures.RIGHT_ARROW, Textures.RIGHT_ARROW_HOVERED, Textures.RIGHT_ARROW_CLICKED);
         addSoundButton(musicVolumeControl_x - 120, musicVolumeControl_y, 53, 53, "decrease_music_volume", Textures.LEFT_ARROW, Textures.LEFT_ARROW_HOVERED, Textures.LEFT_ARROW_CLICKED);
 
         //Game Volume
