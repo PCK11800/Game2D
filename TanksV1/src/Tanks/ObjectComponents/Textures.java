@@ -140,6 +140,7 @@ public class Textures {
 	public static String HARD = "TanksV1/Resources/Images/Hard.png";
 	public static String HARD_HOVERED = "TanksV1/Resources/Images/HardHover.png";
 	public static String HARD_CLICKED = "TanksV1/Resources/Images/HardClicked.png";
+
 	public static String MOUSE_CURSOR_SMALL_RED = "TanksV1/Resources/Images/CustomCursor32Red.png";
 	public static String MOUSE_CURSOR_SMALL_WHITE = "TanksV1/Resources/Images/CustomCursor32White.png";
 	public static String MOUSE_CURSOR_LARGE_RED = "TanksV1/Resources/Images/CustomCursor48Red.png";
@@ -147,4 +148,8 @@ public class Textures {
 
 	public static String TUTORIAL_PAGE = "TanksV1/Resources/Images/TutorialPage1.png";
 	public static String TUTORIAL_PAGE_2 = "TanksV1/Resources/Images/TutorialPage2.png";
+
+	public static String MENU = "TanksV1/Resources/Images/Menu.png";
+	public static String MENU_HOVER = "TanksV1/Resources/Images/MenuHover.png";
+	public static String MENU_CLICKED = "TanksV1/Resources/Images/MenuClicked.png";
 }
