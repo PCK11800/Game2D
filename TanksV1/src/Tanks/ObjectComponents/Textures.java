@@ -142,4 +142,7 @@ public class Textures {
 	public static String MOUSE_CURSOR_SMALL_WHITE = "TanksV1/Resources/Images/CustomCursor32White.png";
 	public static String MOUSE_CURSOR_LARGE_RED = "TanksV1/Resources/Images/CustomCursor48Red.png";
 	public static String MOUSE_CURSOR_LARGE_WHITE = "TanksV1/Resources/Images/CustomCursor48White.png";
+
+	public static String TUTORIAL_PAGE = "TanksV1/Resources/Images/TutorialPage1.png";
+	public static String TUTORIAL_PAGE_2 = "TanksV1/Resources/Images/TutorialPage2.png";
 }
