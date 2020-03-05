@@ -45,7 +45,7 @@ public class LeaderboardScreen extends UIScreen
         }
 
         //Back button - returns to the main menu
-        addLoadUIScreenButton(width - 150, height - 60, 400, 125, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED, menu);
+        addLoadUIScreenButton(width - 250, height - 65, 400, 125, Textures.BACK, Textures.BACK_HOVER, Textures.BACK_CLICKED, menu);
     }
 
 }
