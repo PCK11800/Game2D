@@ -1,0 +1,5 @@
+find . -name '*.java' >s
+javac -cp src:$1 @s
+find . -name '*.class' >c
+jar cvfe $2 Tanks.Main.Main @c TanksV1/Resources
+echo $2

@@ -406,7 +406,7 @@ public class Opponent extends Tank {
         int edgeX = Math.round(x / tileCenterX);
         int edgeY = Math.round(y / tileCenterY);
 
-        if ((diffX < 5 || diffX > tileCenterX - 5) && (diffY < 5 || diffY > tileCenterY - 5) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
+        if ((diffX < 10 || diffX > tileCenterX - 10) && (diffY < 10 || diffY > tileCenterY - 10) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
         {
             return true;
         }

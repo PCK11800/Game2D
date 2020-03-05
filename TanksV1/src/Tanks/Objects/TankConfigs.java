@@ -8,8 +8,8 @@ public class TankConfigs {
     public void player_default(Tank tank)
     {
         textureFix(tank);
-        tank.setHullTexture(Textures.TANKHULL_GREEN);
-        tank.setTurretTexture(Textures.TANKTURRET_GREEN);
+        tank.setHullTexture(Textures.TANKHULL_BLUE);
+        tank.setTurretTexture(Textures.TANKTURRET_BLUE);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
@@ -74,6 +74,7 @@ public class TankConfigs {
 
     public void sonicmode_upgrade(Tank tank)
     {
+        tank.setHullTexture(Textures.TANKHULL_BLUE_FAST);
         tank.setMovementSpeed(10);
         tank.setHullTurningDistance(6);
     }

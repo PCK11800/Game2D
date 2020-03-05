@@ -9,7 +9,7 @@ import Tanks.Sounds.SoundsPath;
 /**
  * This class is used to create an instance of a House Tank which remains stationary.
  */
-public class HouseTankTurret extends Opponent
+public class HouseTankTurret extends ChasingOpponent
 {
     /**
      * Constructor. Creates a new instance of HouseTankTurret class.
@@ -19,9 +19,10 @@ public class HouseTankTurret extends Opponent
     public HouseTankTurret(Tank player, MapGenerator mapGen)
     {
         super(player, mapGen);
-        disableMovement();
+        //disableMovement();
+        setMovementSpeed(1);
         setHealth(100);
-        setFireDelay(600);
+        setFireDelay(150);
         setRammingDamage(10);
         setShellRicochetNumber(3);
         setTurretTexture(Textures.TANKTURRET_RED_MACHINEGUN);

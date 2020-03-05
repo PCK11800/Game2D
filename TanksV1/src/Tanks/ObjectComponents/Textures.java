@@ -13,6 +13,7 @@ public class Textures {
 	public static String TANKTURRET_GREEN_RAILGUN = "TanksV1/Resources/Images/TankTurretIconDefaultRailgun.png";
 	public static String TANKTURRET_GREEN_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconDefaultMachinegun.png";
 	public static String TANKHULL_RED = "TanksV1/Resources/Images/TankHullIconRed.png";
+	public static String TANKHULL_RED_FAST = "TanksV1/Resources/Images/TankHullIconRedFast.png";
 	public static String TANKTURRET_RED = "TanksV1/Resources/Images/TankTurretIconRed.png";
 	public static String TANKTURRET_RED_MACHINEGUN = "TanksV1/Resources/Images/TankTurretIconRedMachinegun.png";
 	public static String TANKTURRET_RED_RAILGUN = "TanksV1/Resources/Images/TankTurretIconRedRailgun.png";
@@ -39,6 +40,7 @@ public class Textures {
 
 	public static String TANKHULL_BLUE = "TanksV1/Resources/Images/TankHullIconBlue.png";
 	public static String TANKTURRET_BLUE = "TanksV1/Resources/Images/TankTurretIconBlue.png";
+	public static String TANKHULL_BLUE_FAST = "TanksV1/Resources/Images/TankHullIconBlueFast.png";
 
 	public static String TANKHULL_DEAD = "TanksV1/Resources/Images/DeadTankHull.png";
 	public static String TANKTURRET_DEAD = "TanksV1/Resources/Images/DeadTankTurret.png";
