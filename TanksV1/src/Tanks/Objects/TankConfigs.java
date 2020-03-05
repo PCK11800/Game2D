@@ -8,8 +8,8 @@ public class TankConfigs {
     public void player_default(Tank tank)
     {
         textureFix(tank);
-        tank.setHullTexture(Textures.TANKHULL_GREEN);
-        tank.setTurretTexture(Textures.TANKTURRET_GREEN);
+        tank.setHullTexture(Textures.TANKHULL_BLUE);
+        tank.setTurretTexture(Textures.TANKTURRET_BLUE);
         tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
@@ -25,7 +25,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(10);
+        tank.setHealth(10000);
     }
 
     public void enemy_default(Tank tank)

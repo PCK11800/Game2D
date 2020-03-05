@@ -25,6 +25,11 @@ public class DifficultyButton extends Button {
     @Override
     public void update()
     {
+        if(window.getDifficulty() == difficulty){
+            super.setPressed();
+            selected = true;
+        }
+
         super.update();
         if (selected) setPressed();
     }
