@@ -2,6 +2,7 @@ package Tanks.Main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -71,8 +72,13 @@ public class Main
 	
 	public static void main(String[] args) 
 	{
-		//Fix XinitThreads() Bug on Linux - remove it if you dont need it
-		//System.load("/home/pck11800/Desktop/workspace/Game2D/TanksV1/src/Tanks/Main/libfixXInitThreads.so");
+		switch (OSCheck.getOS())
+		{
+			case LINUX:
+				File lib = new File("TanksV1/src/Tanks/Main/" + System.mapLibraryName("fixXInitThreads"));
+				System.load(lib.getAbsolutePath());
+				break;
+		}
 		Main main = new Main();
 		main.iniGame();
 		main.loop();

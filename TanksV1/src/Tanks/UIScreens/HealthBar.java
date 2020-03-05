@@ -34,8 +34,8 @@ public class HealthBar extends RotatingObject {
         if (!name.equals("")) {
             text = new Text();
             text.setPosition(tank.getXPos() - ((tank.getHull().getWidth() / 3) * 2), (float) (tank.getYPos() - (tank.getHull().getWidth() * 1.4)));
-            text.setFont(new GameFont(FontPath.MONTSERRAT));
-            text.setCharacterSize(20);
+            text.setFont(new GameFont(FontPath.PIXEL));
+            text.setCharacterSize(16);
             text.setColor(Color.WHITE);
             text.setString(name);
             window.draw(text);

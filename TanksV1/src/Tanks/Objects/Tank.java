@@ -48,11 +48,13 @@ public class Tank
 	private int startingHealth = 100;
 	private int damagePerShell;
 	private int rammingDamage;
+	private boolean armour = false;
 
 	private float sizeMult_w, sizeMult_h;
 	private ArrayList<TankShell> shellList = new ArrayList<>();
 
 	private int money = 0;
+	private String name = "Thomas";
 
 	private Clock turretDelayClock = new Clock();
 	private Clock fireDelayClock = new Clock();
@@ -156,6 +158,13 @@ public class Tank
 		turret.setSize(width * 53, height * 75);
 		sizeMult_w = width;
 		sizeMult_h = height;
+	}
+
+	public void setScale()
+	{
+		float[] scale = ObjectSizeHandler.scaleConstant();
+		hull.setSize(hull.getWidth() * scale[0], hull.getHeight() * scale[1]);
+		turret.setSize(turret.getWidth() * scale[0], turret.getHeight() * scale[1]);
 	}
 
 	public void setFiringSound(String firingSound, float volume)
@@ -342,6 +351,9 @@ public class Tank
 		return hull.getObjectBounds();
 	}
 
+	/**
+	 * Handles collision with map objects
+	 */
 	private void collisionHandling()
 	{
 		//Previous move: 1 = forward, 2 = backward
@@ -357,6 +369,8 @@ public class Tank
 		ghostHull.setLocation(getXPos(), getYPos());
 		ghostHull.rotateObject(hull.getObjectDirection());
 		ghostHull.setMovementSpeed(getMovementSpeed());
+		float[] scale = ObjectSizeHandler.scaleConstant();
+		ghostHull.setSize(ghostHull.getWidth() * scale[0], ghostHull.getHeight() * scale[1]);
 
 		if(previousMove == 1 && previousTurn >= 0){
 			float xPos = (float) (getXPos() + (fineTuneMove * Math.sin(Math.toRadians(ghostHull.getObjectDirection()))));
@@ -488,6 +502,9 @@ public class Tank
 		}
 	}
 
+	/**
+	 * Handles collision with another tank
+	 */
 	private void tankToTankCollisionHandling()
 	{
 		Line2D[] tankHullBounds = hull.getObjectBounds();
@@ -561,42 +578,46 @@ public class Tank
 		}
 	}
 
+	/**
+	 * Function that handles tank physics when a tank collides with another tank.
+	 * Called whenever a collision occurs. Works essentially as Newton's Third Law.
+	 */
 	private void checkPreviousMove()
 	{
 		//Only forward
 		if(previousMoveAlt == 1 && previousTurnAlt >= 0)
 		{
-			hull.moveBackward();
+			moveBackward();
 			previousMoveAlt = 1;
 		}
 		//Only backward
 		else if(previousMoveAlt == 2 && previousTurnAlt >= 0)
 		{
-			hull.moveForward();
+			moveForward();
 			previousMoveAlt = 2;
 		}
 		//Only turnLeft
 		else if(previousMoveAlt == 0 && previousTurnAlt == 1)
 		{
-			hull.turnRight();
+			turnRight();
 			previousTurn = 1;
 		}
 		//Only turnRight
 		else if(previousMoveAlt == 0 && previousTurnAlt == 2)
 		{
-			hull.turnLeft();
+			turnLeft();
 			previousTurnAlt = 2;
 		}
 		else if(previousMoveAlt > 0 && previousTurnAlt == 1)
 		{
-			hull.turnRight();
+			turnRight();
 			previousTurnAlt = 1;
 			if(previousMoveAlt == 1){
-				hull.moveBackward();
+				moveBackward();
 				previousMoveAlt = 1;
 			}
 			else if (previousMoveAlt == 2){
-				hull.moveForward();
+				moveForward();
 				previousMoveAlt = 2;
 			}
 		}
@@ -605,17 +626,20 @@ public class Tank
 			hull.turnLeft();
 			previousTurnAlt = 2;
 			if(previousMoveAlt == 1){
-				hull.moveBackward();
+				moveBackward();
 				previousMoveAlt = 1;
 			}
 			else if (previousMoveAlt == 2){
-				hull.moveForward();
+				moveForward();
 				previousMoveAlt = 2;
 			}
 		}
 	}
 
-	//Call this in game loop
+	/**
+	 * Updates tank. Repeatedly called.
+	 * @return loadNextLevel - boolean showing whether should the next level be called
+	 */
 	public boolean update()
 	{
 		tankToTankCollisionHandling();
@@ -661,7 +685,10 @@ public class Tank
 
 	public void tankIsRammed(int damage)
 	{
-		health = health - damage;
+		if (armour)
+			health = health - damage/2;
+		else
+			health = health - damage;
 	}
 
 	public boolean isOpponent() { return !isPlayerControlled; }
@@ -781,4 +808,14 @@ public class Tank
 	public float getTankMovingVolume() { return tankMovingVolume; }
 
 	public void setTankMovingVolume(float tankMovingVolume) { this.tankMovingVolume = tankMovingVolume; }
+
+	public void setArmour(boolean b)
+	{
+		this.armour = b;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
 }

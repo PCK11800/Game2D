@@ -14,6 +14,7 @@ public class TankConfigs {
         tank.setFiringSound(SoundsPath.TANKFIRING, 20);
         tank.setMovingSound(SoundsPath.TANKMOVING, 10);
         tank.setSize((float) 1, (float) 1);
+        tank.setScale();
         tank.setHullTurningDistance(3);
         tank.setTurretTurningDistance(3);
         tank.setMovementSpeed(5);
@@ -24,7 +25,7 @@ public class TankConfigs {
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(10000);
+        tank.setHealth(10);
     }
 
     public void enemy_default(Tank tank)
@@ -82,7 +83,12 @@ public class TankConfigs {
         tank.setRammingDamage(10);
     }
 
-    public void increase_halfhealth(Tank tank)
+    public void armour_upgrade(Tank tank)
+    {
+        tank.setArmour(true);
+    }
+
+    public void halfheal(Tank tank)
     {
         if (tank.getHealth() + tank.getStartingHealth()/2 > tank.getStartingHealth())
         {
@@ -94,7 +100,7 @@ public class TankConfigs {
         }
     }
 
-    public void increase_fullhealth(Tank tank)
+    public void fullheal(Tank tank)
     {
         tank.setHealth(tank.getStartingHealth());
     }

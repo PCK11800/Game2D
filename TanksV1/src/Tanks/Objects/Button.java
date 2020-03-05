@@ -3,10 +3,6 @@ package Tanks.Objects;
 
 import Tanks.ObjectComponents.RotatingObject;
 import Tanks.Window.Window;
-import org.jsfml.graphics.FloatRect;
-import org.jsfml.system.Clock;
-
-import java.awt.*;
 
 /**
  * This class represents a button that the user can interact with
@@ -15,12 +11,15 @@ public abstract class Button extends RotatingObject
 {
     //Instance Variables
     protected Window window;
-    private FloatRect collider;
 
     private float xPos;
     private float yPos;
     private float width;
     private float height;
+
+    private float xScale = 1;
+    private float yScale = 1;
+    private float[] scale = ObjectSizeHandler.scaleConstant();
 
     private String activeTexture;
     private String hoveredTexture;
@@ -54,12 +53,6 @@ public abstract class Button extends RotatingObject
 
         this.activeTexture = activeTexture;
 
-        /*
-        setObjectTexture(activeTexture);
-        setCenterLocation(x, y);
-        setSize(width, height);
-         */
-
         setButton(1, 1);
 
         this.initialWindowHeight = window.getHeight();
@@ -67,15 +60,19 @@ public abstract class Button extends RotatingObject
 
         this.currentWindowHeight = window.getHeight();
         this.currentWindowWidth = window.getWidth();
-
-        //this.collider = new FloatRect(x - (width / 2), y - (height / 2), width, height); //Left anchor point - height += h/3 as without it there is large area that cannot be pressed that is on the button
     }
 
     private void setButton(float xScale, float yScale)
     {
         setObjectTexture(this.activeTexture);
+
         setCenterLocation(this.xPos * xScale, this.yPos * yScale);
-        setSize(this.width *  xScale, this.height * yScale);
+        this.xPos = this.xPos * xScale;
+        this.yPos = this.yPos * yScale;
+
+        this.width = this.width * xScale;
+        this.height = this.height * yScale ;
+        setSize(this.width * scale[0], this.height * scale[1]);
     }
 
 
@@ -99,10 +96,20 @@ public abstract class Button extends RotatingObject
      */
     public boolean contains(float x, float y)
     {
-        //float rect has a contains method
-        //return this.getLocalBounds().contains(x, y);
-        return this.getGlobalBounds().contains(x, y);
-        //return collider.contains(x, y);
+        float minXPos = (this.xPos - (this.width / 2)) * this.xScale;
+        float minYPos = (this.yPos - (this.height / 2)) * this.yScale;
+        float maxXPos = (this.xPos + (this.width / 2)) * this.xScale;
+        float maxYPos = (this.yPos + (this.height / 2)) * this.yScale;
+
+        if (x >= minXPos && x <= maxXPos)
+        {
+            if (y >= minYPos && y <= maxYPos)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -143,25 +150,16 @@ public abstract class Button extends RotatingObject
      */
     public void update()
     {
-        //System.out.println("Current Width:"  + window.getWidth() + " Stored: " + this.currentWindowWidth);
-        //System.out.println("Current Height:"  + window.getHeight() + " Stored: " + this.currentWindowHeight);
-
-        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        float screenSizeX  = this.window.getSize().x;
-        float screenSizeY = this.window.getSize().y;
-        //this.window.get
-
-        if (screenSizeX != this.currentWindowWidth || screenSizeY != this.currentWindowHeight)
+        if ((this.window.getSize().x != this.initialWindowWidth) || (this.window.getSize().y != this.initialWindowHeight)) // Checks to see if the window size has changed
         {
-            System.out.println("THIS IS CALLED");
-            float xScale = screenSizeX  / this.initialWindowWidth;
-            float yScale = screenSizeY / this.initialWindowHeight;
+            this.currentWindowWidth = this.window.getSize().x;
+            this.currentWindowHeight = this.window.getSize().y;
 
-            this.currentWindowWidth = screenSizeX;
-            this.currentWindowHeight = screenSizeY;
-
-            setButton(xScale, yScale);
+            float[] scale = ObjectSizeHandler.scaleConstant();
+            this.xScale = scale[0];
+            this.yScale = scale[1];
         }
+
         draw(this.window);
     }
 

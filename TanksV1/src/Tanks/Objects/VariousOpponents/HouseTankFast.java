@@ -19,6 +19,7 @@ public class HouseTankFast extends ConfusedOpponent
         super(player, mapGen);
         setHullTexture(Textures.TANKHULL_RED);
         setTurretTexture(Textures.TANKTURRET_BLUE);
+        setScale();
         setHealth(50);
         setFireDelay(1000);
         setDamagePerShell(10);

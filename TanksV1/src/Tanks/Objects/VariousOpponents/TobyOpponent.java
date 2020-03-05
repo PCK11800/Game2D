@@ -21,6 +21,7 @@ public class TobyOpponent extends ConfusedOpponent
         setName("TOBY");
         setHullTexture(Textures.TANKHULL_TOBY);
         setTurretTexture(Textures.TANKTURRET_TOBY);
+        setScale();
         if (levelNum == 1) //first difficulty
         {
             setHealth(500);

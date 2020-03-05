@@ -21,6 +21,7 @@ public class JamesOpponent extends ConfusedOpponent
         setName("JAMES");
         setHullTexture(Textures.TANKHULL_JAMES);
         setTurretTexture(Textures.TANKTURRET_JAMES);
+        setScale();
         if (levelNum == 1) //first difficulty
         {
             setHealth(300);
