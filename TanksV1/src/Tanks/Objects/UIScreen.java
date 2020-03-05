@@ -9,7 +9,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Clock;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -112,7 +111,7 @@ public abstract class UIScreen
         uiScreenButtons.add(b);
     }
 
-    public void addDifficultyButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, int difficulty)
+    public void addDifficultyButton(float x, float y, float width, float height, String activeTexture, String hoveredTexture, String pressedTexture, Window.Difficulty difficulty)
     {
         DifficultyButton b = new DifficultyButton(this.window, x, y, width, height, activeTexture, difficulty);
         b.setAltTextures(hoveredTexture, pressedTexture);

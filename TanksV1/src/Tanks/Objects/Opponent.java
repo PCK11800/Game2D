@@ -3,6 +3,7 @@ package Tanks.Objects;
 import Tanks.ObjectComponents.MapObject;
 import Tanks.ObjectComponents.TankTurret;
 import Tanks.UIScreens.HealthBar;
+import Tanks.Window.Window;
 import org.jsfml.system.Clock;
 
 import java.awt.geom.Line2D;
@@ -37,6 +38,17 @@ public class Opponent extends Tank {
     private HealthBar healthBar;
     private String name = "";
 
+    private enum Side
+    {
+        T_LEFT,
+        L_TOP,
+        B_LEFT,
+        L_BOTTOM,
+        T_RIGHT,
+        R_TOP,
+        R_BOTTOM,
+        B_RIGHT;
+    }
 
     /**
      * Constructor. Creates new instance of Opponent.
@@ -74,22 +86,35 @@ public class Opponent extends Tank {
         }
     }
 
+
+    /**
+     * Alternate constructor. For cloning an instance of Opponent
+     * @param clone instance to clone
+     */
     public Opponent(Opponent clone)
     {
         this(clone.player, clone.mapGenerator);
     }
 
+    /**
+     * Mutator method for setting the Opponent's name.
+     * @param name name of Opponent
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
-    private void setDifficulty(int difficulty)
+    /**
+     * Method for setting the difficulty of this instance of Opponent.
+     * @param difficulty difficulty to set Opponent to
+     */
+    private void setDifficulty(Window.Difficulty difficulty)
     {
         System.out.println("Difficulty: " + difficulty);
         switch (difficulty)
         {
-            case 1: //easy
+            case EASY: //easy
                 increaseMaxHealth(-(getHealth() / 2));
                 tankIsHit(getHealth() / 2);
                 setMovementSpeed(getMovementSpeed() - 1);
@@ -97,7 +122,7 @@ public class Opponent extends Tank {
                 setDamagePerShell(getDamagePerShell() / 2);
                 setRammingDamage(getRammingDamage() / 2);
                 break;
-            case 2: //normal
+            case NORMAL: //normal
                 increaseMaxHealth(-(getHealth() / 3));
                 tankIsHit((getHealth() / 3) * 2);
                 setFireDelay(getFireDelay() + (getFireDelay() / 5));
@@ -146,7 +171,7 @@ public class Opponent extends Tank {
         }
         if (player.isAlive())
         {
-            if (!action() && doesMove) move();
+            if (!findShootingPos() && doesMove) move();
         }
         clone.update();
         healthBar.update();
@@ -179,9 +204,10 @@ public class Opponent extends Tank {
     }
 
     /**
-     * Method for detecting if player can be hit by the opponent at any rotation of the opponent's turret given the opponents' current position within the level.
+     * Function to check if, at any rotation of the turret, the Opponent can shoot the player from its current position.
+     * @return true if can hit player, false if not.
      */
-    private boolean action()
+    private boolean findShootingPos()
     {
         float x1, y1, x2, y2;
         float[] coords;
@@ -213,7 +239,7 @@ public class Opponent extends Tank {
 
 
     /**
-     * Method moves opponent to 'target' space in the grid. Returns immediately if opponent already at location.
+     * Method moves opponent to 'target' space in the grid. Exits immediately if opponent already at location.
      */
     private void move()
     {
@@ -345,6 +371,10 @@ public class Opponent extends Tank {
         movementPath.pop(); //remove current space position from path
     }
 
+
+    /**
+     * Method for generating the movement path to the target tile from the Opponent's current position.
+     */
     private void generateMovementPathToTile()
     {
         Integer[] pos = generateGridPos(getXPos(), getYPos());
@@ -535,12 +565,14 @@ public class Opponent extends Tank {
     }
 
     /**
-     * Function to determine if a tank lies on a line between two points.
+     * Function to determine if the player tank lies on a line, and whether or not the Opponent also lies on this line.
+     * Note: If the Opponent and player both lie on the line, this function will return true if the player would be 'hit' first.
      * @param x1 start point of line x position
      * @param y1 start point of line y position
      * @param x2 end point of line x position
      * @param y2 end point of line y position
-     * @return true if player lies on the line between start and end points, false if not.
+     * @return true if player lies on the line between start and end points (if the Opponent also lies on the line, function will return true if the player would
+     * be hit first), false if not.
      */
     private boolean isPlayerInFiringLine(float x1, float y1, float x2, float y2)
     {
@@ -552,8 +584,8 @@ public class Opponent extends Tank {
         //constant val for parallel lines between which player tank can be shot at
         uBound =  c + (player.hull.getHeight() / 2);
         lBound =  c - (player.hull.getHeight() / 2);
-        oppUBound = c + (hull.getHeight() / 2);
-        oppLBound = c - (hull.getHeight() / 2);
+        oppUBound = c + (hull.getHeight());
+        oppLBound = c - (hull.getHeight());
 
         if (m.isInfinite())
         {
@@ -568,7 +600,6 @@ public class Opponent extends Tank {
                 if (playerYPos < (y1 + player.hull.getWidth()/2) && playerYPos > (y1 - player.hull.getWidth()/2)) return true;
             }
         }
-
         playerConstant = (playerYPos - (m*playerXPos));
         oppConstant = getYPos() - (m*getXPos());
         if (oppUBound > oppConstant && oppLBound < oppConstant)
@@ -636,13 +667,13 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right
                     {
-                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomRIGHT"));
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.B_RIGHT));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //bottom
                     {
-                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightBOTTOM"));
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.R_BOTTOM));
                     }
                 }
             }
@@ -657,13 +688,13 @@ public class Opponent extends Tank {
                      y = (m * x) + c;
                      if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //right side
                      {
-                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topRIGHT"));
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.T_RIGHT));
                      }
                      y = obj.getTopBounds();
                      x = (y - c) / m;
                      if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                      {
-                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "rightTOP"));
+                         return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.R_TOP));
                      }
                  }
             }
@@ -678,12 +709,12 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "bottomLEFT"));
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.B_LEFT));
                     }
                     y = obj.getBottomBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) {
-                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftBOTTOM"));
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.L_BOTTOM));
                     }
                 }
             }
@@ -698,13 +729,13 @@ public class Opponent extends Tank {
                     y = (m * x) + c;
                     if (y > obj.getTopBounds() && y < obj.getBottomBounds()) //left
                     {
-                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "topLEFT"));
+                        return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.T_LEFT));
                     }
                     y = obj.getTopBounds();
                     x = (y - c) / m;
                     if (x < obj.getRightBounds() && x > obj.getLeftBounds()) //top
                     {
-                       return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, "leftTOP"));
+                       return (checkIfCanHitAfterRotation(x, y, x1, y1, x2, y2, direction, Side.L_TOP));
                     }
                 }
             }
@@ -713,41 +744,41 @@ public class Opponent extends Tank {
     }
 
     /**
-     *
-     * @param x
-     * @param y
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @param direction
-     * @param sideHit
+     * Method for checking if Opponent can hit the player after the tank shell ricochets off a MapObject
+     * @param x x coord of tank shell when it hits MapObject
+     * @param y y coord of tank shell when it hits MapObject
+     * @param x1 x position of start of path to MapObject
+     * @param y1 y position of start of path to MapObject
+     * @param x2 x position of end of path to MapObject
+     * @param y2 y position of end of path to MapObject
+     * @param direction the current direction (in degrees) of the tank shell
+     * @param sideHit Side on which the MapObject has been hit
      * @return 1 if can hit, -1 if run out of ricochets, 0 if can't hit but still have ricochets left
      */
-    private boolean checkIfCanHitAfterRotation(float x, float y, float x1, float y1, float x2, float y2, float direction, String sideHit)
+    private boolean checkIfCanHitAfterRotation(float x, float y, float x1, float y1, float x2, float y2, float direction, Side sideHit)
     {
         float newX, newY;
         boolean playerOnSide = false;
         float changeOfDir = 0;
         switch (sideHit)
         {
-            case "leftTOP":
-            case "bottomLEFT":
+            case L_TOP:
+            case B_LEFT:
                 playerOnSide = playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1;
                 changeOfDir = 180 - direction;
                 break;
-            case "topLEFT":
-            case "leftBOTTOM":
+            case T_LEFT:
+            case L_BOTTOM:
                 playerOnSide = playerXPos + (player.hull.getWidth() / 2) < x && playerXPos + (player.hull.getWidth() / 2) > x1;
                 changeOfDir = 0 - direction;
                 break;
-            case "rightTOP":
-            case "rightBOTTOM":
+            case R_TOP:
+            case R_BOTTOM:
                 playerOnSide = playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1 ;
                 changeOfDir = 0 - direction;
                 break;
-            case "topRIGHT":
-            case "bottomRIGHT":
+            case T_RIGHT:
+            case B_RIGHT:
                 playerOnSide = playerXPos + (player.hull.getWidth() / 2) > x && playerXPos + (player.hull.getWidth() / 2) < x1;
                 changeOfDir = 180 - direction;
                 break;
@@ -791,9 +822,22 @@ public class Opponent extends Tank {
         return (new float[] {x2, y2});
     }
 
+    /**
+     * Mutator method for setting distance at which the Opponent 'notices' the player and begins to travel towards them.
+     * Note: Setting the notice distance to -1 means the Opponent will never travel directly towards the player intentionally, regardless of
+     * how close they are.
+     * @param dist distance value (in grid 'squares' on the Map)
+     */
     public void setNoticeDistance(int dist) { this.noticeDistance = dist; }
 
+    /**
+     * Mutator method for setting the delay time between which the Opponent will calculate a new movement path.
+     * @param delay time delay (in seconds)
+     */
     public void setPathCalcDelay(int delay) { this.pathCalcDelay = delay; }
 
+    /**
+     * Mutator method for preventing this instance of Opponent from moving away from its spawn position.
+     */
     public void disableMovement() { this.doesMove = false; }
 }

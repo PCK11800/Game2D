@@ -8,7 +8,7 @@ import org.jsfml.graphics.Color;
 
 public class StoryScreen extends UIScreen {
     private Window window;
-    private String section;
+    private Story section;
     private boolean isSetup = true;
     private int ROW_OFFSET = 35;
     private int TOP_OFFSET = 200;
@@ -33,7 +33,21 @@ public class StoryScreen extends UIScreen {
             "I have to admit I didn't think you'd make it this far..." +
             "Well, good luck. You'll need it. The Controller is waiting.";
 
-    public StoryScreen(Window window, String text)
+    public enum Story
+    {
+        INTRO,
+        BEFORE_BATTLE_1,
+        AFTER_BATTLE_1,
+        BEFORE_BATTLE_2,
+        AFTER_BATTLE_2,
+        BEFORE_FINAL_BATTLE;
+    }
+    /**
+     * Constructor. Creates a new instance of StoryScreen.
+     * @param window window to create instance in
+     * @param text the Story section which should be displayed on screen
+     */
+    public StoryScreen(Window window, Story text)
     {
         super(window);
         this.window = window;
@@ -41,7 +55,13 @@ public class StoryScreen extends UIScreen {
         initButtons();
     }
 
-    public StoryScreen(Window window, String text, ShopScreen shop)
+    /**
+     * Alternate Constructor for StoryScreens before/after shops.
+     * @param window window to create instance in
+     * @param text the Story section which should be displayed on screen
+     * @param shop
+     */
+    public StoryScreen(Window window, Story text, ShopScreen shop)
     {
         super(window);
         this.window = window;
@@ -51,14 +71,19 @@ public class StoryScreen extends UIScreen {
         addLoadUIScreenButton(width - 250, height - 200, 400, 125, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED, shop);
     }
 
-
+    /**
+     * Main update loop.
+     */
     public void update()
     {
         super.update();
     }
 
-
-    private void displayText(String section)
+    /**
+     * Method to display the text from the relevant section on the StoryScreen
+     * @param section section to display text for.
+     */
+    private void displayText(Story section)
     {
         this.section = section;
         float screenWidth = window.getWidth();
@@ -66,20 +91,20 @@ public class StoryScreen extends UIScreen {
         char[] text;
         switch (section)
         {
-            case "intro":
+            case INTRO:
                 text = intro.toCharArray();
                 TOP_OFFSET = 0;
                 break;
-            case "before_battle_1":
+            case BEFORE_BATTLE_1:
                 text = beforeBattle1.toCharArray();
                 break;
-            case "after_battle_1":
+            case AFTER_BATTLE_1:
                 text = afterBattle1.toCharArray();
                 break;
-            case "before_battle_2":
+            case BEFORE_BATTLE_2:
                 text = beforeBattle2.toCharArray();
                 break;
-            case "after_battle_2":
+            case AFTER_BATTLE_2:
                 text = afterBattle2.toCharArray();
                 break;
             default:
@@ -118,7 +143,9 @@ public class StoryScreen extends UIScreen {
         isSetup = false;
     }
 
-
+    /**
+     * Method for initialising the buttons on the StoryScreen.
+     */
     public void initButtons()
     {
         float screenWidth = window.getWidth();
@@ -128,11 +155,11 @@ public class StoryScreen extends UIScreen {
 
         //continue button
         addLoadLevelButton(screenWidth - 250, screenHeight - 100, buttonWidth, buttonHeight, Textures.CONTINUE, Textures.CONTINUE_HOVER, Textures.CONTINUE_CLICKED);
-        if (section.equals("intro")) {
-            addText(250, screenHeight - 450, "SELECT DIFFICULTY: ", 40, FontPath.PIXEL, Color.WHITE);
-            addDifficultyButton(250, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.EASY, Textures.EASY_HOVERED, Textures.EASY_CLICKED, 1);
-            addDifficultyButton(250 + buttonWidth + 50, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.NORMAL, Textures.NORMAL_HOVERED, Textures.NORMAL_CLICKED, 2);
-            addDifficultyButton(250 + ((buttonWidth + 50) * 2), screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.HARD, Textures.HARD_HOVERED, Textures.HARD_CLICKED, 3);
+        if (section == Story.INTRO) {
+            addText(250, screenHeight - 400, "SELECT DIFFICULTY: ", 40, FontPath.PIXEL, Color.WHITE);
+            addDifficultyButton(250, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.EASY, Textures.EASY_HOVERED, Textures.EASY_CLICKED, Window.Difficulty.EASY);
+            addDifficultyButton(250 + buttonWidth + 50, screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.NORMAL, Textures.NORMAL_HOVERED, Textures.NORMAL_CLICKED, Window.Difficulty.NORMAL);
+            addDifficultyButton(250 + ((buttonWidth + 50) * 2), screenHeight - 300, (buttonWidth / 3) * 2, (buttonHeight / 3) * 2, Textures.HARD, Textures.HARD_HOVERED, Textures.HARD_CLICKED, Window.Difficulty.HARD);
         }
     }
 }
