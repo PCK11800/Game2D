@@ -47,7 +47,7 @@ public class Opponent extends Tank {
         T_RIGHT,
         R_TOP,
         R_BOTTOM,
-        B_RIGHT
+        B_RIGHT;
     }
 
     /**
@@ -86,11 +86,20 @@ public class Opponent extends Tank {
         }
     }
 
+
+    /**
+     * Alternate constructor. For cloning an instance of Opponent
+     * @param clone instance to clone
+     */
     public Opponent(Opponent clone)
     {
         this(clone.player, clone.mapGenerator);
     }
 
+    /**
+     * Mutator method for setting the Opponent's name.
+     * @param name name of Opponent
+     */
     public void setName(String name)
     {
         this.name = name;
@@ -98,7 +107,7 @@ public class Opponent extends Tank {
 
     /**
      * Method for setting the difficulty of this instance of Opponent.
-     * @param difficulty
+     * @param difficulty difficulty to set Opponent to
      */
     private void setDifficulty(Window.Difficulty difficulty)
     {
@@ -575,8 +584,8 @@ public class Opponent extends Tank {
         //constant val for parallel lines between which player tank can be shot at
         uBound =  c + (player.hull.getHeight() / 2);
         lBound =  c - (player.hull.getHeight() / 2);
-        oppUBound = c + (hull.getHeight() / 2);
-        oppLBound = c - (hull.getHeight() / 2);
+        oppUBound = c + (hull.getHeight());
+        oppLBound = c - (hull.getHeight());
 
         if (m.isInfinite())
         {
@@ -591,7 +600,6 @@ public class Opponent extends Tank {
                 if (playerYPos < (y1 + player.hull.getWidth()/2) && playerYPos > (y1 - player.hull.getWidth()/2)) return true;
             }
         }
-
         playerConstant = (playerYPos - (m*playerXPos));
         oppConstant = getYPos() - (m*getXPos());
         if (oppUBound > oppConstant && oppLBound < oppConstant)

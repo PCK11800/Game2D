@@ -40,7 +40,7 @@ public class UIScreenManager
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
         TutorialScreen tutorial = new TutorialScreen(this.window);
-        StoryScreen story = new StoryScreen(this.window, "intro");
+        StoryScreen story = new StoryScreen(this.window, StoryScreen.Story.INTRO);
         MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial, story);
 
         leaderboard.initBackButton(mainMenu);
@@ -59,19 +59,19 @@ public class UIScreenManager
         switch (game.getLevelNum())
         {
             case 2:
-                this.currentScreen = new StoryScreen(this.window, "before_battle_1", shop);
+                this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.BEFORE_BATTLE_1, shop);
                 break;
             case 3:
-                this.currentScreen = new StoryScreen(this.window, "after_battle_1", shop);
+                this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.AFTER_BATTLE_1, shop);
                 break;
             case 6:
-                this.currentScreen = new StoryScreen(this.window, "before_battle_2", shop);
+                this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.BEFORE_BATTLE_2, shop);
                 break;
             case 7:
-                this.currentScreen = new StoryScreen(this.window, "after_battle_2", shop);
+                this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.AFTER_BATTLE_2, shop);
                 break;
             case 10:
-                this.currentScreen = new StoryScreen(this.window, "before_battle_3", shop);
+                this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.BEFORE_FINAL_BATTLE, shop);
                 break;
         }
         this.inShop = true;

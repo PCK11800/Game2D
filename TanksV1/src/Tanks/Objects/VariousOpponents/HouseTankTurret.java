@@ -6,8 +6,16 @@ import Tanks.Objects.Opponent;
 import Tanks.Objects.Tank;
 import Tanks.Sounds.SoundsPath;
 
+/**
+ * This class is used to create an instance of a House Tank which remains stationary.
+ */
 public class HouseTankTurret extends Opponent
 {
+    /**
+     * Constructor. Creates a new instance of HouseTankTurret class.
+     * @param player tank to attack
+     * @param mapGen MapGenerator for the map this Opponent is present in.
+     */
     public HouseTankTurret(Tank player, MapGenerator mapGen)
     {
         super(player, mapGen);

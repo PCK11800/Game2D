@@ -7,12 +7,21 @@ import Tanks.Objects.Tank;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class is used to create an instance of ChasingOpponent - which is primarily used as a superclass,
+ * giving its' subclasses the behaviour of 'patrolling' between the four corners of the map (the next being randomly selected once a corner is reached)
+ */
 public class PatrollingOpponent extends Opponent
 {
     private Random r = new Random();
     private HashMap<Integer, Integer[]> corners = new HashMap<Integer, Integer[]>();
     private int target;
 
+    /**
+     * Constructor. Creates a new instance of PatrollingOpponent class.
+     * @param player tank to attack
+     * @param mapGen MapGenerator for the map this Opponent is present in
+     */
     public PatrollingOpponent(Tank player, MapGenerator mapGen)
     {
         super(player, mapGen);
@@ -26,6 +35,10 @@ public class PatrollingOpponent extends Opponent
         targetTile = corners.get(target);
     }
 
+    /**
+     * Update method called once per game loop
+     * @return
+     */
     public boolean update()
     {
         super.update();
