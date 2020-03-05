@@ -5,10 +5,10 @@ import Tanks.Window.Window;
 
 public class DifficultyButton extends Button {
 
-    private int difficulty;
+    private Window.Difficulty difficulty;
     private boolean selected = false;
 
-    public DifficultyButton(Window window, float x, float y, float width, float height, String activeTexture, int difficulty)
+    public DifficultyButton(Window window, float x, float y, float width, float height, String activeTexture, Window.Difficulty difficulty)
     {
         super(window, x, y, width, height, activeTexture);
         this.difficulty = difficulty;
