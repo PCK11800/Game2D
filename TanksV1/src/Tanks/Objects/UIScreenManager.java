@@ -56,6 +56,7 @@ public class UIScreenManager
     {
         ShopScreen shop = new ShopScreen(this.window, player);
         System.out.println(game.getLevelNum());
+
         switch (game.getLevelNum())
         {
             case 2:
@@ -74,7 +75,11 @@ public class UIScreenManager
                 this.currentScreen = new StoryScreen(this.window, StoryScreen.Story.BEFORE_FINAL_BATTLE, shop);
                 break;
         }
+        
         this.inShop = true;
+        this.onUIScreen =  true;
+        this.onPauseScreen = false;
+        this.hideUI = false;
     }
 
     public void displayPauseScreen()
