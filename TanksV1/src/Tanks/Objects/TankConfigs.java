@@ -19,13 +19,13 @@ public class TankConfigs {
         tank.setTurretTurningDistance(3);
         tank.setMovementSpeed(5);
         tank.setInitialDirection(180);
-        tank.setShellSpeed(5);
+        tank.setShellSpeed(10);
         tank.setShellRicochetNumber(2);
         tank.setRammingDamage(5);
         tank.setFireDelay(500);
         tank.enablePlayerControl();
         tank.setDamagePerShell(20);
-        tank.setHealth(10000);
+        tank.setHealth(100);
     }
 
     public void enemy_default(Tank tank)
