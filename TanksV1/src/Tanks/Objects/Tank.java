@@ -82,6 +82,9 @@ public class Tank
 	private float tankFiringVolume;
 	private float tankMovingVolume;
 
+	/**
+	 * Class constructor. Creates a new instance of Tank.
+	 */
 	public Tank()
 	{
 		this.hull = new TankHull();
@@ -90,26 +93,47 @@ public class Tank
 		tankID = UUID.randomUUID().toString();
 	}
 
+	/**
+	 * Mutator method for setting the texture of the Hull of this instance of Tank
+	 * @param texturePath path to hull texture
+	 */
 	public void setHullTexture(String texturePath)
 	{
 		hull.setObjectTexture(texturePath);
 	}
 
-	public void setHealth(int health) {
+	/**
+	 * Mutator method for setting the health of the Tank
+	 * @param health health value
+	 */
+	public void setHealth(int health)
+	{
 		this.health = health;
 		this.startingHealth = health;
 	}
 
+	/**
+	 * Mutator method for setting the texture of the Turret of this instance of Tank
+	 * @param texturePath path to turret texture
+	 */
 	public void setTurretTexture(String texturePath)
 	{
 		turret.setObjectTexture(texturePath);
 	}
 
+	/**
+	 * Mutator method for setting the texture of shells fired from this instance of Tank
+	 * @param texturePath path to shell texture
+	 */
 	public void setShellTexture(String texturePath)
 	{
 		shellTexturePath = texturePath;
 	}
 
+	/**
+	 * Mutator method for setting the Window for this instance of Tank
+	 * @param window Window
+	 */
 	public void setWindow(Window window)
 	{
 		hull.setWindow(window);
@@ -117,41 +141,76 @@ public class Tank
 		this.window = window;
 	}
 
+
+	/**
+	 * Mutator method for setting the LevelContainer for this instance of Tank
+	 * @param levelContainer LevelContainer
+	 */
 	public void setLevelContainer(LevelContainer levelContainer)
 	{
 		this.levelContainer = levelContainer;
 		this.map = levelContainer.getMap();
 	}
 
+	/**
+	 * Mutator method for setting Tank location
+	 * @param xPos x position
+	 * @param yPos y position
+	 */
 	public void setTankLocation(float xPos, float yPos)
 	{
 		hull.setCenterLocation(xPos, yPos);
 		turret.setTurretLocation();
 	}
 
+	/**
+	 * Mutator method for setting the damage caused by shells fired from this Tank
+	 * @param damagePerShell damage caused by shells
+	 */
 	public void setDamagePerShell(int damagePerShell) {this.damagePerShell = damagePerShell;}
 
+	/**
+	 * Mutator method for setting the turning distance of the Tank Hull
+	 * @param turningDistance turning distance (in pixels per frame)
+	 */
 	public void setHullTurningDistance(float turningDistance)
 	{
 		hull.setTurningDistance(turningDistance);
 	}
 
+	/**
+	 * Mutator method for setting the turning distance of the Tank Turret
+	 * @param turningDistance turning distance (in pixels per frame)
+	 */
 	public void setTurretTurningDistance(float turningDistance)
 	{
 		turret.setTurningDistance(turningDistance);
 	}
 
+	/**
+	 * Mutator method for setting the movement speed of the Tank
+	 * @param movementSpeed movement speed (in pixels per frame)
+	 */
 	public void setMovementSpeed(float movementSpeed)
 	{
 		hull.setMovementSpeed(movementSpeed);
 	}
 
+	/**
+	 * Mutator method for setting the initial rotation of the Tank
+	 * @param objectDirection initial rotation (in degrees)
+	 */
 	public void setInitialDirection(float objectDirection)
 	{
 		hull.rotateObject(objectDirection);
 		turret.rotateObject(objectDirection);
 	}
 
+	/**
+	 * Mutator method for setting the size of the Tank
+	 * @param width relative width
+	 * @param height relative height
+	 */
 	public void setSize(float width, float height)
 	{
 		hull.setSize(width * 53, height * 75);
@@ -160,6 +219,9 @@ public class Tank
 		sizeMult_h = height;
 	}
 
+	/**
+	 * Scales the Tank according to screen size
+	 */
 	public void setScale()
 	{
 		float[] scale = ObjectSizeHandler.scaleConstant();
@@ -167,6 +229,11 @@ public class Tank
 		turret.setSize(turret.getWidth() * scale[0], turret.getHeight() * scale[1]);
 	}
 
+	/**
+	 * Mutator method for setting the firing sound for this Tank.
+	 * @param firingSound path to firing sound
+	 * @param volume volume of sound
+	 */
 	public void setFiringSound(String firingSound, float volume)
 	{
 		tankFiring = new GameSound(firingSound);
@@ -174,6 +241,11 @@ public class Tank
 		tankFiringVolume = volume;
 	}
 
+	/**
+	 * Mutator method for setting the movement sound for this Tank
+	 * @param moveSound path to movement sound
+	 * @param volume volume of sound
+	 */
 	public void setMovingSound(String moveSound, float volume)
 	{
 		tankMoving = new GameSound(moveSound);
@@ -181,19 +253,29 @@ public class Tank
 		tankMovingVolume = volume;
 	}
 
+	/**
+	 * Mutator method for setting the speed at which shells fired by this Tank travel
+	 * @param shellSpeed shell speed (pixels per frame)
+	 */
 	public void setShellSpeed(float shellSpeed)
 	{
 		this.shellSpeed = shellSpeed;
 	}
 
+	/**
+	 * Mutator method to set the delay time between shells being fired from this tank
+	 * @param rateOfFire time delay (in milliseconds) between shells being fired
+	 */
 	public void setFireDelay(int rateOfFire)
 	{
 		this.delayBetweenShell = rateOfFire;
 	}
 
-	public void setMoney(int money) { this.money = money; }
 
-
+	/**
+	 * Create an instance of TankShell with this tank's turret as the origin
+	 * @return new TankShell
+	 */
 	private TankShell createShell()
 	{
 		TankShell shell = new TankShell(turret, shellTexturePath, window, shellSpeed, levelContainer, shellRicochetNumber, damagePerShell);
@@ -203,31 +285,27 @@ public class Tank
 
 	}
 
-	public ArrayList<TankShell> getShellList()
-	{
-		return shellList;
-	}
-
+	/**
+	 * Mutator method to set the amount of times shells fired by this tank can ricochet before they are removed from the game.
+	 * @param ricochetNumber number of times shells can ricochet
+	 */
 	public void setShellRicochetNumber(int ricochetNumber) {
 		shellRicochetNumber = ricochetNumber;
 	}
 
+	/**
+	 * Make this instance of tank player controlled.
+	 */
 	public void enablePlayerControl()
 	{
 		listener = new PlayerListener(this);
 		isPlayerControlled = true;
 	}
 
-	public void enableEnemyCollision()
-	{
-		enemyCollision = true;
-	}
-
-	public void disableEnemyCollision()
-	{
-		enemyCollision = false;
-	}
-
+	/**
+	 * Mutator method for setting the ramming damage done by this instance of tank
+	 * @param rammingDamage ramming damage
+	 */
 	public void setRammingDamage(int rammingDamage)
 	{
 		this.rammingDamage = rammingDamage;
@@ -235,7 +313,7 @@ public class Tank
 
 
 	/**
-	 * Shoot a shell
+	 * Shoot a shell from the tank turret.
 	 */
 	public void shoot()
 	{
@@ -333,6 +411,9 @@ public class Tank
 		}
 	}
 
+	/**
+	 * Handles the sound for tank movement
+	 */
 	private void tankMovingSoundHandler()
 	{
 		if(tankMovingSoundHandlerClock.getElapsedTime().asMilliseconds() > 180)
@@ -656,6 +737,10 @@ public class Tank
 		return loadNextLevel;
 	}
 
+	/**
+	 * Method for setting the configuration for this Tank
+	 * @param config_name name of config
+	 */
 	public void config(String config_name)
 	{
 		try{
@@ -675,14 +760,24 @@ public class Tank
 		}
 	}
 
-
+	/**
+	 * Mutator method for reseting the flag which indicates whether a new level needs to be loaded or not
+	 */
 	public void resetLoadFlag() { this.loadNextLevel = false; }
 
+	/**
+	 * Method which 'damages' the health of this instance of Tank when it is hit by a shell
+	 * @param damage the damage amount dealt by shell
+	 */
 	public void tankIsHit(int damage)
 	{
 		health = health - damage;
 	}
 
+	/**
+	 * Method for damaging the health of this instance of Tank when it is rammed by another Tank
+	 * @param damage damage dealth by other Tank
+	 */
 	public void tankIsRammed(int damage)
 	{
 		if (armour)
@@ -691,38 +786,70 @@ public class Tank
 			health = health - damage;
 	}
 
+	/**
+	 * Accessor method to determine if this instance of Tank is an Opponent
+	 * @return true if yes, false if no
+	 */
 	public boolean isOpponent() { return !isPlayerControlled; }
 
+	/**
+	 *  Accessor method to access movement speed of this instance of Tank
+	 * @return movement speed
+	 */
 	public float getMovementSpeed()
 	{
 		return hull.getMovementSpeed();
 	}
 
+	/**
+	 *  Accessor method to access the turning distance of this instance of Tank
+	 * @return hull turning distance
+	 */
 	public float getTurningDistance()
 	{
 		return hull.getTurningDistance();
 	}
 
+	/**
+	 *  Accessor method to access turret turning distance of this instance of Tank
+	 * @return turret turning distance
+	 */
 	public float getTurretTurningDistance()
 	{
 		return turret.getTurningDistance();
 	}
 
+	/**
+	 * Mutator method for increasing the money owned by this Tank
+	 * @param i amount to increase money by
+	 */
 	public void increaseMoney(int i)
 	{
 		this.money += i;
 	}
 
+	/**
+	 * Mutator method for decreasing the money owned by this Tank
+	 * @param i amount to decrease money by
+	 */
 	public void decreaseMoney(int i)
 	{
 		this.money -= i;
 	}
 
+	/**
+	 * Accessor method for getting the amount of money owned by this Tank
+	 * @return amount of money owned by this Tank
+	 */
 	public int getMoney()
 	{
 		return this.money;
 	}
 
+	/**
+	 * Method for calculating the score of this Tank
+	 * @return score
+	 */
 	public int getScore()
 	{
 		int score = this.money;
@@ -737,21 +864,37 @@ public class Tank
 		return score;
 	}
 
+	/**
+	 * Mutator method for increasing the health of this Tank
+	 * @param i amount to increase health by
+	 */
 	public void increaseHealth(int i)
 	{
 		this.health = this.health + i;
 	}
 
+	/**
+	 * Mutator method for increasing the max health of this Tank
+	 * @param i amount to increase max health by
+	 */
 	public void increaseMaxHealth(int i)
 	{
 		this.startingHealth = this.startingHealth + i;
 	}
 
+	/**
+	 * Accessor method for getting shell firing delay for this Tank
+	 * @return shell firing delay
+	 */
 	public int getFireDelay()
 	{
 		return delayBetweenShell;
 	}
 
+	/**
+	 * Method to retrieve data about this Tank once it has been destroyed
+	 * @return array of data about Tank in following format {hull x pos, hull y pos, turret x pos, turret y pos, width size multiplier, height size multiplier, hull direction, turret direction}
+	 */
 	public float[] getDeathData()
 	{
 		float[] data = new float[8];
@@ -767,27 +910,12 @@ public class Tank
 		return data;
 	}
 
-	public int[] getCurrentData()
-	{
-		int[] data = new int[8];
-		data[0] = health;
-
-		return data;
-	}
 
 	public float getXPos() { return turret.getxPos(); }
 
 	public float getYPos() { return turret.getyPos(); }
 
 	public float getTurretDir() { return turret.getDirection(); }
-
-	public float getLeftBounds() { return hull.getLeftBounds(); }
-
-	public float getRightBounds() { return hull.getRightBounds(); }
-
-	public float getTopBounds() { return hull.getTopBounds(); }
-
-	public float getBottomBounds() { return hull.getBottomBounds(); }
 
 	public boolean collision() { return collisionLastMove; }
 
