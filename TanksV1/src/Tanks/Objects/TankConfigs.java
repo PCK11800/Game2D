@@ -48,6 +48,17 @@ public class TankConfigs {
         //tank.enableEnemyCollision();
     }
 
+    public void defaultgun_upgrade(Tank tank)
+    {
+        tank.setTurretTexture(Textures.TANKTURRET_BLUE);
+        tank.setShellTexture(Textures.TANKSHELL_DEFAULT);
+        tank.setFiringSound(SoundsPath.TANKFIRING, 20);
+        tank.setShellSpeed(10);
+        tank.setShellRicochetNumber(2);
+        tank.setFireDelay(500);
+        tank.setDamagePerShell(20);
+    }
+
     public void railgun_upgrade(Tank tank)
     {
         textureFix(tank);
@@ -77,16 +88,19 @@ public class TankConfigs {
         tank.setHullTexture(Textures.TANKHULL_BLUE_FAST);
         tank.setMovementSpeed(10);
         tank.setHullTurningDistance(6);
+        tank.installedUpgrades.add("sonicmode_upgrade");
     }
 
     public void spikes_upgrade(Tank tank)
     {
         tank.setRammingDamage(10);
+        tank.installedUpgrades.add("spikes_upgrade");
     }
 
     public void armour_upgrade(Tank tank)
     {
         tank.setArmour(true);
+        tank.installedUpgrades.add("armour_upgrade");
     }
 
     public void halfheal(Tank tank)
