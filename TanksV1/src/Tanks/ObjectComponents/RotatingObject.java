@@ -10,6 +10,9 @@ import org.jsfml.graphics.Texture;
 
 import Tanks.Window.Window;
 
+/**
+ * This is the base class for nearly all objects in the game
+ */
 public class RotatingObject extends Sprite {
 
 	protected float xPos, yPos;
@@ -18,7 +21,11 @@ public class RotatingObject extends Sprite {
 	protected float objectDirection;
 	protected Texture objectTexture;
 	protected String texture;
-	
+
+	/**
+	 * This method is used to set the texture of an object
+	 * @param texturePath the texture string Textures.EXAMPLE
+	 */
 	public void setObjectTexture(String texturePath) 
 	{
 		texture = texturePath;

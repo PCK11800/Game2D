@@ -339,6 +339,9 @@ public class MapGenerator
 	}
 
 
+	/*
+	Accessors and mutators
+	*/
 	public int[][] getMap() { return level; }
 
 	public float getMaxXPos() { return maxXPos; }

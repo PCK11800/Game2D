@@ -7,8 +7,13 @@ import Tanks.Window.Window;
 
 import java.util.Random;
 
+/**
+ * This class contains a game instance
+ * THis is the class updated in the main loop
+ */
 public class GameMode
 {
+    //Instance vars
     private Window window;
     private LevelContainer currentLevel;
 
@@ -51,6 +56,9 @@ public class GameMode
     }
 
 
+    /**
+     * This method is used to re-set the game when the player dies or completes the game
+     */
     private void resetGame()
     {
         this.levelNum = 0;
@@ -78,6 +86,9 @@ public class GameMode
     }
 
 
+    /**
+     * This method spawns the player in the level
+     */
     private void spawnPlayer()
     {
         this.player.resetLoadFlag();
@@ -189,7 +200,7 @@ public class GameMode
 
 
     /**
-     * This method loads the first level
+     * This method loads the first level - called when the player starts a new game
      */
     private void initGameMode()
     {
@@ -265,6 +276,9 @@ public class GameMode
     }
 
 
+    /**
+     * This method abstracts the UI managers update behaviour
+     */
     private void uiManagerUpdate()
     {
         if(uiManager.hideUI())
@@ -280,6 +294,10 @@ public class GameMode
     }
 
 
+    /**
+     * This method is used to handle the loading between levels
+     * This also handles loading levels from arenas to UI Screens
+     */
     private void handleLevelLoading()
     {
         if (isShopLevel()) // The rounds before and after a boss
@@ -316,7 +334,10 @@ public class GameMode
     }
 
 
-
+    /**
+     * This method returns a boolean to see if the current level should have a shop before it
+     * @return true if it should false if not
+     */
     private boolean isShopLevel()
     {
         for (int i : this.shopLevels)
@@ -331,6 +352,9 @@ public class GameMode
     }
 
 
+    /**
+     * This method is used to load the next level
+     */
     private void loadNextLevel()
     {
         this.levelNum++;
@@ -341,15 +365,25 @@ public class GameMode
     }
 
 
+    /**
+     * This method is used to pause the game
+     */
     public void pause()
     {
         paused = true;
     }
 
+    /**
+     * This method is used to unpause the game
+     */
     public void unpause(){
         paused = false;
     }
 
+    /**
+     * THis method is used to return if the game is paused or not
+     * @return true if it is paused, false if not
+     */
     public boolean getStatus(){
         return paused;
     }

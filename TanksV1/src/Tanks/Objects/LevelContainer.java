@@ -72,6 +72,9 @@ public class LevelContainer
     }
 
 
+    /**
+     * This method is used to spawn enemies into the level based on what the current level is
+     */
     private void spawnEnemies()
     {
         if (this.index == 0)

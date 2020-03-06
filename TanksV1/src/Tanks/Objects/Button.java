@@ -62,6 +62,12 @@ public abstract class Button extends RotatingObject
         this.currentWindowWidth = window.getWidth();
     }
 
+    /**
+     * This method is place the button
+     * This is the main method to init a button
+     * @param xScale the pixel scale on the x-axis
+     * @param yScale the pixel scale on the y-axis
+     */
     private void setButton(float xScale, float yScale)
     {
         setObjectTexture(this.activeTexture);

@@ -85,6 +85,11 @@ public class UIScreenManager
         this.hideUI = false;
     }
 
+    /**
+     * This method is called externally when the player pauses the game/
+     * The method sets the necessary flags, and then displays the pause screen
+     * This also has the effect of actually pausing the game
+     */
     public void displayPauseScreen()
     {
         //System.out.println("DISPLAY PAUSE SCREEN CALLED");
@@ -122,6 +127,10 @@ public class UIScreenManager
     }
 
 
+    /**
+     * This method is called externally when the player dies
+     * The method displays the pause screen
+     */
     public void displayGameOverScreen()
     {
         GameOverScreen goScreen = new GameOverScreen(this.window);
@@ -182,10 +191,13 @@ public class UIScreenManager
     public boolean isOnPauseScreen() { return this.onPauseScreen; }
 
 
+    /**
+     * This method is called when the player resumes the game
+     * It returns the game to its state before pausing the game
+     */
     public void resumeGame()
     {
         this.onPauseScreen = false;
-        //System.out.println("STATE BEFORE: " + this.stateBeforePause);
 
         if (this.stateBeforePause)
         {
@@ -201,7 +213,6 @@ public class UIScreenManager
             this.hideUI = true;
             this.onUIScreen = false;
         }
-        //System.out.println("RESUME GAME CALLED");
     }
 
 

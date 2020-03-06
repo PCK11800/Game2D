@@ -13,9 +13,11 @@ import java.util.ArrayList;
 
 /**
  * The parent of all UI screens - e.g. shops, main menus, etc.
+ * This class handles the events that occur in a UI Screen
  */
 public abstract class UIScreen
 {
+    //Instance variables
     private Window window;
     private Tank player;
     private GameMusicHandler handler;
