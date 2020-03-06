@@ -26,6 +26,6 @@ public class MainMenu extends UIScreen
         addQuitButton(centerX, (centerY + 400)  * scale[1], 400, 125, Textures.EXITGAME, Textures.EXITGAME_HOVER, Textures.EXITGAME_CLICKED);
 
         //Thomas the Tank Text
-        addText(375 * scale[0], 100 * scale[1], "THOMAS THE TANK", 80, FontPath.PIXEL, Color.WHITE);
+        addText(centerX - 600, 90 * scale[1], "THOMAS THE TANK", 80, FontPath.PIXEL, Color.WHITE);
     }
 }
