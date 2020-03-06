@@ -12,10 +12,16 @@ public class Leaderboard
     {
         try
         {
+            //loads the local leaderboard file
             file = new File("TanksV1/Resources/leaderboard.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             scores = new ArrayList<>();
 
+            /**
+             * The file should only ever be 10 lines.
+             * Reads through all ten lines, parsing each to get a name and a score.
+             * If the line is empty the default "EMPTY - 0" score is stored.
+             */
             for (int i = 0; i < 10; i++)
             {
                 String line = br.readLine();
@@ -32,6 +38,7 @@ public class Leaderboard
                 }
             }
 
+            //sorts the new array list in descending order
             Collections.sort(scores, new Comparator<Score>() {
                 @Override
                 public int compare(Score o1, Score o2) {
@@ -49,6 +56,13 @@ public class Leaderboard
 
     }
 
+    /**
+     * Takes a name and a score and looks to add them both to the leaderboard list.
+     * If the score is bigger than the lowest score, it's stored in the leaderboard.
+     * Once the old score is replaced the arraylist is then sorted again.
+     * @param name
+     * @param score
+     */
     public void addScore(String name, int score)
     {
         if (score > scores.get(9).getScore())
@@ -78,6 +92,10 @@ public class Leaderboard
         return score;
     }
 
+    /**
+     * Updates the leaderboard that's stored locally by creating a new leaderboard.txt file using the scores stored
+     * in the array list.
+     */
     public void update()
     {
         try
