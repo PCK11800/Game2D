@@ -35,6 +35,7 @@ public class UpgradeButton extends Button
                 this.player.decreaseMoney(cost);
                 this.player.config(this.config);
                 System.out.println("Upgrade: " + this.config);
+                System.out.println("test");
             }
 
             buttonClock.restart();
