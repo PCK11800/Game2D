@@ -239,7 +239,7 @@ public class GameMode
                 if (currentLevel.isPlayerDead())
                 {
                     Leaderboard leaderboard = new Leaderboard();
-                    leaderboard.addScore(player.getName(), player.getMoney());
+                    leaderboard.addScore(player.getName(), player.getScore());
                     uiManager.setOnUIScreen(true);
                     uiManager.displayGameOverScreen();
                     resetGame();
@@ -303,7 +303,7 @@ public class GameMode
             if (this.levelNum + 1 >= this.maxLevel)
             {
                 Leaderboard leaderboard = new Leaderboard();
-                leaderboard.addScore(player.getName(), player.getMoney());
+                leaderboard.addScore(player.getName(), player.getScore());
                 uiManager.setOnUIScreen(true);
                 uiManager.displayEndScreen();
                 resetGame();

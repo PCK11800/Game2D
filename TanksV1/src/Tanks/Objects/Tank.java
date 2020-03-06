@@ -723,6 +723,20 @@ public class Tank
 		return this.money;
 	}
 
+	public int getScore()
+	{
+		int score = this.money;
+		switch (window.getDifficulty())
+		{
+			case NORMAL:
+				score = (int) Math.floor(score * 1.25);
+				break;
+			case HARD:
+				score = (int) Math.floor(score * 1.5);
+		}
+		return score;
+	}
+
 	public void increaseHealth(int i)
 	{
 		this.health = this.health + i;
