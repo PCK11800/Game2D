@@ -393,6 +393,7 @@ public class Opponent extends Tank {
      */
     private boolean middleOfSpace(float x, float y)
     {
+        float OFFSET_FROM_CENTER = 10;
         float tileCenterX = (this.mapGenerator.getTileSize() * this.mapGenerator.getXScale()) / 2;
         float tileCenterY = (this.mapGenerator.getTileSize() * this.mapGenerator.getYScale()) / 2;
 
@@ -406,7 +407,7 @@ public class Opponent extends Tank {
         int edgeX = Math.round(x / tileCenterX);
         int edgeY = Math.round(y / tileCenterY);
 
-        if ((diffX < 10 || diffX > tileCenterX - 10) && (diffY < 10 || diffY > tileCenterY - 10) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
+        if ((diffX < OFFSET_FROM_CENTER || diffX > tileCenterX - OFFSET_FROM_CENTER) && (diffY < OFFSET_FROM_CENTER || diffY > tileCenterY - OFFSET_FROM_CENTER) && (edgeX % 2 == 0) && (edgeY % 2 == 0))
         {
             return true;
         }
