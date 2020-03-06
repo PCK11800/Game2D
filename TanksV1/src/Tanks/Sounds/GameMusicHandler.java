@@ -17,12 +17,15 @@ public class GameMusicHandler {
     public GameMusicHandler() {
         musicListLoad();
         isBackgroundMusicDonePlaying = true;
-        volume = 100;
+        volume = 50;
+
+        int randomSelection = rand.nextInt(musicList.size());
+        currentSong = musicList.get(randomSelection);
     }
 
     //PUT YOUR BACKGROUND MUSIC HERE
     private void musicListLoad() {
-        musicList.add(new GameMusic(SoundsPath.MEGALOVANIA));
+        musicList.add(new GameMusic(SoundsPath.NEOSPRINGCORE));
     }
 
     public void musicHandler() {
