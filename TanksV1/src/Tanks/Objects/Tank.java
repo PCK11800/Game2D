@@ -81,6 +81,7 @@ public class Tank
 
 	private float tankFiringVolume;
 	private float tankMovingVolume;
+	public ArrayList<String> installedUpgrades = new ArrayList<>();
 
 	/**
 	 * Class constructor. Creates a new instance of Tank.
