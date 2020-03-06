@@ -1,5 +1,6 @@
 package Tanks.Objects;
 
+import Tanks.ObjectComponents.Textures;
 import Tanks.UIScreens.*;
 import Tanks.Window.Window;
 
@@ -39,12 +40,14 @@ public class UIScreenManager
     private MainMenu initMainMenu()
     {
         LeaderboardScreen leaderboard = new LeaderboardScreen(this.window);
-        TutorialScreen tutorial = new TutorialScreen(this.window);
+        TutorialScreen tutorial2 = new TutorialScreen(this.window, Textures.TUTORIAL_PAGE_2);
+        TutorialScreen tutorial = new TutorialScreen(this.window, Textures.TUTORIAL_PAGE, tutorial2);
         StoryScreen story = new StoryScreen(this.window, StoryScreen.Story.INTRO);
         MainMenu mainMenu = new MainMenu(this.window, leaderboard, tutorial, story);
 
         leaderboard.initBackButton(mainMenu);
         tutorial.initBackButton(mainMenu);
+        tutorial2.initBackButton(mainMenu);
 
         return mainMenu;
     }

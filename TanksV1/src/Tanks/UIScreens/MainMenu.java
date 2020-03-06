@@ -4,6 +4,7 @@ import Tanks.ObjectComponents.Textures;
 import Tanks.Objects.ObjectSizeHandler;
 import Tanks.Objects.UIScreen;
 import Tanks.Window.Window;
+import org.jsfml.graphics.Color;
 
 public class MainMenu extends UIScreen
 {
@@ -23,5 +24,8 @@ public class MainMenu extends UIScreen
         addLoadUIScreenButton(centerX, (centerY + 200)  * scale[1], 400, 125, Textures.TUTORIAL, Textures.TUTORIAL_HOVER, Textures.TUTORIAL_CLICKED, tutorial);
         //Quit
         addQuitButton(centerX, (centerY + 400)  * scale[1], 400, 125, Textures.EXITGAME, Textures.EXITGAME_HOVER, Textures.EXITGAME_CLICKED);
+
+        //Thomas the Tank Text
+        addText(375 * scale[0], 100 * scale[1], "THOMAS THE TANK", 80, FontPath.PIXEL, Color.WHITE);
     }
 }
